@@ -5,11 +5,12 @@
  */
 package boulder_trainings_app;
 
-import javax.swing.JFrame;
+import boulder_trainings_app.data.Data;
+import boulder_trainings_app.ui.GraphicalUserInterface;
 
 /**
  *
- * @author fabian
+ * @author Fabian Rauscher
  */
 public class Boulder_App
 {
@@ -24,14 +25,19 @@ public class Boulder_App
         this.userInterface = new GraphicalUserInterface(PROGRAM_NAME, WIDTH, HEIGHT);
     }
 
-    public void start()
+    /**
+     * Starts the application.
+     */
+    public void start(Data data)
     {
+        this.userInterface.observe(data);
         this.userInterface.display();
     }
 
     public static void main(String[] args)
     {
         Boulder_App app = new Boulder_App();
-        app.start();
+        Data data = new Data();
+        app.start(data);
     }
 }
