@@ -20,21 +20,67 @@ import javax.swing.JFrame;
  *
  * @author fabian
  */
-public class GraphicalUserInterface extends JFrame
+public class GraphicalUserInterface
 {
+    private String title;
+    private int width;
+    private int height;
+
     public GraphicalUserInterface(String title, int width, int height)
     {
-        super(title);
-        this.setSize(width, height);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //this.setUndecorated(true);
-        this.loadComponents(this.getContentPane());
+        this.title = title;
+        this.width = width;
+        this.height = height;
+    }
 
-        this.addKeyListener(new KeyListener()
+    public void display()
+    {
+        java.awt.EventQueue.invokeLater(new Runnable()
+        {
+            public void run()
+            {
+                JFrame frame = new JFrame();
+                frame.setSize(width, height);
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                //this.setUndecorated(true);
+                GraphicalUserInterface.loadComponents(frame);
+                GraphicalUserInterface.addListeners(frame);
+                frame.setVisible(true);
+            }
+        });
+    }
+
+    public void observe(Data data)
+    {
+
+    }
+
+    /**
+     * Generates and adds all the components for the ui.
+     */
+    private static void loadComponents(JFrame frame)
+    {
+        Container pane = frame.getContentPane();
+        final int HGAP = 5;
+        final int VGAP = 5;
+        BorderLayout borderLayout = new BorderLayout(HGAP, VGAP);
+        pane.setLayout(borderLayout);
+        Top top = new Top();
+        Middle middle = new Middle();
+        Bottom bottom = new Bottom();
+        pane.add(top, BorderLayout.PAGE_START);
+        pane.add(middle, BorderLayout.CENTER);
+        pane.add(bottom, BorderLayout.PAGE_END);
+    }
+
+    private static void addListeners(JFrame frame)
+    {
+        frame.addKeyListener(new KeyListener()
         {
             @Override
-            public void keyTyped(KeyEvent e){}
- 
+            public void keyTyped(KeyEvent e)
+            {
+            }
 
             @Override
             public void keyPressed(KeyEvent e)
@@ -46,35 +92,9 @@ public class GraphicalUserInterface extends JFrame
             }
 
             @Override
-            public void keyReleased(KeyEvent e){}
+            public void keyReleased(KeyEvent e)
+            {
+            }
         });
-    }
-
-    public void display()
-    {
-        this.setVisible(true);
-    }
-
-    public void observe(Data data)
-    {
-
-    }
-
-    /**
-     * Generates and adds all the components for the ui.
-     */
-    private void loadComponents(Container pane)
-    {
-        final int HGAP = 5;
-        final int VGAP = 5;
-        BorderLayout borderLayout = new BorderLayout(HGAP, VGAP);
-        pane.setLayout(borderLayout);
-        Top top = new Top();
-        Middle middle = new Middle();
-        Bottom bottom = new Bottom();
-        pane.add(top, BorderLayout.PAGE_START);
-        pane.add(middle, BorderLayout.CENTER);
-        pane.add(bottom, BorderLayout.PAGE_END);
-
     }
 }

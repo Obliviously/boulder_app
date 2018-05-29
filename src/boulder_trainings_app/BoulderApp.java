@@ -12,7 +12,7 @@ import boulder_trainings_app.ui.GraphicalUserInterface;
  *
  * @author Fabian Rauscher
  */
-public class Boulder_App
+public class BoulderApp
 {
     private final String PROGRAM_NAME = "Boulder Trainings App";
     private final int WIDTH = 800;
@@ -20,8 +20,8 @@ public class Boulder_App
 
     private GraphicalUserInterface userInterface;
 
-    public Boulder_App()
-    {
+    public BoulderApp()
+    {        
         this.userInterface = new GraphicalUserInterface(PROGRAM_NAME, WIDTH, HEIGHT);
     }
 
@@ -36,7 +36,7 @@ public class Boulder_App
 
     public static void main(String[] args)
     {
-        Boulder_App app = new Boulder_App();
+        BoulderApp app = new BoulderApp();
         Data data = new Data();
         app.start(data);
     }
