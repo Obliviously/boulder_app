@@ -9,6 +9,9 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import java.io.Serializable;
 import java.util.ArrayList;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  *
@@ -17,11 +20,14 @@ import java.util.ArrayList;
 public class Boulder implements Serializable
 {
     private final int id;
+    private DateTime date = new DateTime();
+    private Section section;
     private ColorRGBA color;
     private final ArrayList<Vector3f> marks = new ArrayList<>();
 
     public Boulder(int id, ColorRGBA color)
     {
+        this.section = Section.EIGHT;
         this.id = id;
         this.color = color;
     }
@@ -54,4 +60,31 @@ public class Boulder implements Serializable
     {
         this.color = color;
     }
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public Section getSection()
+    {
+        return section;
+    }
+
+    public void setSection(Section section)
+    {
+        this.section = section;
+    }
+
+    public void setDate(DateTime date)
+    {
+        this.date = date;
+    }
+
+    public String getDate()
+    {
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("MM/dd/yyyy");
+        return this.date.toString(dtf);
+    }
+
 }

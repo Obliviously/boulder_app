@@ -69,6 +69,7 @@ public class View3d extends SimpleApplication
         inputManager.addMapping("MOUSE_MOVE", new MouseAxisTrigger(MouseInput.AXIS_Y, false));
         inputManager.addMapping("MOUSE_LEFT_CLICK", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         inputManager.addMapping("SWITCH_MODE", new KeyTrigger(KeyInput.KEY_TAB));
+        inputManager.addMapping("SAVE_BOULDER", new KeyTrigger(KeyInput.KEY_S));
     }
 
 }

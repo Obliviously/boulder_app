@@ -7,6 +7,8 @@ package boulder_trainings_app;
 
 import boulder_trainings_app.data.Data;
 import boulder_trainings_app.ui.GraphicalUserInterface;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  *
@@ -14,6 +16,8 @@ import boulder_trainings_app.ui.GraphicalUserInterface;
  */
 public class BoulderApp
 {
+    private final Path dataPath = Paths.get(".\\data\\");
+
     private final String PROGRAM_NAME = "Boulder Trainings App";
     private final int WIDTH = 800;
     private final int HEIGHT = 600;
@@ -22,6 +26,9 @@ public class BoulderApp
 
     public BoulderApp()
     {
+        BoulderManager boulderManager = BoulderManager.getInstance();
+        boulderManager.setDataPath(dataPath);
+
         this.userInterface = new GraphicalUserInterface(PROGRAM_NAME, WIDTH, HEIGHT);
     }
 

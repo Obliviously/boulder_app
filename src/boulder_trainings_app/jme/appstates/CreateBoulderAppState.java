@@ -5,6 +5,7 @@
  */
 package boulder_trainings_app.jme.appstates;
 
+import boulder_trainings_app.BoulderManager;
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.jme.utils.AbstractInputController;
 import boulder_trainings_app.jme.utils.MeshUtils;
@@ -186,6 +187,11 @@ public class CreateBoulderAppState extends BaseAppState
                     extendBoulderTo(results.getClosestCollision());
                 }
             }
+
+            if (name.equals("SAVE_BOULDER") && !isPressed)
+            {
+                BoulderManager.getInstance().save(boulder);
+            }
         }
 
         @Override
@@ -194,6 +200,7 @@ public class CreateBoulderAppState extends BaseAppState
             app.getInputManager().addListener(this, "MOUSE_LEFT_CLICK");
             app.getInputManager().addListener(this, "MOUSE_MOVE");
             app.getInputManager().addListener(this, "SWITCH_MODE");
+            app.getInputManager().addListener(this, "SAVE_BOULDER");
         }
 
         @Override
