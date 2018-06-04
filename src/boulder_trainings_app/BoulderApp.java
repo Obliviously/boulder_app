@@ -18,10 +18,10 @@ public class BoulderApp
     private final int WIDTH = 800;
     private final int HEIGHT = 600;
 
-    private GraphicalUserInterface userInterface;
+    private final GraphicalUserInterface userInterface;
 
     public BoulderApp()
-    {        
+    {
         this.userInterface = new GraphicalUserInterface(PROGRAM_NAME, WIDTH, HEIGHT);
     }
 
