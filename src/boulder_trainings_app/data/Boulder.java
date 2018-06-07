@@ -9,6 +9,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.UUID;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -19,36 +20,41 @@ import org.joda.time.format.DateTimeFormatter;
  */
 public class Boulder implements Serializable
 {
-    private final int id;
+    private String id = UUID.randomUUID().toString();
     private DateTime date = new DateTime();
     private Section section;
     private ColorRGBA color;
-    private final ArrayList<Vector3f> marks = new ArrayList<>();
+    private final ArrayList<Vector3f> positions = new ArrayList<>();
 
-    public Boulder(int id, ColorRGBA color)
+    public Boulder(ColorRGBA color)
     {
         this.section = Section.EIGHT;
-        this.id = id;
         this.color = color;
+
     }
 
-    public boolean addMark(Vector3f mark)
+    public ArrayList<Vector3f> getPositions()
     {
-        return this.marks.add(mark);
+        return new ArrayList<>(positions);
     }
 
-    public Vector3f getLastMark()
+    public boolean addPosition(Vector3f position)
     {
-        return marks.get(marks.size() - 1);
+        return positions.add(position);
     }
 
-    public Vector3f getNthLastMark(int n)
+    public Vector3f getLastPosition()
     {
-        if (n >= marks.size())
+        return positions.get(positions.size() - 1);
+    }
+
+    public Vector3f getNthLastPosition(int n)
+    {                
+        if (n > positions.size())
         {
             return null;
         }
-        return marks.get(marks.size() - n);
+        return positions.get(positions.size() - n);
     }
 
     public ColorRGBA getColor()
@@ -61,7 +67,7 @@ public class Boulder implements Serializable
         this.color = color;
     }
 
-    public int getId()
+    public String getId()
     {
         return id;
     }
@@ -81,10 +87,9 @@ public class Boulder implements Serializable
         this.date = date;
     }
 
-    public String getDate()
+    public DateTime getDate()
     {
-        DateTimeFormatter dtf = DateTimeFormat.forPattern("MM/dd/yyyy");
-        return this.date.toString(dtf);
+        return this.date;
     }
 
 }

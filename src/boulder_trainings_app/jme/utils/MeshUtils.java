@@ -6,9 +6,14 @@
 package boulder_trainings_app.jme.utils;
 
 import com.jme3.collision.CollisionResult;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Triangle;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
+import com.jme3.scene.shape.Line;
+import com.jme3.scene.shape.Sphere;
 import java.util.ArrayList;
 
 /**
@@ -107,4 +112,32 @@ public class MeshUtils
         while (added);
         return verticesHit;
     }
+
+    /**
+     * A sphere that marks a spot.
+     *
+     * @param position The position of the sphere
+     */
+    public static Geometry createMark(Vector3f position, String name, Material mat, ColorRGBA color)
+    {
+        final float RADIUS = 0.05f;
+        final int RESOLUTION = 15;
+
+        Sphere sphere = new Sphere(RESOLUTION, RESOLUTION, RADIUS);
+        Geometry mark = new Geometry(name, sphere);
+        mat.setColor("Color", color);
+        mark.setMaterial(mat);
+        mark.setLocalTranslation(position);
+        return mark;
+    }
+
+    public static Geometry createLineBetween(Vector3f start, Vector3f end, String name, Material mat, ColorRGBA color)
+    {
+        mat.setColor("Color", color);
+        Line line = new Line(start, end);
+        Geometry lineGeo = new Geometry(name, line);
+        lineGeo.setMaterial(mat);
+        return lineGeo;
+    }
+
 }

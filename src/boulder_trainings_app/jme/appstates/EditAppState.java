@@ -90,8 +90,8 @@ public class EditAppState extends BaseAppState
             {
                 getStateManager().detach(getState(EditAppState.class));
 
-                Boulder boulder = new Boulder(0, ColorRGBA.Blue);
-                boulder.addMark(contactPoint);
+                Boulder boulder = new Boulder(ColorRGBA.Blue);
+                boulder.addPosition(contactPoint);
                 getStateManager().attach(new CreateBoulderAppState(boulder, selectedVertices));
             }
         }
