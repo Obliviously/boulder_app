@@ -25,6 +25,7 @@ public class Boulder implements Serializable
     private Section section;
     private ColorRGBA color;
     private final ArrayList<Vector3f> positions = new ArrayList<>();
+    private boolean isHighlighted = false;
 
     public Boulder(ColorRGBA color)
     {
@@ -49,7 +50,7 @@ public class Boulder implements Serializable
     }
 
     public Vector3f getNthLastPosition(int n)
-    {                
+    {
         if (n > positions.size())
         {
             return null;
@@ -90,6 +91,16 @@ public class Boulder implements Serializable
     public DateTime getDate()
     {
         return this.date;
+    }
+
+    public void setHighlighted(boolean isHighlighted)
+    {
+        this.isHighlighted = isHighlighted;
+    }
+
+    public boolean isHighlighted()
+    {
+        return this.isHighlighted;
     }
 
 }

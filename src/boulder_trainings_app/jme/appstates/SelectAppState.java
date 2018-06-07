@@ -5,6 +5,7 @@
  */
 package boulder_trainings_app.jme.appstates;
 
+import boulder_trainings_app.BoulderManager;
 import boulder_trainings_app.jme.utils.AbstractInputController;
 import boulder_trainings_app.ui.components.View3d;
 import com.jme3.app.Application;
@@ -76,7 +77,7 @@ public class SelectAppState extends BaseAppState
 
                 if (results.size() > 0)
                 {
-                    //TODO              
+                    BoulderManager.getInstance().highlightBoulder(results.getClosestCollision().getGeometry().getName());
                 }
             }
         }

@@ -31,7 +31,7 @@ public class BoulderManager
 {
     private static BoulderManager instance;
     private Path dataPath;
-    private BoulderList boulderList = new BoulderList();
+    private final BoulderList boulderList = new BoulderList();
 
     private BoulderManager()
     {
@@ -44,6 +44,11 @@ public class BoulderManager
             BoulderManager.instance = new BoulderManager();
         }
         return BoulderManager.instance;
+    }
+
+    public void highlightBoulder(String boulderId)
+    {
+        boulderList.highLightBoulder(boulderId);
     }
 
     public void setDataPath(Path dataPath)

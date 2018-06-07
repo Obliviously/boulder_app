@@ -9,8 +9,8 @@ import boulder_trainings_app.BoulderManager;
 import boulder_trainings_app.data.Section;
 import boulder_trainings_app.jme.BoulderUpdater;
 import boulder_trainings_app.jme.appstates.SelectAppState;
-import boulder_trainings_app.jme.utils.VertexUtils;
 import com.jme3.app.SimpleApplication;
+import com.jme3.font.BitmapText;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.KeyTrigger;
@@ -48,10 +48,10 @@ public class View3d extends SimpleApplication
         setDisplayStatView(false);
         //flyCam.setDragToRotate(true);
 
-        //innitialize input mappings
         initInputMappings();
 
-        //load world
+        initCrossHairs();
+
         initWorld();
 
         //initial state
@@ -63,7 +63,7 @@ public class View3d extends SimpleApplication
     {
 
         boulderUpdater = new BoulderUpdater(this);
-        
+
         BoulderManager.getInstance().loadBoulder(DateTime.now(), Section.EIGHT);
 
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
@@ -82,6 +82,22 @@ public class View3d extends SimpleApplication
         inputManager.addMapping("MOUSE_LEFT_CLICK", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         inputManager.addMapping("SWITCH_MODE", new KeyTrigger(KeyInput.KEY_TAB));
         inputManager.addMapping("SAVE_BOULDER", new KeyTrigger(KeyInput.KEY_S));
+    }
+
+    /**
+     * A centred plus sign to help the player aim.
+     */
+    protected void initCrossHairs()
+    {
+        setDisplayStatView(false);
+        guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        BitmapText ch = new BitmapText(guiFont, false);
+        ch.setSize(guiFont.getCharSet().getRenderedSize() * 2);
+        ch.setText("+"); // crosshairs
+        ch.setLocalTranslation( // center
+                settings.getWidth() / 2 - ch.getLineWidth() / 2,
+                settings.getHeight() / 2 + ch.getLineHeight() / 2, 0);
+        guiNode.attachChild(ch);
     }
 
 }

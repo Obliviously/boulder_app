@@ -19,6 +19,7 @@ public class BoulderList extends Observable
     private static final Logger LOGGER = Logger.getLogger(BoulderList.class.getName());
 
     private final ArrayList<Boulder> boulderList = new ArrayList<>();
+    private String highlightedBoulder = null;
 
     public synchronized void addBoulder(Boulder boulder)
     {
@@ -48,5 +49,28 @@ public class BoulderList extends Observable
             }
         }
         notifyObservers(removedBoulders);
+    }
+
+    public Boulder getBoulderById(String boulderId)
+    {
+        for (Boulder b : boulderList)
+        {
+            if (b.getId().equals(boulderId))
+            {
+                return b;
+            }
+        }
+        return null;
+    }
+
+    public synchronized void highLightBoulder(String boulderId)
+    {
+        Boulder boulder = getBoulderById(boulderId);
+        if (boulder != null && !boulder.isHighlighted())
+        {
+            setChanged();
+            boulder.setHighlighted(true);
+            notifyObservers(boulderId);
+        }
     }
 }
