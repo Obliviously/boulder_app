@@ -19,8 +19,8 @@ public class BoulderApp
     private final Path dataPath = Paths.get(".\\data\\");
 
     private final String PROGRAM_NAME = "Boulder Trainings App";
-    private final int WIDTH = 640;
-    private final int HEIGHT = 360;
+    private final int WIDTH = 1280;
+    private final int HEIGHT = 720;
 
     private final GraphicalUserInterface userInterface;
 
