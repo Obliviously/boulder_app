@@ -82,9 +82,7 @@ public class BoulderUpdater implements Observer
                 String boulderId = (String) arg;
                 if (bouldersMap.containsKey(boulderId))
                 {
-                    System.out.println("HALLo");
                     highLightBoulder(bouldersMap.get(boulderId));
-
                 }
             }
         }

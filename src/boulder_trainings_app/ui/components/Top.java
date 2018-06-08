@@ -16,14 +16,16 @@ import javax.swing.JPanel;
 public class Top extends JPanel
 {
     public Top()
-    {      
+    {
         GridBagLayout gbl = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1.0;
         c.weighty = 1.0;
+        c.ipadx = 0;
+        c.ipady = 0;
         Options options = new Options();
         this.setLayout(gbl);
-        this.add(options,c);
+        this.add(options, c);
     }
 }

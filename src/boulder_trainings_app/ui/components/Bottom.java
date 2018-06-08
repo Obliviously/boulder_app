@@ -23,6 +23,8 @@ public class Bottom extends JPanel
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1.0;
         c.weighty = 1.0;
+        c.ipadx = 0;
+        c.ipady = 0;
         Info info = new Info();
         this.setLayout(gbl);
         this.add(info, c);

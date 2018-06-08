@@ -11,6 +11,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 
 /**
@@ -25,31 +27,31 @@ public class Middle extends JPanel
         GridBagConstraints c = new GridBagConstraints();
         this.setLayout(gbl);
         c.fill = GridBagConstraints.BOTH;
+        c.ipady = 0;
+        c.ipadx = 0;
         c.gridy = 0;
         c.weighty = 1.0;
-        c.insets = new Insets(0, 3, 0, 3);
+        //c.insets = new Insets(0, 3, 0, 3);
 
         c.weightx = 0.25;
         c.gridx = 0;
         Sections sections = new Sections();
+        sections.setPreferredSize(new Dimension(1, 1));
         this.add(sections, c);
 
         c.weightx = 0.5;
         c.gridx = 1;
 
-        View3d view3d = new View3d();
-        view3d.createCanvas();
-        JmeCanvasContext ctx = (JmeCanvasContext) view3d.getContext();
-        ctx.setSystemListener(view3d);
-        Dimension dim = new Dimension(640, 480);
-        ctx.getCanvas().setPreferredSize(dim);
+        View3dContainer view3dContainer = new View3dContainer();
+        view3dContainer.setPreferredSize(new Dimension(1, 1));
 
-        this.add(ctx.getCanvas());
-        view3d.startCanvas();
+        this.add(view3dContainer, c);
 
         c.weightx = 0.25;
         c.gridx = 2;
         Statistics statistics = new Statistics();
+        statistics.setPreferredSize(new Dimension(1, 1));
+
         this.add(statistics, c);
     }
 
