@@ -3,6 +3,7 @@ package boulder_trainings_app.jme;
 import boulder_trainings_app.BoulderManager;
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.data.BoulderList;
+import boulder_trainings_app.data.Payload;
 import boulder_trainings_app.jme.utils.MeshUtils;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
@@ -46,43 +47,46 @@ public class BoulderUpdater implements Observer
     {
         if (o instanceof BoulderList)
         {
-            if (arg instanceof ArrayList)
+            if (arg instanceof Payload)
             {
-                ArrayList<Boulder> changedBoulders = (ArrayList<Boulder>) arg;
-                if (boulders.containsAll(changedBoulders))
+                System.out.println("Test");
+                Payload payload = (Payload) arg;
+                Boulder boulder;
+                ArrayList<Boulder> boulderList;
+                switch (payload.getState())
                 {
-                    for (Boulder b : changedBoulders)
-                    {
-                        removeBoulder(b);
-                    }
-                }
-                else
-                {
-                    for (Boulder b : changedBoulders)
+                case ADDED_BOULDER:
+                    boulder = (Boulder) payload.getData();
+                    addBoulder(boulder);
+
+                    break;
+                case REMOVED_BOULDER:
+                    boulder = (Boulder) payload.getData();
+                    removeBoulder(boulder);
+
+                    break;
+                case ADDED_BOULDER_LIST:
+                    boulderList = (ArrayList<Boulder>) payload.getData();
+
+                    for (Boulder b : boulderList)
                     {
                         addBoulder(b);
                     }
-                }
-            }
-            if (arg instanceof Boulder)
-            {
-                Boulder changedBoulder = (Boulder) arg;
-                if (boulders.contains(changedBoulder))
-                {
-                    this.removeBoulder(changedBoulder);
-                }
-                else
-                {
-                    this.addBoulder(changedBoulder);
-                }
-            }
+                    break;
+                case REMOVED_BOULDER_LIST:
+                    boulderList = (ArrayList<Boulder>) payload.getData();
 
-            if (arg instanceof String)
-            {
-                String boulderId = (String) arg;
-                if (bouldersMap.containsKey(boulderId))
-                {
-                    highLightBoulder(bouldersMap.get(boulderId));
+                    for (Boulder b : boulderList)
+                    {
+                        removeBoulder(b);
+                    }
+
+                    break;
+                case HIGHLIGHT_BOULDER:
+                    highLightBoulder(bouldersMap.get((String) payload.getData()));
+                    break;
+                default:
+                    break;
                 }
             }
         }

@@ -25,7 +25,7 @@ public class BoulderList extends Observable
     {
         setChanged();
         boulderList.add(boulder);
-        notifyObservers(boulder);
+        notifyObservers(new Payload(Payload.State.ADDED_BOULDER, boulder));
     }
 
     public synchronized void addBoulders(ArrayList<Boulder> boulders)
@@ -33,7 +33,7 @@ public class BoulderList extends Observable
         setChanged();
         LOGGER.log(Level.INFO, "Added " + boulders.size() + " boulders!");
         boulderList.addAll(boulders);
-        notifyObservers(boulders);
+        notifyObservers(new Payload(Payload.State.ADDED_BOULDER_LIST, boulders));
     }
 
     public synchronized void removeSection(Section section)
@@ -48,7 +48,7 @@ public class BoulderList extends Observable
                 removedBoulders.add(boulder);
             }
         }
-        notifyObservers(removedBoulders);
+        notifyObservers(new Payload(Payload.State.REMOVED_BOULDER_LIST, removedBoulders));
     }
 
     public Boulder getBoulderById(String boulderId)
@@ -70,7 +70,7 @@ public class BoulderList extends Observable
         {
             setChanged();
             boulder.setHighlighted(true);
-            notifyObservers(boulderId);
+            notifyObservers(new Payload(Payload.State.HIGHLIGHT_BOULDER, boulderId));
         }
     }
 }
