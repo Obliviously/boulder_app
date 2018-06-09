@@ -29,11 +29,9 @@ import java.util.logging.Logger;
  */
 public class BoulderUpdater implements Observer
 {
-    private ArrayList<Boulder> boulders = new ArrayList<>();
-    private HashMap<String, Node> bouldersMap = new HashMap<>();
-    private Node rootNode;
-    private AssetManager assetManager;
-    private Thread highLightThread;
+    private final HashMap<String, Node> bouldersMap = new HashMap<>();
+    private final Node rootNode;
+    private final AssetManager assetManager;
 
     public BoulderUpdater(SimpleApplication app)
     {
@@ -49,7 +47,6 @@ public class BoulderUpdater implements Observer
         {
             if (arg instanceof Payload)
             {
-                System.out.println("Test");
                 Payload payload = (Payload) arg;
                 Boulder boulder;
                 ArrayList<Boulder> boulderList;
@@ -94,7 +91,7 @@ public class BoulderUpdater implements Observer
 
     private void highLightBoulder(Node boulderNode)
     {
-        highLightThread = new Thread(() ->
+        new Thread(() ->
         {
             Material oldMat;
             Material highlightMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
@@ -117,20 +114,16 @@ public class BoulderUpdater implements Observer
             }
             BoulderManager.getInstance().getBoulderList().getBoulderById(boulderNode.getName()).setHighlighted(false);
         }
-        );
-        highLightThread.start();
-
+        ).start();
     }
 
     private void removeBoulder(Boulder boulder)
     {
-        boulders.remove(boulder);
         destroyBoulder(bouldersMap.remove(boulder.getId()));
     }
 
     private void addBoulder(Boulder boulder)
     {
-        boulders.add(boulder);
         bouldersMap.put(boulder.getId(), createBoulder(boulder));
     }
 
