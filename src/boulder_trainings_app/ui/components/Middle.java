@@ -14,6 +14,7 @@ import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 /**
  *
@@ -38,21 +39,21 @@ public class Middle extends JPanel
         Sections sections = new Sections();
         sections.setPreferredSize(new Dimension(1, 1));
         this.add(sections, c);
-
+        
         c.weightx = 0.5;
         c.gridx = 1;
-
+        
         View3dContainer view3dContainer = new View3dContainer();
         view3dContainer.setPreferredSize(new Dimension(1, 1));
-
+        
         this.add(view3dContainer, c);
-
+        
         c.weightx = 0.25;
         c.gridx = 2;
         Statistics statistics = new Statistics();
         statistics.setPreferredSize(new Dimension(1, 1));
-
+        
         this.add(statistics, c);
     }
-
+    
 }

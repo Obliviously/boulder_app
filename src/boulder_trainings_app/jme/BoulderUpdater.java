@@ -32,11 +32,15 @@ public class BoulderUpdater implements Observer
     private final HashMap<String, Node> bouldersMap = new HashMap<>();
     private final Node rootNode;
     private final AssetManager assetManager;
+    private final ColorRGBA SELECTION_COLOR = ColorRGBA.DarkGray;
+
+    private Boulder selectedBoulder = null;
 
     public BoulderUpdater(SimpleApplication app)
     {
         this.rootNode = app.getRootNode();
         this.assetManager = app.getAssetManager();
+
         BoulderManager.getInstance().getBoulderList().addObserver(this);
     }
 
@@ -79,9 +83,16 @@ public class BoulderUpdater implements Observer
                     }
 
                     break;
+
                 case HIGHLIGHT_BOULDER:
                     highLightBoulder(bouldersMap.get((String) payload.getData()));
                     break;
+
+                case SELECT_BOULDER:
+                    boulder = (Boulder) payload.getData();
+                    selectBoulder(boulder);
+                    break;
+
                 default:
                     break;
                 }
@@ -89,32 +100,41 @@ public class BoulderUpdater implements Observer
         }
     }
 
+    private void selectBoulder(Boulder boulder)
+    {
+        if (selectedBoulder != null)
+        {
+            deselectBoulder(selectedBoulder);
+        }
+        Node boulderNode = bouldersMap.get(boulder.getId());
+        Material selectionMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        selectionMat.setColor("Color", SELECTION_COLOR);
+
+        for (Spatial s : boulderNode.getChildren())
+        {
+            Geometry geom = (Geometry) s;
+            geom.setMaterial(selectionMat);
+        }
+        selectedBoulder = boulder;
+    }
+
+    private void deselectBoulder(Boulder boulder)
+    {
+        Node boulderNode = bouldersMap.get(boulder.getId());
+        Material selectionMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        selectionMat.setColor("Color", boulder.getColor());
+
+        for (Spatial s : boulderNode.getChildren())
+        {
+            Geometry geom = (Geometry) s;
+            geom.setMaterial(selectionMat);
+        }
+        selectedBoulder = null;
+    }
+
     private void highLightBoulder(Node boulderNode)
     {
-        new Thread(() ->
-        {
-            Material oldMat;
-            Material highlightMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-            highlightMat.setColor("Color", ColorRGBA.White);
-
-            for (Spatial s : boulderNode.getChildren())
-            {
-                Geometry geom = (Geometry) s;
-                oldMat = ((Geometry) s).getMaterial();
-                geom.setMaterial(highlightMat);
-                try
-                {
-                    Thread.sleep(200);
-                }
-                catch (InterruptedException ex)
-                {
-                    Logger.getLogger(BoulderUpdater.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                geom.setMaterial(oldMat);
-            }
-            BoulderManager.getInstance().getBoulderList().getBoulderById(boulderNode.getName()).setHighlighted(false);
-        }
-        ).start();
+        //TODO
     }
 
     private void removeBoulder(Boulder boulder)

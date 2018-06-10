@@ -58,6 +58,7 @@ public class SelectAppState extends BaseAppState
         {
             app.getInputManager().addListener(this, "MOUSE_MOVE");
             app.getInputManager().addListener(this, "SWITCH_MODE");
+            app.getInputManager().addListener(this, "MOUSE_LEFT_CLICK");
         }
 
         @Override
@@ -89,6 +90,20 @@ public class SelectAppState extends BaseAppState
             {
                 stateManager.detach(getState(SelectAppState.class));
                 stateManager.attach(new EditAppState());
+            }
+
+            if (name.equals("MOUSE_LEFT_CLICK") && !isPressed)
+            {
+                System.err.println("SS");
+
+                CollisionResults results = new CollisionResults();
+                Ray ray = new Ray(app.getCamera().getLocation(), app.getCamera().getDirection());
+                app.getRootNode().collideWith(ray, results);
+
+                if (results.size() > 0)
+                {
+                    BoulderManager.getInstance().getBoulderList().selectBoulder(results.getClosestCollision().getGeometry().getName());
+                }
             }
         }
 
