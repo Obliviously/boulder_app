@@ -5,7 +5,6 @@
  */
 package boulder_trainings_app;
 
-import boulder_trainings_app.data.Data;
 import boulder_trainings_app.ui.GraphicalUserInterface;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,16 +34,14 @@ public class BoulderApp
     /**
      * Starts the application.
      */
-    public void start(Data data)
+    public void start()
     {
-        this.userInterface.observe(data);
         this.userInterface.display();
     }
 
     public static void main(String[] args)
     {
         BoulderApp app = new BoulderApp();
-        Data data = new Data();
-        app.start(data);
+        app.start();
     }
 }

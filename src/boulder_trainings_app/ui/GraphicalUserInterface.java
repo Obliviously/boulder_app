@@ -5,7 +5,6 @@
  */
 package boulder_trainings_app.ui;
 
-import boulder_trainings_app.data.Data;
 import boulder_trainings_app.ui.components.Bottom;
 import boulder_trainings_app.ui.components.Middle;
 import boulder_trainings_app.ui.components.Top;
@@ -32,7 +31,6 @@ public class GraphicalUserInterface
         this.title = title;
         this.width = width;
         this.height = height;
-        
     }
 
     public void display()
@@ -52,11 +50,6 @@ public class GraphicalUserInterface
                 frame.setVisible(true);
             }
         });
-    }
-
-    public void observe(Data data)
-    {
-
     }
 
     /**
