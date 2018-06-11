@@ -62,7 +62,7 @@ public class CreateBoulderAppState extends BaseAppState
         this.assetManager = this.app.getAssetManager();
         this.defaultMaterial = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 
-        Geometry mark = MeshUtils.createMark(boulder.getLastPosition(), GEO_NAME, defaultMaterial, boulder.getColor());
+        Geometry mark = MeshUtils.createMark(boulder.getLastPosition(), GEO_NAME, defaultMaterial, boulder.getColor().toColorRGBA());
         rootNode.attachChild(mark);
     }
 
@@ -73,10 +73,10 @@ public class CreateBoulderAppState extends BaseAppState
         //New point is on the same flat polygon as the last one.
         if (newSelectedVertices.containsAll(currSelectedVertices))
         {
-            geom = MeshUtils.createMark(contactPoint, GEO_NAME, defaultMaterial, boulder.getColor());
+            geom = MeshUtils.createMark(contactPoint, GEO_NAME, defaultMaterial, boulder.getColor().toColorRGBA());
             rootNode.attachChild(geom);
             boulder.addPosition(contactPoint);
-            geom = MeshUtils.createLineBetween(boulder.getNthLastPosition(2), boulder.getNthLastPosition(1), GEO_NAME, defaultMaterial, boulder.getColor());
+            geom = MeshUtils.createLineBetween(boulder.getNthLastPosition(2), boulder.getNthLastPosition(1), GEO_NAME, defaultMaterial, boulder.getColor().toColorRGBA());
             rootNode.attachChild(geom);
         }
         else
@@ -100,17 +100,17 @@ public class CreateBoulderAppState extends BaseAppState
                 LOGGER.log(Level.INFO, "Selection is invalid! Can only connect adjacent polygons.");
                 break;
             case 1:
-                Geometry mark = MeshUtils.createMark(newSelectedVertices.get(0), GEO_NAME, defaultMaterial, boulder.getColor());
+                Geometry mark = MeshUtils.createMark(newSelectedVertices.get(0), GEO_NAME, defaultMaterial, boulder.getColor().toColorRGBA());
                 rootNode.attachChild(mark);
                 boulder.addPosition(newSelectedVertices.get(0));
 
-                mark = MeshUtils.createMark(contactPoint, GEO_NAME, defaultMaterial, boulder.getColor());
+                mark = MeshUtils.createMark(contactPoint, GEO_NAME, defaultMaterial, boulder.getColor().toColorRGBA());
                 rootNode.attachChild(mark);
                 boulder.addPosition(contactPoint);
 
-                geom = MeshUtils.createLineBetween(boulder.getNthLastPosition(3), boulder.getNthLastPosition(2), GEO_NAME, defaultMaterial, boulder.getColor());
+                geom = MeshUtils.createLineBetween(boulder.getNthLastPosition(3), boulder.getNthLastPosition(2), GEO_NAME, defaultMaterial, boulder.getColor().toColorRGBA());
                 rootNode.attachChild(geom);
-                geom = MeshUtils.createLineBetween(boulder.getNthLastPosition(2), boulder.getNthLastPosition(1), GEO_NAME, defaultMaterial, boulder.getColor());
+                geom = MeshUtils.createLineBetween(boulder.getNthLastPosition(2), boulder.getNthLastPosition(1), GEO_NAME, defaultMaterial, boulder.getColor().toColorRGBA());
                 rootNode.attachChild(geom);
 
                 currSelectedVertices = tempSelectedVertices;
@@ -119,16 +119,16 @@ public class CreateBoulderAppState extends BaseAppState
                 Vector3f lastContactPoint = boulder.getLastPosition();
                 Vector3f closestContactPoint = VertexUtils.calcClosestPointOnLine(newSelectedVertices.get(0), newSelectedVertices.get(1), lastContactPoint);
 
-                mark = MeshUtils.createMark(closestContactPoint, GEO_NAME, defaultMaterial, boulder.getColor());
+                mark = MeshUtils.createMark(closestContactPoint, GEO_NAME, defaultMaterial, boulder.getColor().toColorRGBA());
                 rootNode.attachChild(mark);
                 boulder.addPosition(closestContactPoint);
-                mark = MeshUtils.createMark(contactPoint, GEO_NAME, defaultMaterial, boulder.getColor());
+                mark = MeshUtils.createMark(contactPoint, GEO_NAME, defaultMaterial, boulder.getColor().toColorRGBA());
                 rootNode.attachChild(mark);
                 boulder.addPosition(contactPoint);
 
-                geom = MeshUtils.createLineBetween(boulder.getNthLastPosition(3), boulder.getNthLastPosition(2), GEO_NAME, defaultMaterial, boulder.getColor());
+                geom = MeshUtils.createLineBetween(boulder.getNthLastPosition(3), boulder.getNthLastPosition(2), GEO_NAME, defaultMaterial, boulder.getColor().toColorRGBA());
                 rootNode.attachChild(geom);
-                geom = MeshUtils.createLineBetween(boulder.getNthLastPosition(2), boulder.getNthLastPosition(1), GEO_NAME, defaultMaterial, boulder.getColor());
+                geom = MeshUtils.createLineBetween(boulder.getNthLastPosition(2), boulder.getNthLastPosition(1), GEO_NAME, defaultMaterial, boulder.getColor().toColorRGBA());
                 rootNode.attachChild(geom);
 
                 currSelectedVertices = tempSelectedVertices;
@@ -183,7 +183,7 @@ public class CreateBoulderAppState extends BaseAppState
             if (name.equals("SAVE_BOULDER") && !isPressed)
             {
                 while (rootNode.detachChildNamed(GEO_NAME) != -1);
-                BoulderManager.getInstance().saveBoulder(boulder);
+                BoulderManager.saveBoulder(boulder);
                 getStateManager().detach(getState(CreateBoulderAppState.class));
                 getStateManager().attach(new EditAppState());
             }

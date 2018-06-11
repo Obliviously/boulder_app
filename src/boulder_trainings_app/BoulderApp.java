@@ -5,9 +5,12 @@
  */
 package boulder_trainings_app;
 
+import boulder_trainings_app.data.Const;
+import boulder_trainings_app.data.Section;
 import boulder_trainings_app.ui.GraphicalUserInterface;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import org.joda.time.DateTime;
 
 /**
  *
@@ -15,28 +18,17 @@ import java.nio.file.Paths;
  */
 public class BoulderApp
 {
-    private final Path dataPath = Paths.get(".\\data\\");
-
-    private final String PROGRAM_NAME = "Boulder Trainings App";
-    private final int WIDTH = 1280;
-    private final int HEIGHT = 720;
-
     private final GraphicalUserInterface userInterface;
 
     public BoulderApp()
-    {
-        BoulderManager boulderManager = BoulderManager.getInstance();
-        boulderManager.setDataPath(dataPath);
-
-        this.userInterface = new GraphicalUserInterface(PROGRAM_NAME, WIDTH, HEIGHT);
+    {       
+        this.userInterface = new GraphicalUserInterface(Const.PROGRAM_NAME, Const.MIN_WIDTH, Const.MIN_HEIGHT);
     }
-
-    /**
-     * Starts the application.
-     */
+  
     public void start()
     {
         this.userInterface.display();
+        BoulderManager.loadBoulder(DateTime.now());
     }
 
     public static void main(String[] args)

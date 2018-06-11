@@ -15,7 +15,6 @@ import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import java.util.ArrayList;
@@ -90,7 +89,7 @@ public class EditAppState extends BaseAppState
             {
                 getStateManager().detach(getState(EditAppState.class));
 
-                Boulder boulder = new Boulder(ColorRGBA.Blue);
+                Boulder boulder = new Boulder();
                 boulder.addPosition(contactPoint);
                 getStateManager().attach(new CreateBoulderAppState(boulder, selectedVertices));
             }

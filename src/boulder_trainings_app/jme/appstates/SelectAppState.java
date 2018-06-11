@@ -5,7 +5,7 @@
  */
 package boulder_trainings_app.jme.appstates;
 
-import boulder_trainings_app.BoulderManager;
+import boulder_trainings_app.data.BoulderList;
 import boulder_trainings_app.jme.utils.AbstractInputController;
 import boulder_trainings_app.ui.components.View3d;
 import com.jme3.app.Application;
@@ -78,7 +78,7 @@ public class SelectAppState extends BaseAppState
 
                 if (results.size() > 0)
                 {
-                    BoulderManager.getInstance().highlightBoulder(results.getClosestCollision().getGeometry().getName());
+                    BoulderList.getInstance().highLightBoulder(results.getClosestCollision().getGeometry().getName());
                 }
             }
         }
@@ -94,15 +94,13 @@ public class SelectAppState extends BaseAppState
 
             if (name.equals("MOUSE_LEFT_CLICK") && !isPressed)
             {
-                System.err.println("SS");
-
                 CollisionResults results = new CollisionResults();
                 Ray ray = new Ray(app.getCamera().getLocation(), app.getCamera().getDirection());
                 app.getRootNode().collideWith(ray, results);
 
                 if (results.size() > 0)
                 {
-                    BoulderManager.getInstance().getBoulderList().selectBoulder(results.getClosestCollision().getGeometry().getName());
+                    BoulderList.getInstance().selectBoulder(results.getClosestCollision().getGeometry().getName());
                 }
             }
         }

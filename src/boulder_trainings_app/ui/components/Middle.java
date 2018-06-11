@@ -50,7 +50,7 @@ public class Middle extends JPanel
         
         c.weightx = 0.25;
         c.gridx = 2;
-        Statistics statistics = new Statistics();
+        BoulderInfo statistics = new BoulderInfo();
         statistics.setPreferredSize(new Dimension(1, 1));
         
         this.add(statistics, c);

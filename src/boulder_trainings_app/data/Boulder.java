@@ -20,16 +20,14 @@ public class Boulder implements Serializable
 {
     private String id = UUID.randomUUID().toString();
     private DateTime date = new DateTime();
-    private Section section;
-    private ColorRGBA color;
+    private Section section = Section.ONE;
+    private BoulderColor color = BoulderColor.PINK;
     private final ArrayList<Vector3f> positions = new ArrayList<>();
     private boolean isHighlighted = false;
+    private String name = null;
 
-    public Boulder(ColorRGBA color)
+    public Boulder()
     {
-        this.section = Section.EIGHT;
-        this.color = color;
-
     }
 
     public ArrayList<Vector3f> getPositions()
@@ -56,12 +54,12 @@ public class Boulder implements Serializable
         return positions.get(positions.size() - n);
     }
 
-    public ColorRGBA getColor()
+    public BoulderColor getColor()
     {
         return this.color;
     }
 
-    public void setColor(ColorRGBA color)
+    public void setColor(BoulderColor color)
     {
         this.color = color;
     }
@@ -99,6 +97,16 @@ public class Boulder implements Serializable
     public boolean isHighlighted()
     {
         return this.isHighlighted;
+    }
+
+    public String getName()
+    {
+        return this.name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
 }

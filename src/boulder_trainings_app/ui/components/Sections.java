@@ -5,12 +5,9 @@
  */
 package boulder_trainings_app.ui.components;
 
-import boulder_trainings_app.BoulderManager;
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.data.BoulderList;
 import boulder_trainings_app.data.Payload;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -27,16 +24,13 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 /**
  *
- * @author fabian
+ * @author Fabian Rauscher
  */
 public class Sections extends JPanel implements Observer
 {
@@ -99,7 +93,7 @@ public class Sections extends JPanel implements Observer
                 {
                     if (!e.getValueIsAdjusting())
                     {
-                        BoulderManager.getInstance().getBoulderList().selectBoulder(list.getSelectedValue());
+                        BoulderList.getInstance().selectBoulder(list.getSelectedValue());
                     }
                 }
             }
@@ -114,7 +108,7 @@ public class Sections extends JPanel implements Observer
                 }
             });
 
-            BoulderManager.getInstance().getBoulderList().addObserver(this);
+            BoulderList.getInstance().addObserver(this);
 
         }
     }

@@ -1,6 +1,5 @@
 package boulder_trainings_app.jme;
 
-import boulder_trainings_app.BoulderManager;
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.data.BoulderList;
 import boulder_trainings_app.data.Payload;
@@ -17,8 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This class is responsible for the visualization of the currrent boulders in
@@ -41,7 +38,13 @@ public class BoulderUpdater implements Observer
         this.rootNode = app.getRootNode();
         this.assetManager = app.getAssetManager();
 
-        BoulderManager.getInstance().getBoulderList().addObserver(this);
+        BoulderList boulderList = BoulderList.getInstance();
+        boulderList.addObserver(this);
+
+        for (Boulder b : boulderList.getBoulderList())
+        {
+            addBoulder(b);
+        }
     }
 
     @Override
@@ -122,7 +125,7 @@ public class BoulderUpdater implements Observer
     {
         Node boulderNode = bouldersMap.get(boulder.getId());
         Material selectionMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        selectionMat.setColor("Color", boulder.getColor());
+        selectionMat.setColor("Color", boulder.getColor().toColorRGBA());
 
         for (Spatial s : boulderNode.getChildren())
         {
@@ -157,11 +160,11 @@ public class BoulderUpdater implements Observer
         Vector3f previousPoint = null;
         for (Vector3f vector : boulder.getPositions())
         {
-            geom = MeshUtils.createMark(vector, boulder.getId(), defaultMaterial, boulder.getColor());
+            geom = MeshUtils.createMark(vector, boulder.getId(), defaultMaterial, boulder.getColor().toColorRGBA());
             boulderNode.attachChild(geom);
             if (previousPoint != null)
             {
-                geom = MeshUtils.createLineBetween(vector, previousPoint, boulder.getId(), defaultMaterial, boulder.getColor());
+                geom = MeshUtils.createLineBetween(vector, previousPoint, boulder.getId(), defaultMaterial, boulder.getColor().toColorRGBA());
                 boulderNode.attachChild(geom);
             }
             previousPoint = vector;

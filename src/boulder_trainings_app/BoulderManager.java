@@ -7,6 +7,7 @@ package boulder_trainings_app;
 
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.data.BoulderList;
+import boulder_trainings_app.data.Const;
 import boulder_trainings_app.data.Section;
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,36 +30,9 @@ import org.joda.time.DateTime;
  */
 public class BoulderManager
 {
-    private static BoulderManager instance;
-    private Path dataPath;
-    private final BoulderList boulderList = new BoulderList();
-
-    private BoulderManager()
+    public static void saveBoulder(Boulder boulder)
     {
-    }
-
-    public static BoulderManager getInstance()
-    {
-        if (BoulderManager.instance == null)
-        {
-            BoulderManager.instance = new BoulderManager();
-        }
-        return BoulderManager.instance;
-    }
-
-    public void highlightBoulder(String boulderId)
-    {
-        boulderList.highLightBoulder(boulderId);
-    }
-
-    public void setDataPath(Path dataPath)
-    {
-        this.dataPath = dataPath;
-    }
-
-    public void saveBoulder(Boulder boulder)
-    {
-        Path path = Paths.get(dataPath.toString(), boulder.getDate().getYear() + "", "" + boulder.getDate().getWeekOfWeekyear(), "" + boulder.getSection().toInt(), boulder.getId() + ".boulder");
+        Path path = Paths.get(Const.DATAPATH.toString(), boulder.getDate().getYear() + "", "" + boulder.getDate().getWeekOfWeekyear(), "" + boulder.getSection().toInt(), boulder.getId() + ".boulder");
         FileOutputStream fout;
 
         path.toFile().getParentFile().mkdirs();
@@ -76,15 +50,18 @@ public class BoulderManager
         {
 
         }
-        boulderList.addBoulder(boulder);
+        BoulderList.getInstance().addBoulder(boulder);
     }
 
-    public BoulderList getBoulderList()
+    public static void loadBoulder(DateTime date)
     {
-        return this.boulderList;
+        for (Section section : Section.values())
+        {
+            loadBoulderSection(date, section);
+        }
     }
 
-    public boolean loadBoulder(DateTime date, Section section)
+    public static void loadBoulderSection(DateTime date, Section section)
     {
         ArrayList<Boulder> boulders = new ArrayList<>();
         int year = date.getYear();
@@ -92,7 +69,6 @@ public class BoulderManager
         int week = date.getWeekOfWeekyear();
 
         Path latestSectionPath = getPath(year, week, section, MIN_YEAR);
-
         if (latestSectionPath != null)
         {
             File[] boulderFiles = latestSectionPath.toFile().listFiles();
@@ -117,17 +93,15 @@ public class BoulderManager
                     Logger.getLogger(BoulderManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            boulderList.addBoulders(boulders);
-            return true;
+            BoulderList.getInstance().addBoulders(boulders);
         }
-        return false;
     }
 
-    private int findMinYear()
+    private static int findMinYear()
     {
         int minYear = Integer.MAX_VALUE;
         int fileYear;
-        for (File f : dataPath.toFile().listFiles())
+        for (File f : Const.DATAPATH.toFile().listFiles())
         {
             fileYear = Integer.parseInt(f.getName());
             if (fileYear < minYear)
@@ -138,9 +112,9 @@ public class BoulderManager
         return minYear;
     }
 
-    private Path getPath(int year, int week, Section section, int MIN_YEAR)
+    private static Path getPath(int year, int week, Section section, int MIN_YEAR)
     {
-        Path path = Paths.get(dataPath.toString(), year + "", week + "", section.toInt() + "");
+        Path path = Paths.get(Const.DATAPATH.toString(), year + "", week + "", section.toInt() + "");
 
         if (path.toFile().exists())
         {
@@ -162,11 +136,10 @@ public class BoulderManager
         return getPath(year, week, section, MIN_YEAR);
     }
 
-    private int getNumberOfWeeksForYear(int year)
+    private static int getNumberOfWeeksForYear(int year)
     {
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, 1, 1);
         return calendar.getActualMaximum(Calendar.WEEK_OF_YEAR);
     }
-
 }

@@ -19,6 +19,25 @@ public class BoulderList extends Observable
     private static final Logger LOGGER = Logger.getLogger(BoulderList.class.getName());
 
     private final ArrayList<Boulder> boulderList = new ArrayList<>();
+    private static BoulderList instance;
+
+    private BoulderList()
+    {
+    }
+
+    public static BoulderList getInstance()
+    {
+        if (BoulderList.instance == null)
+        {
+            BoulderList.instance = new BoulderList();
+        }
+        return BoulderList.instance;
+    }
+
+    public ArrayList<Boulder> getBoulderList()
+    {
+        return new ArrayList<>(boulderList);
+    }
 
     public synchronized void addBoulder(Boulder boulder)
     {
@@ -30,7 +49,7 @@ public class BoulderList extends Observable
     public synchronized void addBoulders(ArrayList<Boulder> boulders)
     {
         setChanged();
-        LOGGER.log(Level.INFO, "Added " + boulders.size() + " boulders!");
+        LOGGER.log(Level.INFO, "Added {0} boulders!", boulders.size());
         boulderList.addAll(boulders);
         notifyObservers(new Payload(Payload.State.ADDED_BOULDER_LIST, boulders));
     }

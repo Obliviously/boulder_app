@@ -18,37 +18,35 @@ import javax.swing.JFrame;
 /**
  * This class represents the GUI for the Application.
  *
- * @author fabian
+ * @author Fabian Rauscher
  */
 public class GraphicalUserInterface
 {
-    private String title;
-    private int width;
-    private int height;
+    private final String title;
+    private final int minWidth;
+    private final int minHeight;
 
-    public GraphicalUserInterface(String title, int width, int height)
+    public GraphicalUserInterface(String title, int minWidth, int minHeight)
     {
         this.title = title;
-        this.width = width;
-        this.height = height;
+        this.minWidth = minWidth;
+        this.minHeight = minHeight;
     }
 
     public void display()
     {
-        java.awt.EventQueue.invokeLater(new Runnable()
+        java.awt.EventQueue.invokeLater(() ->
         {
-            public void run()
-            {
-                JFrame frame = new JFrame();
-                frame.setSize(width, height);
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setAlwaysOnTop(true);
-                frame.setMinimumSize(new Dimension(width, height));
-                //this.setUndecorated(true);
-                GraphicalUserInterface.loadComponents(frame);
-                GraphicalUserInterface.addListeners(frame);
-                frame.setVisible(true);
-            }
+            JFrame frame = new JFrame();
+            frame.setTitle(title);
+            frame.setSize(minWidth, minHeight);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setAlwaysOnTop(true);
+            frame.setMinimumSize(new Dimension(minWidth, minHeight));
+            //frame.setUndecorated(true);
+            GraphicalUserInterface.loadComponents(frame);
+            GraphicalUserInterface.addListeners(frame);
+            frame.setVisible(true);
         });
     }
 
@@ -58,8 +56,8 @@ public class GraphicalUserInterface
     private static void loadComponents(JFrame frame)
     {
         Container pane = frame.getContentPane();
-        final int HGAP = 0;
-        final int VGAP = 0;
+        final int HGAP = 5;
+        final int VGAP = 5;
         BorderLayout borderLayout = new BorderLayout(HGAP, VGAP);
         pane.setLayout(borderLayout);
         Top top = new Top();

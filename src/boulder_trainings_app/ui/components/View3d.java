@@ -83,11 +83,8 @@ public class View3d extends SimpleApplication
 
     private void initWorld()
     {
-
         boulderUpdater = new BoulderUpdater(this);
-
-        BoulderManager.getInstance().loadBoulder(DateTime.now(), Section.EIGHT);
-
+        
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Green);
         Geometry boxGeo;
