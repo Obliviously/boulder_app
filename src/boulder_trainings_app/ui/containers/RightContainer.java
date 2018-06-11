@@ -21,7 +21,7 @@ public class RightContainer extends JPanel
     {
         super.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         BoulderInfo statistics = new BoulderInfo();
-        statistics.setPreferredSize(new Dimension(Const.MIN_WIDTH / 5, HEIGHT));
+        super.setPreferredSize(new Dimension(Const.MIN_WIDTH / 5, HEIGHT));
         super.add(statistics);
     }
 }

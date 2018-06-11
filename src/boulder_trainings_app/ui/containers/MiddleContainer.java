@@ -5,12 +5,15 @@
  */
 package boulder_trainings_app.ui.containers;
 
+import boulder_trainings_app.data.Const;
 import boulder_trainings_app.ui.containers.components.View3d;
 import com.jme3.system.JmeCanvasContext;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
@@ -27,41 +30,13 @@ public class MiddleContainer extends JPanel
     public MiddleContainer()
     {
         super.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        
-        view3d = new View3d();
+        super.setPreferredSize(new Dimension(3 * Const.MIN_WIDTH / 5, HEIGHT));
+
+        view3d = new View3d(this);
         view3d.createCanvas();
         ctx = (JmeCanvasContext) view3d.getContext();
         ctx.setSystemListener(view3d);
         super.add(ctx.getCanvas());
-
-        super.addComponentListener(new ComponentListener()
-        {
-            @Override
-            public void componentResized(ComponentEvent e)
-            {
-                Dimension dim = getSize();
-                //this fixes a small offset that appears after resizing 
-                ctx.getCanvas().setBounds(new Rectangle(dim));
-
-                ctx.getCanvas().setPreferredSize(dim);
-                ctx.getCanvas().setSize(dim);
-                view3d.updateSize(dim);
-            }
-
-            @Override
-            public void componentMoved(ComponentEvent e)
-            {
-            }
-
-            @Override
-            public void componentShown(ComponentEvent e)
-            {
-            }
-
-            @Override
-            public void componentHidden(ComponentEvent e)
-            {
-            }
-        });       
     }
+
 }

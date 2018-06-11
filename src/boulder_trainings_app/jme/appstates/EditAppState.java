@@ -5,6 +5,7 @@
  */
 package boulder_trainings_app.jme.appstates;
 
+import boulder_trainings_app.BoulderManager;
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.jme.utils.AbstractInputController;
 import boulder_trainings_app.jme.utils.MeshUtils;
@@ -87,10 +88,9 @@ public class EditAppState extends BaseAppState
 
             if (name.equals("MOUSE_LEFT_CLICK") && selectedVertices != null && contactPoint != null)
             {
-                getStateManager().detach(getState(EditAppState.class));
+                Boulder boulder = BoulderManager.createBoulder(contactPoint);
 
-                Boulder boulder = new Boulder();
-                boulder.addPosition(contactPoint);
+                getStateManager().detach(getState(EditAppState.class));
                 getStateManager().attach(new CreateBoulderAppState(boulder, selectedVertices));
             }
         }

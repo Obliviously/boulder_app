@@ -5,6 +5,7 @@
  */
 package boulder_trainings_app.data;
 
+import boulder_trainings_app.data.enums.Section;
 import java.util.Observable;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -20,6 +21,8 @@ public class BoulderList extends Observable
 
     private final ArrayList<Boulder> boulderList = new ArrayList<>();
     private static BoulderList instance;
+    private Boulder newBoulder;
+    private String selectedBoulderId = "";
 
     private BoulderList()
     {
@@ -32,6 +35,16 @@ public class BoulderList extends Observable
             BoulderList.instance = new BoulderList();
         }
         return BoulderList.instance;
+    }
+
+    public void setNewBoulder(Boulder newBoulder)
+    {
+        this.newBoulder = newBoulder;
+    }
+
+    public Boulder getNewBoulder()
+    {
+        return this.newBoulder;
     }
 
     public ArrayList<Boulder> getBoulderList()
@@ -69,14 +82,20 @@ public class BoulderList extends Observable
         notifyObservers(new Payload(Payload.State.REMOVED_BOULDER_LIST, removedBoulders));
     }
 
-    public void selectBoulder(String boulderId)
+    public synchronized void selectBoulder(String boulderId)
     {
-        Boulder boulder;
-        if ((boulder = getBoulderById(boulderId)) != null)
+        if (!selectedBoulderId.equals(boulderId))
         {
-            setChanged();
-            notifyObservers(new Payload(Payload.State.SELECT_BOULDER, boulder));
+            selectedBoulderId = boulderId;
+            Boulder boulder;
+            if ((boulder = getBoulderById(boulderId)) != null)
+            {
+                setChanged();
+                notifyObservers(new Payload(Payload.State.SELECT_BOULDER, boulder));
+            }
+
         }
+
     }
 
     public Boulder getBoulderById(String boulderId)

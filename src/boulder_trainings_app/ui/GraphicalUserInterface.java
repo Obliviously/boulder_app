@@ -42,14 +42,13 @@ public class GraphicalUserInterface
         {
             JFrame frame = new JFrame();
             frame.setTitle(title);
-            frame.setSize(minWidth, minHeight);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setAlwaysOnTop(true);
-            frame.setMinimumSize(new Dimension(minWidth, minHeight));
             //frame.setUndecorated(true);
             GraphicalUserInterface.loadComponents(frame);
             GraphicalUserInterface.addListeners(frame);
             frame.setVisible(true);
+            frame.setSize(minWidth, minHeight);
+            frame.setMinimumSize(new Dimension(minWidth, minHeight));
         });
     }
 
@@ -73,7 +72,6 @@ public class GraphicalUserInterface
         pane.add(middle, BorderLayout.CENTER);
         pane.add(right, BorderLayout.LINE_END);
         pane.add(bottom, BorderLayout.PAGE_END);
-        frame.pack();
     }
 
     private static void addListeners(JFrame frame)

@@ -5,7 +5,10 @@
  */
 package boulder_trainings_app.data;
 
-import com.jme3.math.ColorRGBA;
+import boulder_trainings_app.data.enums.BoulderColor;
+import boulder_trainings_app.data.enums.BoulderGrade;
+import boulder_trainings_app.data.enums.BoulderType;
+import boulder_trainings_app.data.enums.Section;
 import com.jme3.math.Vector3f;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,13 +21,15 @@ import org.joda.time.DateTime;
  */
 public class Boulder implements Serializable
 {
-    private String id = UUID.randomUUID().toString();
+    private final String ID = UUID.randomUUID().toString();
     private DateTime date = new DateTime();
     private Section section = Section.ONE;
     private BoulderColor color = BoulderColor.PINK;
     private final ArrayList<Vector3f> positions = new ArrayList<>();
     private boolean isHighlighted = false;
     private String name = null;
+    private BoulderGrade grade;
+    private BoulderType type;
 
     public Boulder()
     {
@@ -66,7 +71,7 @@ public class Boulder implements Serializable
 
     public String getId()
     {
-        return id;
+        return ID;
     }
 
     public Section getSection()
@@ -107,6 +112,26 @@ public class Boulder implements Serializable
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public BoulderGrade getGrade()
+    {
+        return this.grade;
+    }
+
+    public void setGrade(BoulderGrade grade)
+    {
+        this.grade = grade;
+    }
+
+    public BoulderType getType()
+    {
+        return this.type;
+    }
+
+    public void setType(BoulderType type)
+    {
+        this.type = type;
     }
 
 }

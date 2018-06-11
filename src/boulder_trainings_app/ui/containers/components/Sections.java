@@ -12,7 +12,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
@@ -26,7 +25,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -35,14 +33,14 @@ import javax.swing.event.ListSelectionListener;
 public class Sections extends JPanel implements Observer
 {
 
-    private HashMap<Integer, JList> sections = new HashMap();
-    private HashMap<Integer, JButton> buttons = new HashMap();
+    private final HashMap<Integer, JList> sections = new HashMap();
+    private final HashMap<Integer, JButton> buttons = new HashMap();
 
     public Sections()
     {
         super();
 
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        super.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         //create 8 sections
         for (int i = 0; i < 8; i++)
         {
@@ -57,6 +55,8 @@ public class Sections extends JPanel implements Observer
             list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
             list.setVisibleRowCount(-1);
+            list.setFixedCellHeight(15);
+            
             list.setVisible(false);
 
             sections.put(i + 1, list);
@@ -84,32 +84,28 @@ public class Sections extends JPanel implements Observer
             c.gridwidth = 2;
             section.add(list, c);
 
-            this.add(section);
+            super.add(section);
 
-            list.addListSelectionListener(new ListSelectionListener()
+            list.addListSelectionListener((ListSelectionEvent e) ->
             {
-                @Override
-                public void valueChanged(ListSelectionEvent e)
+                if (!e.getValueIsAdjusting())
                 {
-                    if (!e.getValueIsAdjusting())
-                    {
-                        BoulderList.getInstance().selectBoulder(list.getSelectedValue());
-                    }
-                }
-            }
-            );
-
-            toggleButton.addActionListener(new ActionListener()
-            {
-                @Override
-                public void actionPerformed(ActionEvent e)
-                {
-                    list.setVisible(!list.isVisible());
+                    BoulderList.getInstance().selectBoulder(list.getSelectedValue());
                 }
             });
 
-            BoulderList.getInstance().addObserver(this);
+            toggleButton.addActionListener((ActionEvent e) ->
+            {
+                list.setVisible(!list.isVisible());
+            });
 
+        }
+
+        BoulderList boulderList = BoulderList.getInstance();
+        boulderList.addObserver(this);
+        for (Boulder b : boulderList.getBoulderList())
+        {
+            addBoulder(b);
         }
     }
 

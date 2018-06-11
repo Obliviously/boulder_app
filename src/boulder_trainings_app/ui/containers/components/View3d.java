@@ -16,12 +16,10 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
-import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.system.AppSettings;
 import java.awt.Dimension;
+import javax.swing.JPanel;
 
 /**
  *
@@ -30,19 +28,25 @@ import java.awt.Dimension;
 public class View3d extends SimpleApplication
 {
 
+    //For the initial crosshair position caclculation (Couldnt figure out another way to do this).
+    private final JPanel parentContainer;
     private BoulderUpdater boulderUpdater;
-    private InputController input;
+    private final InputController input;
     private BitmapText crossHair;
     private boolean isMouseVisible = true;
     private boolean isCrossHairVisible = false;
 
-    public View3d()
+    public View3d(JPanel parentContainer)
     {
         super();
+        this.parentContainer = parentContainer;
+
         AppSettings appSetting = new AppSettings(true);
         appSetting.setFrameRate(60);
+
         this.showSettings = false;
-        this.setSettings(appSetting);
+
+        super.setSettings(appSetting);
         this.input = new InputController();
     }
 
@@ -81,13 +85,7 @@ public class View3d extends SimpleApplication
     private void initWorld()
     {
         boulderUpdater = new BoulderUpdater(this);
-
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setColor("Color", ColorRGBA.Green);
-        Geometry boxGeo;
         Node box = (Node) assetManager.loadModel("Models/box.blend");
-        boxGeo = (Geometry) (((Node) ((Node) box.getChild(0)).getChild(0)).getChild(0));
-        boxGeo.setMaterial(mat);
         rootNode.attachChild(box);
     }
 
@@ -109,7 +107,6 @@ public class View3d extends SimpleApplication
         if (isCrossHairVisible)
         {
             guiNode.detachChild(crossHair);
-
         }
         else
         {
@@ -131,10 +128,10 @@ public class View3d extends SimpleApplication
         crossHair.setText("+");
     }
 
-    public void updateSize(Dimension size)
+    public void updateSize(Dimension dim)
     {
-        settings.setHeight((int) size.getHeight());
-        settings.setWidth((int) size.getWidth());
+        settings.setHeight((int) dim.getHeight());
+        settings.setWidth((int) dim.getWidth());
     }
 
     private class InputController extends AbstractInputController implements ActionListener
@@ -156,6 +153,7 @@ public class View3d extends SimpleApplication
         {
             if (name.equals("EXIT_3DVIEW") && !isPressed)
             {
+                updateSize(parentContainer.getSize());
                 toogleInput();
             }
         }

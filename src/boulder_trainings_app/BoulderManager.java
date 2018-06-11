@@ -8,7 +8,8 @@ package boulder_trainings_app;
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.data.BoulderList;
 import boulder_trainings_app.data.Const;
-import boulder_trainings_app.data.Section;
+import boulder_trainings_app.data.enums.Section;
+import com.jme3.math.Vector3f;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,6 +31,14 @@ import org.joda.time.DateTime;
  */
 public class BoulderManager
 {
+    public static Boulder createBoulder(Vector3f startPoint)
+    {
+        Boulder boulder = new Boulder();
+        boulder.addPosition(startPoint);
+        BoulderList.getInstance().setNewBoulder(boulder);
+        return boulder;
+    }
+
     public static void saveBoulder(Boulder boulder)
     {
         Path path = Paths.get(Const.DATAPATH.toString(), boulder.getDate().getYear() + "", "" + boulder.getDate().getWeekOfWeekyear(), "" + boulder.getSection().toInt(), boulder.getId() + ".boulder");

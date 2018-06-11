@@ -6,7 +6,7 @@
 package boulder_trainings_app;
 
 import boulder_trainings_app.data.Const;
-import boulder_trainings_app.data.Section;
+import boulder_trainings_app.data.enums.Section;
 import boulder_trainings_app.ui.GraphicalUserInterface;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -21,10 +21,10 @@ public class BoulderApp
     private final GraphicalUserInterface userInterface;
 
     public BoulderApp()
-    {       
+    {
         this.userInterface = new GraphicalUserInterface(Const.PROGRAM_NAME, Const.MIN_WIDTH, Const.MIN_HEIGHT);
     }
-  
+
     public void start()
     {
         this.userInterface.display();
@@ -35,5 +35,6 @@ public class BoulderApp
     {
         BoulderApp app = new BoulderApp();
         app.start();
+
     }
 }

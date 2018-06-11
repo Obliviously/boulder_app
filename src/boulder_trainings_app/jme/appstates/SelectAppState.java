@@ -97,7 +97,6 @@ public class SelectAppState extends BaseAppState
                 CollisionResults results = new CollisionResults();
                 Ray ray = new Ray(app.getCamera().getLocation(), app.getCamera().getDirection());
                 app.getRootNode().collideWith(ray, results);
-
                 if (results.size() > 0)
                 {
                     BoulderList.getInstance().selectBoulder(results.getClosestCollision().getGeometry().getName());

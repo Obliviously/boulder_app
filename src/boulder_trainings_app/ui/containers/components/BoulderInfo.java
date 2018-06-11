@@ -5,18 +5,14 @@
  */
 package boulder_trainings_app.ui.containers.components;
 
-import boulder_trainings_app.BoulderManager;
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.data.BoulderList;
 import boulder_trainings_app.data.Const;
 import boulder_trainings_app.data.Payload;
-import com.jme3.math.ColorRGBA;
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -32,7 +28,7 @@ public class BoulderInfo extends JPanel implements Observer
     public BoulderInfo()
     {
         super();
-        this.setLayout(new GridLayout(10, 2));
+        super.setLayout(new GridLayout(10, 2));
 
         BoulderList.getInstance().addObserver(this);
 
@@ -44,8 +40,8 @@ public class BoulderInfo extends JPanel implements Observer
         nameTextField = new JTextField();
         nameTextField.setEnabled(false);
 
-        this.add(nameLabel);
-        this.add(nameTextField);
+        super.add(nameLabel);
+        super.add(nameTextField);
     }
 
     @Override
