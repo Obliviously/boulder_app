@@ -3,10 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package boulder_trainings_app.ui.components;
+package boulder_trainings_app.ui.containers.components;
 
-import boulder_trainings_app.BoulderManager;
-import boulder_trainings_app.data.Section;
 import boulder_trainings_app.jme.BoulderUpdater;
 import boulder_trainings_app.jme.appstates.SelectAppState;
 import boulder_trainings_app.jme.utils.AbstractInputController;
@@ -24,7 +22,6 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.system.AppSettings;
 import java.awt.Dimension;
-import org.joda.time.DateTime;
 
 /**
  *
@@ -84,7 +81,7 @@ public class View3d extends SimpleApplication
     private void initWorld()
     {
         boulderUpdater = new BoulderUpdater(this);
-        
+
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Green);
         Geometry boxGeo;

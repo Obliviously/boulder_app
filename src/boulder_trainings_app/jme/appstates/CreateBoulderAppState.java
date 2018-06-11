@@ -10,7 +10,7 @@ import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.jme.utils.AbstractInputController;
 import boulder_trainings_app.jme.utils.MeshUtils;
 import boulder_trainings_app.jme.utils.VertexUtils;
-import boulder_trainings_app.ui.components.View3d;
+import boulder_trainings_app.ui.containers.components.View3d;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;

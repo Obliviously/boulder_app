@@ -5,9 +5,12 @@
  */
 package boulder_trainings_app.ui;
 
-import boulder_trainings_app.ui.components.Bottom;
-import boulder_trainings_app.ui.components.Middle;
-import boulder_trainings_app.ui.components.Top;
+import boulder_trainings_app.ui.containers.BottomContainer;
+import boulder_trainings_app.ui.containers.LeftContainer;
+import boulder_trainings_app.ui.containers.MiddleContainer;
+import boulder_trainings_app.ui.containers.RightContainer;
+import boulder_trainings_app.ui.containers.TopContainer;
+import boulder_trainings_app.ui.containers.MiddleContainer;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -60,11 +63,15 @@ public class GraphicalUserInterface
         final int VGAP = 5;
         BorderLayout borderLayout = new BorderLayout(HGAP, VGAP);
         pane.setLayout(borderLayout);
-        Top top = new Top();
-        Middle middle = new Middle();
-        Bottom bottom = new Bottom();
+        TopContainer top = new TopContainer();
+        MiddleContainer middle = new MiddleContainer();
+        LeftContainer left = new LeftContainer();
+        RightContainer right = new RightContainer();
+        BottomContainer bottom = new BottomContainer();
         pane.add(top, BorderLayout.PAGE_START);
+        pane.add(left, BorderLayout.LINE_START);
         pane.add(middle, BorderLayout.CENTER);
+        pane.add(right, BorderLayout.LINE_END);
         pane.add(bottom, BorderLayout.PAGE_END);
         frame.pack();
     }

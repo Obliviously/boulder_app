@@ -3,20 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package boulder_trainings_app.ui.components;
+package boulder_trainings_app.ui.containers;
 
+import boulder_trainings_app.ui.containers.components.Options;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import javax.swing.JPanel;
 
 /**
  *
  * @author fabian
  */
-public class Bottom extends JPanel
+public class TopContainer extends JPanel
 {
-    public Bottom()
+    public TopContainer()
     {
         GridBagLayout gbl = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
@@ -25,10 +25,8 @@ public class Bottom extends JPanel
         c.weighty = 1.0;
         c.ipadx = 0;
         c.ipady = 0;
-        Info info = new Info();
+        Options options = new Options();
         this.setLayout(gbl);
-        this.add(info, c);
-
+        this.add(options, c);
     }
-
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package boulder_trainings_app.ui.components;
+package boulder_trainings_app.ui.containers.components;
 
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.data.BoulderList;
