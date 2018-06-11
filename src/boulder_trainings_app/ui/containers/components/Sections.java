@@ -6,7 +6,7 @@
 package boulder_trainings_app.ui.containers.components;
 
 import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.data.BoulderList;
+import boulder_trainings_app.data.ProgramData;
 import boulder_trainings_app.data.Payload;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -56,7 +56,7 @@ public class Sections extends JPanel implements Observer
             list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
             list.setVisibleRowCount(-1);
             list.setFixedCellHeight(15);
-            
+
             list.setVisible(false);
 
             sections.put(i + 1, list);
@@ -90,7 +90,7 @@ public class Sections extends JPanel implements Observer
             {
                 if (!e.getValueIsAdjusting())
                 {
-                    BoulderList.getInstance().selectBoulder(list.getSelectedValue());
+                    ProgramData.getInstance().selectBoulder(list.getSelectedValue());
                 }
             });
 
@@ -101,7 +101,7 @@ public class Sections extends JPanel implements Observer
 
         }
 
-        BoulderList boulderList = BoulderList.getInstance();
+        ProgramData boulderList = ProgramData.getInstance();
         boulderList.addObserver(this);
         for (Boulder b : boulderList.getBoulderList())
         {
@@ -112,7 +112,7 @@ public class Sections extends JPanel implements Observer
     @Override
     public void update(Observable o, Object arg)
     {
-        if (o instanceof BoulderList)
+        if (o instanceof ProgramData)
         {
             if (arg instanceof Payload)
             {
@@ -140,7 +140,6 @@ public class Sections extends JPanel implements Observer
                     break;
                 case REMOVED_BOULDER_LIST:
                     boulderList = (ArrayList<Boulder>) payload.getData();
-
                     for (Boulder b : boulderList)
                     {
                         removeBoulder(b);

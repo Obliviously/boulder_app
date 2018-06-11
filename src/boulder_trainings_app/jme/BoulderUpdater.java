@@ -1,7 +1,7 @@
 package boulder_trainings_app.jme;
 
 import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.data.BoulderList;
+import boulder_trainings_app.data.ProgramData;
 import boulder_trainings_app.data.Payload;
 import boulder_trainings_app.jme.utils.MeshUtils;
 import com.jme3.app.SimpleApplication;
@@ -38,7 +38,7 @@ public class BoulderUpdater implements Observer
         this.rootNode = app.getRootNode();
         this.assetManager = app.getAssetManager();
 
-        BoulderList boulderList = BoulderList.getInstance();
+        ProgramData boulderList = ProgramData.getInstance();
         boulderList.addObserver(this);
 
         for (Boulder b : boulderList.getBoulderList())
@@ -50,7 +50,7 @@ public class BoulderUpdater implements Observer
     @Override
     public void update(Observable o, Object arg)
     {
-        if (o instanceof BoulderList)
+        if (o instanceof ProgramData)
         {
             if (arg instanceof Payload)
             {

@@ -7,6 +7,8 @@ package boulder_trainings_app.jme.appstates;
 
 import boulder_trainings_app.BoulderManager;
 import boulder_trainings_app.data.Boulder;
+import boulder_trainings_app.data.ProgramData;
+import boulder_trainings_app.data.enums.ProgramState;
 import boulder_trainings_app.jme.utils.AbstractInputController;
 import boulder_trainings_app.jme.utils.MeshUtils;
 import boulder_trainings_app.ui.containers.components.View3d;
@@ -82,6 +84,7 @@ public class EditAppState extends BaseAppState
         {
             if (name.equals("SWITCH_MODE") && !isPressed)
             {
+                ProgramData.getInstance().changeStateTo(ProgramState.SELECT);
                 getStateManager().detach(getState(EditAppState.class));
                 getStateManager().attach(new SelectAppState());
             }

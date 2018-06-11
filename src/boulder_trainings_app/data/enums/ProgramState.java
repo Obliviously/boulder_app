@@ -9,7 +9,7 @@ package boulder_trainings_app.data.enums;
  *
  * @author Fabian Rauscher
  */
-public enum State
+public enum ProgramState
 {
     SELECT, EDIT;
 }

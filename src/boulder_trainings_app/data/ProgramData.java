@@ -6,6 +6,7 @@
 package boulder_trainings_app.data;
 
 import boulder_trainings_app.data.enums.Section;
+import boulder_trainings_app.data.enums.ProgramState;
 import java.util.Observable;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -15,36 +16,42 @@ import java.util.logging.Logger;
  *
  * @author Fabian Rauscher
  */
-public class BoulderList extends Observable
+public class ProgramData extends Observable
 {
-    private static final Logger LOGGER = Logger.getLogger(BoulderList.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ProgramData.class.getName());
 
     private final ArrayList<Boulder> boulderList = new ArrayList<>();
-    private static BoulderList instance;
-    private Boulder newBoulder;
-    private String selectedBoulderId = "";
+    private static ProgramData instance;
+    private ProgramState programState = ProgramState.SELECT;
 
-    private BoulderList()
+    private ProgramData()
     {
     }
 
-    public static BoulderList getInstance()
+    public static ProgramData getInstance()
     {
-        if (BoulderList.instance == null)
+        if (ProgramData.instance == null)
         {
-            BoulderList.instance = new BoulderList();
+            ProgramData.instance = new ProgramData();
         }
-        return BoulderList.instance;
+        return ProgramData.instance;
     }
 
-    public void setNewBoulder(Boulder newBoulder)
+    public void changeStateTo(ProgramState programState)
     {
-        this.newBoulder = newBoulder;
+        if (this.programState != programState)
+        {
+            setChanged();
+            this.programState = programState;
+            notifyObservers(new Payload(Payload.State.PROGRAM_STATE_CHANGED, programState));
+        }
+
     }
 
-    public Boulder getNewBoulder()
+    public void editBoulder(Boulder editBoulder)
     {
-        return this.newBoulder;
+        setChanged();
+        notifyObservers(new Payload(Payload.State.EDIT_BOULDER, editBoulder));
     }
 
     public ArrayList<Boulder> getBoulderList()
@@ -84,18 +91,12 @@ public class BoulderList extends Observable
 
     public synchronized void selectBoulder(String boulderId)
     {
-        if (!selectedBoulderId.equals(boulderId))
+        Boulder boulder;
+        if ((boulder = getBoulderById(boulderId)) != null)
         {
-            selectedBoulderId = boulderId;
-            Boulder boulder;
-            if ((boulder = getBoulderById(boulderId)) != null)
-            {
-                setChanged();
-                notifyObservers(new Payload(Payload.State.SELECT_BOULDER, boulder));
-            }
-
+            setChanged();
+            notifyObservers(new Payload(Payload.State.SELECT_BOULDER, boulder));
         }
-
     }
 
     public Boulder getBoulderById(String boulderId)

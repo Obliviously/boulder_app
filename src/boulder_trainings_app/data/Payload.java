@@ -5,6 +5,7 @@
  */
 package boulder_trainings_app.data;
 
+import boulder_trainings_app.data.enums.ProgramState;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +25,9 @@ public class Payload
         ADDED_BOULDER_LIST(ArrayList.class),
         REMOVED_BOULDER_LIST(ArrayList.class),
         HIGHLIGHT_BOULDER(String.class),
-        SELECT_BOULDER(Boulder.class);
+        SELECT_BOULDER(Boulder.class),
+        EDIT_BOULDER(Boulder.class),
+        PROGRAM_STATE_CHANGED(ProgramState.class);
 
         Class dataClass;
 

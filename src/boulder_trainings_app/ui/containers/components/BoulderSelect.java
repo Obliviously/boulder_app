@@ -6,7 +6,7 @@
 package boulder_trainings_app.ui.containers.components;
 
 import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.data.BoulderList;
+import boulder_trainings_app.data.ProgramData;
 import boulder_trainings_app.data.Const;
 import boulder_trainings_app.data.Payload;
 import java.awt.GridLayout;
@@ -21,16 +21,16 @@ import javax.swing.JTextField;
  *
  * @author fabian
  */
-public class BoulderInfo extends JPanel implements Observer
+public class BoulderSelect extends JPanel implements Observer
 {
     private final JTextField nameTextField;
 
-    public BoulderInfo()
+    public BoulderSelect()
     {
         super();
         super.setLayout(new GridLayout(10, 2));
 
-        BoulderList.getInstance().addObserver(this);
+        ProgramData.getInstance().addObserver(this);
 
         JLabel nameLabel = new JLabel(Const.BOULDER_NAME_LABEL);
         JLabel colorLabel = new JLabel(Const.BOULDER_COLOR_LABEL);
@@ -47,7 +47,7 @@ public class BoulderInfo extends JPanel implements Observer
     @Override
     public void update(Observable o, Object arg)
     {
-        if (o instanceof BoulderList)
+        if (o instanceof ProgramData)
         {
             if (arg instanceof Payload)
             {

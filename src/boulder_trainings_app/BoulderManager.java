@@ -6,9 +6,10 @@
 package boulder_trainings_app;
 
 import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.data.BoulderList;
+import boulder_trainings_app.data.ProgramData;
 import boulder_trainings_app.data.Const;
 import boulder_trainings_app.data.enums.Section;
+import boulder_trainings_app.data.enums.ProgramState;
 import com.jme3.math.Vector3f;
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,7 +36,7 @@ public class BoulderManager
     {
         Boulder boulder = new Boulder();
         boulder.addPosition(startPoint);
-        BoulderList.getInstance().setNewBoulder(boulder);
+        ProgramData.getInstance().editBoulder(boulder);
         return boulder;
     }
 
@@ -59,7 +60,7 @@ public class BoulderManager
         {
 
         }
-        BoulderList.getInstance().addBoulder(boulder);
+        ProgramData.getInstance().addBoulder(boulder);
     }
 
     public static void loadBoulder(DateTime date)
@@ -102,7 +103,7 @@ public class BoulderManager
                     Logger.getLogger(BoulderManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            BoulderList.getInstance().addBoulders(boulders);
+            ProgramData.getInstance().addBoulders(boulders);
         }
     }
 

@@ -12,6 +12,7 @@ import boulder_trainings_app.data.enums.Section;
 import com.jme3.math.Vector3f;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Observable;
 import java.util.UUID;
 import org.joda.time.DateTime;
 
@@ -19,7 +20,7 @@ import org.joda.time.DateTime;
  *
  * @author Fabian Rauscher
  */
-public class Boulder implements Serializable
+public class Boulder extends Observable implements Serializable
 {
     private final String ID = UUID.randomUUID().toString();
     private DateTime date = new DateTime();
@@ -27,13 +28,9 @@ public class Boulder implements Serializable
     private BoulderColor color = BoulderColor.PINK;
     private final ArrayList<Vector3f> positions = new ArrayList<>();
     private boolean isHighlighted = false;
-    private String name = null;
+    private String name = "DefualtName";
     private BoulderGrade grade;
     private BoulderType type;
-
-    public Boulder()
-    {
-    }
 
     public ArrayList<Vector3f> getPositions()
     {
@@ -43,6 +40,7 @@ public class Boulder implements Serializable
     public boolean addPosition(Vector3f position)
     {
         return positions.add(position);
+
     }
 
     public Vector3f getLastPosition()
@@ -66,7 +64,9 @@ public class Boulder implements Serializable
 
     public void setColor(BoulderColor color)
     {
+        setChanged();
         this.color = color;
+        notifyObservers();
     }
 
     public String getId()
@@ -81,7 +81,9 @@ public class Boulder implements Serializable
 
     public void setSection(Section section)
     {
+        setChanged();
         this.section = section;
+        notifyObservers();
     }
 
     public void setDate(DateTime date)
@@ -111,7 +113,9 @@ public class Boulder implements Serializable
 
     public void setName(String name)
     {
+        setChanged();
         this.name = name;
+        notifyObservers();
     }
 
     public BoulderGrade getGrade()

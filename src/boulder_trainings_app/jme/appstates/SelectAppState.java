@@ -5,7 +5,8 @@
  */
 package boulder_trainings_app.jme.appstates;
 
-import boulder_trainings_app.data.BoulderList;
+import boulder_trainings_app.data.ProgramData;
+import boulder_trainings_app.data.enums.ProgramState;
 import boulder_trainings_app.jme.utils.AbstractInputController;
 import boulder_trainings_app.ui.containers.components.View3d;
 import com.jme3.app.Application;
@@ -78,7 +79,7 @@ public class SelectAppState extends BaseAppState
 
                 if (results.size() > 0)
                 {
-                    BoulderList.getInstance().highLightBoulder(results.getClosestCollision().getGeometry().getName());
+                    ProgramData.getInstance().highLightBoulder(results.getClosestCollision().getGeometry().getName());
                 }
             }
         }
@@ -88,6 +89,7 @@ public class SelectAppState extends BaseAppState
         {
             if (name.equals("SWITCH_MODE") && !isPressed)
             {
+                ProgramData.getInstance().changeStateTo(ProgramState.EDIT);
                 stateManager.detach(getState(SelectAppState.class));
                 stateManager.attach(new EditAppState());
             }
@@ -99,7 +101,7 @@ public class SelectAppState extends BaseAppState
                 app.getRootNode().collideWith(ray, results);
                 if (results.size() > 0)
                 {
-                    BoulderList.getInstance().selectBoulder(results.getClosestCollision().getGeometry().getName());
+                    ProgramData.getInstance().selectBoulder(results.getClosestCollision().getGeometry().getName());
                 }
             }
         }
