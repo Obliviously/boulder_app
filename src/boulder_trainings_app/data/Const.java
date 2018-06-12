@@ -24,5 +24,7 @@ public class Const
     public final static String BOULDER_COLOR_LABEL = "Color";
     public final static String BOULDER_SECTION_LABEL = "Section";
     public final static String BOULDER_DATE_LABEL = "Date";
+    public final static String BOULDER_TYPE_LABEL = "Type";
+    public final static String BOULDER_GRADE_LABEL = "Grade";
 
 }

@@ -6,12 +6,9 @@
 package boulder_trainings_app.ui.containers.components;
 
 import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.data.Const;
 import boulder_trainings_app.data.ProgramData;
 import boulder_trainings_app.data.Payload;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -20,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
-import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -85,7 +81,19 @@ public class Sections extends JPanel implements Observer
             {
                 if (!e.getValueIsAdjusting())
                 {
-                    ProgramData.getInstance().selectBoulder(list.getSelectedValue());
+                    //ignore deselecting items
+                    if (list.getSelectedValue() != null)
+                    {
+                        //deselect all other lists
+                        sections.forEach((key, otherList) ->
+                        {
+                            if (!otherList.equals(e.getSource()))
+                            {
+                                otherList.clearSelection();
+                            }
+                        });
+                        ProgramData.getInstance().selectBoulder(list.getSelectedValue());
+                    }
                 }
             });
 

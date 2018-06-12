@@ -9,11 +9,8 @@ import boulder_trainings_app.data.Const;
 import boulder_trainings_app.ui.containers.components.View3d;
 import com.jme3.system.JmeCanvasContext;
 import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
@@ -23,9 +20,8 @@ import javax.swing.JPanel;
  */
 public class MiddleContainer extends JPanel
 {
-
-    private View3d view3d;
-    private JmeCanvasContext ctx;
+    private final View3d view3d;
+    private final JmeCanvasContext ctx;
 
     public MiddleContainer()
     {
@@ -36,7 +32,23 @@ public class MiddleContainer extends JPanel
         view3d.createCanvas();
         ctx = (JmeCanvasContext) view3d.getContext();
         ctx.setSystemListener(view3d);
-        super.add(ctx.getCanvas());
-    }
 
+        super.add(ctx.getCanvas());
+
+        ctx.getCanvas().addFocusListener(new FocusListener()
+        {
+            @Override
+            public void focusGained(FocusEvent e)
+            {
+            }
+
+            @Override
+            public void focusLost(FocusEvent e)
+            {
+                //To make sure input is always captured by the jme
+                ctx.getCanvas().getParent().requestFocus();
+                ctx.getCanvas().getParent().requestFocusInWindow();
+            }
+        });
+    }
 }

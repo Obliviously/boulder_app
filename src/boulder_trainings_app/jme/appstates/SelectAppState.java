@@ -89,7 +89,6 @@ public class SelectAppState extends BaseAppState
         {
             if (name.equals("SWITCH_MODE") && !isPressed)
             {
-                ProgramData.getInstance().changeStateTo(ProgramState.EDIT);
                 stateManager.detach(getState(SelectAppState.class));
                 stateManager.attach(new EditAppState());
             }

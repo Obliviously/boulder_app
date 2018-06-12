@@ -5,7 +5,7 @@
  */
 package boulder_trainings_app.data;
 
-import boulder_trainings_app.data.enums.Section;
+import boulder_trainings_app.data.enums.BoulderSection;
 import boulder_trainings_app.data.enums.ProgramState;
 import java.util.Observable;
 import java.util.ArrayList;
@@ -74,7 +74,7 @@ public class ProgramData extends Observable
         notifyObservers(new Payload(Payload.State.ADDED_BOULDER_LIST, boulders));
     }
 
-    public synchronized void removeSection(Section section)
+    public synchronized void removeSection(BoulderSection section)
     {
         setChanged();
         ArrayList<Boulder> removedBoulders = new ArrayList<Boulder>();

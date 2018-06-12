@@ -9,11 +9,9 @@ import boulder_trainings_app.data.Const;
 import boulder_trainings_app.ui.containers.components.Sections;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import static java.awt.image.ImageObserver.HEIGHT;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 

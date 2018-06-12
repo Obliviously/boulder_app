@@ -91,8 +91,8 @@ public class EditAppState extends BaseAppState
 
             if (name.equals("MOUSE_LEFT_CLICK") && selectedVertices != null && contactPoint != null)
             {
+                ProgramData.getInstance().changeStateTo(ProgramState.EDIT);
                 Boulder boulder = BoulderManager.createBoulder(contactPoint);
-
                 getStateManager().detach(getState(EditAppState.class));
                 getStateManager().attach(new CreateBoulderAppState(boulder, selectedVertices));
             }

@@ -18,11 +18,14 @@ import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,7 +33,7 @@ import java.util.logging.Logger;
  *
  * @author Fabian Rauscher
  */
-public class CreateBoulderAppState extends BaseAppState
+public class CreateBoulderAppState extends BaseAppState implements Observer
 {
     private static final Logger LOGGER = Logger.getLogger(CreateBoulderAppState.class.getName());
 
@@ -53,8 +56,18 @@ public class CreateBoulderAppState extends BaseAppState
     }
 
     @Override
+    public void update(Observable o, Object arg)
+    {
+        if (o instanceof Boulder)
+        {
+            defaultMaterial.setColor("Color", boulder.getColor().toColorRGBA());
+        }
+    }
+
+    @Override
     protected void initialize(Application app)
     {
+        boulder.addObserver(this);
         this.app = (View3d) app;
         this.input = new InputController();
         input.setUpInput();

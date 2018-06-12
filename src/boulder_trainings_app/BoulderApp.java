@@ -6,7 +6,7 @@
 package boulder_trainings_app;
 
 import boulder_trainings_app.data.Const;
-import boulder_trainings_app.data.enums.Section;
+import boulder_trainings_app.data.enums.BoulderSection;
 import boulder_trainings_app.ui.GraphicalUserInterface;
 import java.nio.file.Path;
 import java.nio.file.Paths;

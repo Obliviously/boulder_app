@@ -8,7 +8,7 @@ package boulder_trainings_app.data;
 import boulder_trainings_app.data.enums.BoulderColor;
 import boulder_trainings_app.data.enums.BoulderGrade;
 import boulder_trainings_app.data.enums.BoulderType;
-import boulder_trainings_app.data.enums.Section;
+import boulder_trainings_app.data.enums.BoulderSection;
 import com.jme3.math.Vector3f;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class Boulder extends Observable implements Serializable
 {
     private final String ID = UUID.randomUUID().toString();
     private DateTime date = new DateTime();
-    private Section section = Section.ONE;
+    private BoulderSection section = BoulderSection.ONE;
     private BoulderColor color = BoulderColor.PINK;
     private final ArrayList<Vector3f> positions = new ArrayList<>();
     private boolean isHighlighted = false;
@@ -74,12 +74,12 @@ public class Boulder extends Observable implements Serializable
         return ID;
     }
 
-    public Section getSection()
+    public BoulderSection getSection()
     {
         return section;
     }
 
-    public void setSection(Section section)
+    public void setSection(BoulderSection section)
     {
         setChanged();
         this.section = section;

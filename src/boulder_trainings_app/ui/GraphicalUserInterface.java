@@ -11,10 +11,9 @@ import boulder_trainings_app.ui.containers.RightContainer;
 import boulder_trainings_app.ui.containers.TopContainer;
 import boulder_trainings_app.ui.containers.MiddleContainer;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 
 /**
@@ -44,7 +43,6 @@ public class GraphicalUserInterface
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             //frame.setUndecorated(true);
             GraphicalUserInterface.loadComponents(frame);
-            GraphicalUserInterface.addListeners(frame);
             frame.setVisible(true);
             frame.setSize(minWidth, minHeight);
             frame.setMinimumSize(new Dimension(minWidth, minHeight));
@@ -71,30 +69,18 @@ public class GraphicalUserInterface
         pane.add(middle, BorderLayout.CENTER);
         pane.add(right, BorderLayout.LINE_END);
         pane.add(bottom, BorderLayout.PAGE_END);
+
+        //disableFocus(pane.getComponents());
     }
 
-    private static void addListeners(JFrame frame)
+    private static void disableFocus(Component[] components)
     {
-        frame.addKeyListener(new KeyListener()
+        for (Component c : components)
         {
-            @Override
-            public void keyTyped(KeyEvent e)
-            {
+            c.setFocusable(false);
+            if(c instanceof Container){
+                disableFocus(((Container) c).getComponents());
             }
-
-            @Override
-            public void keyPressed(KeyEvent e)
-            {
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
-                {
-                    System.exit(0);
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e)
-            {
-            }
-        });
+        }
     }
 }

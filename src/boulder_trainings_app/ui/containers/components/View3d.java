@@ -43,7 +43,6 @@ public class View3d extends SimpleApplication
 
         AppSettings appSetting = new AppSettings(true);
         appSetting.setFrameRate(60);
-
         this.showSettings = false;
 
         super.setSettings(appSetting);
@@ -53,6 +52,7 @@ public class View3d extends SimpleApplication
     @Override
     public void simpleInitApp()
     {
+        setPauseOnLostFocus(false);
         setDisplayFps(false);
         setDisplayStatView(false);
         flyCam.setEnabled(false);

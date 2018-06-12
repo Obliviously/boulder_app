@@ -8,7 +8,7 @@ package boulder_trainings_app;
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.data.ProgramData;
 import boulder_trainings_app.data.Const;
-import boulder_trainings_app.data.enums.Section;
+import boulder_trainings_app.data.enums.BoulderSection;
 import boulder_trainings_app.data.enums.ProgramState;
 import com.jme3.math.Vector3f;
 import java.io.File;
@@ -65,13 +65,13 @@ public class BoulderManager
 
     public static void loadBoulder(DateTime date)
     {
-        for (Section section : Section.values())
+        for (BoulderSection section : BoulderSection.values())
         {
             loadBoulderSection(date, section);
         }
     }
 
-    public static void loadBoulderSection(DateTime date, Section section)
+    public static void loadBoulderSection(DateTime date, BoulderSection section)
     {
         ArrayList<Boulder> boulders = new ArrayList<>();
         int year = date.getYear();
@@ -122,7 +122,7 @@ public class BoulderManager
         return minYear;
     }
 
-    private static Path getPath(int year, int week, Section section, int MIN_YEAR)
+    private static Path getPath(int year, int week, BoulderSection section, int MIN_YEAR)
     {
         Path path = Paths.get(Const.DATAPATH.toString(), year + "", week + "", section.toInt() + "");
 
