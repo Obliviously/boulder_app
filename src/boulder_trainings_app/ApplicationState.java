@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package boulder_trainings_app.data;
+package boulder_trainings_app;
 
+import boulder_trainings_app.data.Boulder;
+import boulder_trainings_app.utils.Payload;
 import boulder_trainings_app.data.enums.BoulderSection;
 import boulder_trainings_app.data.enums.ProgramState;
 import java.util.Observable;
@@ -16,25 +18,25 @@ import java.util.logging.Logger;
  *
  * @author Fabian Rauscher
  */
-public class ProgramData extends Observable
+public class ApplicationState extends Observable
 {
-    private static final Logger LOGGER = Logger.getLogger(ProgramData.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ApplicationState.class.getName());
 
     private final ArrayList<Boulder> boulderList = new ArrayList<>();
-    private static ProgramData instance;
+    private static ApplicationState instance;
     private ProgramState programState = ProgramState.SELECT;
 
-    private ProgramData()
+    private ApplicationState()
     {
     }
 
-    public static ProgramData getInstance()
+    public static ApplicationState getInstance()
     {
-        if (ProgramData.instance == null)
+        if (ApplicationState.instance == null)
         {
-            ProgramData.instance = new ProgramData();
+            ApplicationState.instance = new ApplicationState();
         }
-        return ProgramData.instance;
+        return ApplicationState.instance;
     }
 
     public void changeStateTo(ProgramState programState)
@@ -48,10 +50,17 @@ public class ProgramData extends Observable
 
     }
 
-    public void editBoulder(Boulder editBoulder)
+    public void editBoulder(Boulder boulder)
     {
         setChanged();
-        notifyObservers(new Payload(Payload.State.EDIT_BOULDER, editBoulder));
+        notifyObservers(new Payload(Payload.State.EDIT_BOULDER, boulder));
+    }
+
+    public void saveBoulder(Boulder boulder)
+    {
+        setChanged();
+        BoulderManager.saveBoulder(boulder);
+        notifyObservers(new Payload(Payload.State.SAVE_BOULDER, boulder));
     }
 
     public ArrayList<Boulder> getBoulderList()

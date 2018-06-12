@@ -5,7 +5,7 @@
  */
 package boulder_trainings_app.ui.containers;
 
-import boulder_trainings_app.data.Const;
+import boulder_trainings_app.utils.Consts;
 import boulder_trainings_app.ui.containers.components.Sections;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -24,9 +24,9 @@ public class LeftContainer extends JPanel
     public LeftContainer()
     {
         super.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        super.setPreferredSize(new Dimension(Const.MIN_WIDTH / 5, 0));
-        super.setBorder(new EmptyBorder(0, 5, 0, 0));
-        
+        super.setPreferredSize(new Dimension(Consts.MIN_WIDTH / 5, 0));
+        super.setBorder(new EmptyBorder(5, 5, 5, 0));
+
         Sections sections = new Sections();
 
         JPanel panel = new JPanel(new BorderLayout());

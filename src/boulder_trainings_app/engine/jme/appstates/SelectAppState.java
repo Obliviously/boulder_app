@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package boulder_trainings_app.jme.appstates;
+package boulder_trainings_app.engine.jme.appstates;
 
-import boulder_trainings_app.data.ProgramData;
+import boulder_trainings_app.ApplicationState;
 import boulder_trainings_app.data.enums.ProgramState;
-import boulder_trainings_app.jme.utils.AbstractInputController;
+import boulder_trainings_app.engine.jme.utils.AbstractInputController;
 import boulder_trainings_app.ui.containers.components.View3d;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -30,6 +30,8 @@ public class SelectAppState extends BaseAppState
     @Override
     protected void initialize(Application app)
     {
+        ApplicationState.getInstance().changeStateTo(ProgramState.SELECT);
+
         this.app = (View3d) app;
         this.stateManager = app.getStateManager();
         this.input = new InputController();
@@ -79,7 +81,7 @@ public class SelectAppState extends BaseAppState
 
                 if (results.size() > 0)
                 {
-                    ProgramData.getInstance().highLightBoulder(results.getClosestCollision().getGeometry().getName());
+                    ApplicationState.getInstance().highLightBoulder(results.getClosestCollision().getGeometry().getName());
                 }
             }
         }
@@ -100,7 +102,7 @@ public class SelectAppState extends BaseAppState
                 app.getRootNode().collideWith(ray, results);
                 if (results.size() > 0)
                 {
-                    ProgramData.getInstance().selectBoulder(results.getClosestCollision().getGeometry().getName());
+                    ApplicationState.getInstance().selectBoulder(results.getClosestCollision().getGeometry().getName());
                 }
             }
         }

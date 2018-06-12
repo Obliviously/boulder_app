@@ -19,6 +19,6 @@ public class Options extends JPanel
     {
         super();
         this.add(new JLabel("Options"));
-        this.setBackground(Color.red);
+        this.setBackground(Color.GRAY);
     }
 }

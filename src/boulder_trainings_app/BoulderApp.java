@@ -5,11 +5,9 @@
  */
 package boulder_trainings_app;
 
-import boulder_trainings_app.data.Const;
-import boulder_trainings_app.data.enums.BoulderSection;
 import boulder_trainings_app.ui.GraphicalUserInterface;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import boulder_trainings_app.utils.Consts;
+import boulder_trainings_app.ui.SwingUserInterface;
 import org.joda.time.DateTime;
 
 /**
@@ -22,12 +20,12 @@ public class BoulderApp
 
     public BoulderApp()
     {
-        this.userInterface = new GraphicalUserInterface(Const.PROGRAM_NAME, Const.MIN_WIDTH, Const.MIN_HEIGHT);
+        this.userInterface = new SwingUserInterface();
     }
 
     public void start()
     {
-        this.userInterface.display();
+        userInterface.display(Consts.PROGRAM_NAME, Consts.MIN_WIDTH, Consts.MIN_HEIGHT);
         BoulderManager.loadBoulder(DateTime.now());
     }
 
@@ -35,6 +33,5 @@ public class BoulderApp
     {
         BoulderApp app = new BoulderApp();
         app.start();
-
     }
 }

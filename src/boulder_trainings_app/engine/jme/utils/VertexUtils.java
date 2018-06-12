@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package boulder_trainings_app.jme.utils;
+package boulder_trainings_app.engine.jme.utils;
 
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;

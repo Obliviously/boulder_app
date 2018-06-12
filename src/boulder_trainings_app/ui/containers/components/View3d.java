@@ -5,9 +5,9 @@
  */
 package boulder_trainings_app.ui.containers.components;
 
-import boulder_trainings_app.jme.BoulderUpdater;
-import boulder_trainings_app.jme.appstates.SelectAppState;
-import boulder_trainings_app.jme.utils.AbstractInputController;
+import boulder_trainings_app.engine.jme.BoulderUpdater;
+import boulder_trainings_app.engine.jme.appstates.SelectAppState;
+import boulder_trainings_app.engine.jme.utils.AbstractInputController;
 import com.jme3.app.SimpleApplication;
 import com.jme3.font.BitmapText;
 import com.jme3.input.KeyInput;

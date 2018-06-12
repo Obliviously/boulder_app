@@ -6,13 +6,14 @@
 package boulder_trainings_app.ui.containers.components;
 
 import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.data.Const;
-import boulder_trainings_app.data.Payload;
-import boulder_trainings_app.data.ProgramData;
+import boulder_trainings_app.utils.Consts;
+import boulder_trainings_app.utils.Payload;
+import boulder_trainings_app.ApplicationState;
 import boulder_trainings_app.data.enums.BoulderColor;
 import boulder_trainings_app.data.enums.BoulderGrade;
 import boulder_trainings_app.data.enums.BoulderType;
 import boulder_trainings_app.data.enums.BoulderSection;
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.text.ParseException;
@@ -21,6 +22,8 @@ import java.util.Calendar;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Properties;
+import javafx.scene.control.DatePicker;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.JLabel;
@@ -48,51 +51,59 @@ public class BoulderEdit extends JPanel implements Observer
     private final JComboBox typeComboBox;
     private final JComboBox gradeComboBox;
     private final JComboBox sectionComboBox;
+    private final JButton saveButton;
 
     public BoulderEdit()
     {
         super();
 
-        super.setLayout(new GridLayout(0, 2));
+        super.setLayout(new BorderLayout());
+        JPanel propertiesContainer = new JPanel(new GridLayout(20, 2));
 
-        ProgramData.getInstance().addObserver(this);
+        ApplicationState.getInstance().addObserver(this);
 
-        JLabel nameLabel = new JLabel(Const.BOULDER_NAME_LABEL);
+        JLabel nameLabel = new JLabel(Consts.BOULDER_NAME_LABEL);
         nameTextField = new JTextField();
 
-        JLabel dateLabel = new JLabel(Const.BOULDER_DATE_LABEL);
+        JLabel dateLabel = new JLabel(Consts.BOULDER_DATE_LABEL);
         dateModel = new UtilDateModel();
+        dateModel.setSelected(true);
         Properties p = new Properties();
-//        p.put("text.today", "Today");
-//        p.put("text.month", "Month");
-//        p.put("text.year", "Year");
+        p.put("text.today", "Today");
+        p.put("text.month", "Month");
+        p.put("text.year", "Year");
         JDatePanelImpl datePanel = new JDatePanelImpl(dateModel, p);
         JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
 
-        JLabel colorLabel = new JLabel(Const.BOULDER_COLOR_LABEL);
+        JLabel colorLabel = new JLabel(Consts.BOULDER_COLOR_LABEL);
         colorComboBox = new JComboBox(BoulderColor.values());
 
-        JLabel typeLabel = new JLabel(Const.BOULDER_TYPE_LABEL);
+        JLabel typeLabel = new JLabel(Consts.BOULDER_TYPE_LABEL);
         typeComboBox = new JComboBox(BoulderType.values());
 
-        JLabel gradeLabel = new JLabel(Const.BOULDER_GRADE_LABEL);
+        JLabel gradeLabel = new JLabel(Consts.BOULDER_GRADE_LABEL);
         gradeComboBox = new JComboBox(BoulderGrade.values());
 
-        JLabel sectionLabel = new JLabel(Const.BOULDER_SECTION_LABEL);
+        JLabel sectionLabel = new JLabel(Consts.BOULDER_SECTION_LABEL);
         sectionComboBox = new JComboBox(BoulderSection.values());
 
-        super.add(nameLabel);
-        super.add(nameTextField);
-        super.add(dateLabel);
-        super.add(datePicker);
-        super.add(colorLabel);
-        super.add(colorComboBox);
-        super.add(typeLabel);
-        super.add(typeComboBox);
-        super.add(gradeLabel);
-        super.add(gradeComboBox);
-        super.add(sectionLabel);
-        super.add(sectionComboBox);
+        saveButton = new JButton(Consts.BOULDER_SAVE_BUTTON);
+
+        propertiesContainer.add(nameLabel);
+        propertiesContainer.add(nameTextField);
+        propertiesContainer.add(dateLabel);
+        propertiesContainer.add(datePicker);
+        propertiesContainer.add(colorLabel);
+        propertiesContainer.add(colorComboBox);
+        propertiesContainer.add(typeLabel);
+        propertiesContainer.add(typeComboBox);
+        propertiesContainer.add(gradeLabel);
+        propertiesContainer.add(gradeComboBox);
+        propertiesContainer.add(sectionLabel);
+        propertiesContainer.add(sectionComboBox);
+
+        super.add(propertiesContainer, BorderLayout.CENTER);
+        super.add(saveButton, BorderLayout.SOUTH);
 
         nameTextField.getDocument().addDocumentListener(new DocumentListener()
         {
@@ -137,6 +148,11 @@ public class BoulderEdit extends JPanel implements Observer
             updateSection();
         });
 
+        saveButton.addActionListener((ActionEvent e) ->
+        {
+            ApplicationState.getInstance().saveBoulder(boulder);
+        });
+
     }
 
     private void updateName()
@@ -176,7 +192,7 @@ public class BoulderEdit extends JPanel implements Observer
     @Override
     public void update(Observable o, Object arg)
     {
-        if (o instanceof ProgramData)
+        if (o instanceof ApplicationState)
         {
             if (arg instanceof Payload)
             {
@@ -199,14 +215,13 @@ public class BoulderEdit extends JPanel implements Observer
     {
         nameTextField.setText(boulder.getName());
         DateTime date = boulder.getDate();
-        dateModel.setDate(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth());
+        dateModel.setDate(date.getYear(), date.getMonthOfYear() - 1, date.getDayOfMonth());
     }
 
     private class DateLabelFormatter extends AbstractFormatter
     {
-
-        private String datePattern = "yyyy-MM-dd";
-        private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
+        private final String datePattern = "dd-MM-yyyy";
+        private final SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
 
         @Override
         public Object stringToValue(String text) throws ParseException

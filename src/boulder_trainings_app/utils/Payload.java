@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package boulder_trainings_app.data;
+package boulder_trainings_app.utils;
 
+import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.data.enums.ProgramState;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -27,6 +28,7 @@ public class Payload
         HIGHLIGHT_BOULDER(String.class),
         SELECT_BOULDER(Boulder.class),
         EDIT_BOULDER(Boulder.class),
+        SAVE_BOULDER(Boulder.class),
         PROGRAM_STATE_CHANGED(ProgramState.class);
 
         Class dataClass;

@@ -6,10 +6,8 @@
 package boulder_trainings_app;
 
 import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.data.ProgramData;
-import boulder_trainings_app.data.Const;
+import boulder_trainings_app.utils.Consts;
 import boulder_trainings_app.data.enums.BoulderSection;
-import boulder_trainings_app.data.enums.ProgramState;
 import com.jme3.math.Vector3f;
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,13 +34,13 @@ public class BoulderManager
     {
         Boulder boulder = new Boulder();
         boulder.addPosition(startPoint);
-        ProgramData.getInstance().editBoulder(boulder);
+        ApplicationState.getInstance().editBoulder(boulder);
         return boulder;
     }
 
     public static void saveBoulder(Boulder boulder)
     {
-        Path path = Paths.get(Const.DATAPATH.toString(), boulder.getDate().getYear() + "", "" + boulder.getDate().getWeekOfWeekyear(), "" + boulder.getSection().toInt(), boulder.getId() + ".boulder");
+        Path path = Paths.get(Consts.DATAPATH.toString(), boulder.getDate().getYear() + "", "" + boulder.getDate().getWeekOfWeekyear(), "" + boulder.getSection().toInt(), boulder.getId() + ".boulder");
         FileOutputStream fout;
 
         path.toFile().getParentFile().mkdirs();
@@ -60,7 +58,7 @@ public class BoulderManager
         {
 
         }
-        ProgramData.getInstance().addBoulder(boulder);
+        ApplicationState.getInstance().addBoulder(boulder);
     }
 
     public static void loadBoulder(DateTime date)
@@ -103,7 +101,7 @@ public class BoulderManager
                     Logger.getLogger(BoulderManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            ProgramData.getInstance().addBoulders(boulders);
+            ApplicationState.getInstance().addBoulders(boulders);
         }
     }
 
@@ -111,7 +109,7 @@ public class BoulderManager
     {
         int minYear = Integer.MAX_VALUE;
         int fileYear;
-        for (File f : Const.DATAPATH.toFile().listFiles())
+        for (File f : Consts.DATAPATH.toFile().listFiles())
         {
             fileYear = Integer.parseInt(f.getName());
             if (fileYear < minYear)
@@ -124,7 +122,7 @@ public class BoulderManager
 
     private static Path getPath(int year, int week, BoulderSection section, int MIN_YEAR)
     {
-        Path path = Paths.get(Const.DATAPATH.toString(), year + "", week + "", section.toInt() + "");
+        Path path = Paths.get(Consts.DATAPATH.toString(), year + "", week + "", section.toInt() + "");
 
         if (path.toFile().exists())
         {

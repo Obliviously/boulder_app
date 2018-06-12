@@ -5,6 +5,7 @@
  */
 package boulder_trainings_app.ui.containers.components;
 
+import boulder_trainings_app.utils.Consts;
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,8 +19,9 @@ public class Info extends JPanel
     public Info()
     {
         super();
-        this.add(new JLabel("Info"));
-        this.setBackground(Color.red);
+        super.add(new JLabel(Consts.PROGRAM_VERSION));
+        super.add(new JLabel(Consts.PROGRAM_NAME));
+        super.setBackground(Color.GRAY);
 
     }
 }

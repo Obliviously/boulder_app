@@ -6,8 +6,8 @@
 package boulder_trainings_app.ui.containers.components;
 
 import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.data.ProgramData;
-import boulder_trainings_app.data.Payload;
+import boulder_trainings_app.ApplicationState;
+import boulder_trainings_app.utils.Payload;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
+import javafx.scene.paint.Color;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -54,8 +55,7 @@ public class Sections extends JPanel implements Observer
             list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
             list.setVisibleRowCount(-1);
-            list.setFixedCellHeight(20);
-
+            list.setFixedCellHeight(20);       
             list.setVisible(false);
 
             sections.put(i + 1, list);
@@ -92,7 +92,7 @@ public class Sections extends JPanel implements Observer
                                 otherList.clearSelection();
                             }
                         });
-                        ProgramData.getInstance().selectBoulder(list.getSelectedValue());
+                        ApplicationState.getInstance().selectBoulder(list.getSelectedValue());
                     }
                 }
             });
@@ -104,7 +104,7 @@ public class Sections extends JPanel implements Observer
 
         }
 
-        ProgramData boulderList = ProgramData.getInstance();
+        ApplicationState boulderList = ApplicationState.getInstance();
         boulderList.addObserver(this);
         for (Boulder b : boulderList.getBoulderList())
         {
@@ -115,7 +115,7 @@ public class Sections extends JPanel implements Observer
     @Override
     public void update(Observable o, Object arg)
     {
-        if (o instanceof ProgramData)
+        if (o instanceof ApplicationState)
         {
             if (arg instanceof Payload)
             {

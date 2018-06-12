@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package boulder_trainings_app.data;
+package boulder_trainings_app.utils;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,10 +12,12 @@ import java.nio.file.Paths;
  *
  * @author Fabian Rauscher
  */
-public class Const
+public class Consts
 {
     public final static Path DATAPATH = Paths.get(".\\data\\");
     public final static String PROGRAM_NAME = "Boulder Trainings App";
+    public final static String PROGRAM_VERSION = "Version 0.1";
+
     public final static int MIN_WIDTH = 1280;
     public final static int MIN_HEIGHT = 720;
 
@@ -26,5 +28,5 @@ public class Const
     public final static String BOULDER_DATE_LABEL = "Date";
     public final static String BOULDER_TYPE_LABEL = "Type";
     public final static String BOULDER_GRADE_LABEL = "Grade";
-
+    public final static String BOULDER_SAVE_BUTTON = "SAVE";
 }

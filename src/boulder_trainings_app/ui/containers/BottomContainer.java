@@ -8,7 +8,6 @@ package boulder_trainings_app.ui.containers;
 import boulder_trainings_app.ui.containers.components.Info;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import javax.swing.JPanel;
 
 /**

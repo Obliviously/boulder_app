@@ -6,9 +6,9 @@
 package boulder_trainings_app.ui.containers.components;
 
 import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.data.ProgramData;
-import boulder_trainings_app.data.Const;
-import boulder_trainings_app.data.Payload;
+import boulder_trainings_app.ApplicationState;
+import boulder_trainings_app.utils.Consts;
+import boulder_trainings_app.utils.Payload;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -30,12 +30,12 @@ public class BoulderSelect extends JPanel implements Observer
         super();
         super.setLayout(new GridLayout(10, 2));
 
-        ProgramData.getInstance().addObserver(this);
+        ApplicationState.getInstance().addObserver(this);
 
-        JLabel nameLabel = new JLabel(Const.BOULDER_NAME_LABEL);
-        JLabel colorLabel = new JLabel(Const.BOULDER_COLOR_LABEL);
-        JLabel sectionLabel = new JLabel(Const.BOULDER_SECTION_LABEL);
-        JLabel dateLabel = new JLabel(Const.BOULDER_DATE_LABEL);
+        JLabel nameLabel = new JLabel(Consts.BOULDER_NAME_LABEL);
+        JLabel colorLabel = new JLabel(Consts.BOULDER_COLOR_LABEL);
+        JLabel sectionLabel = new JLabel(Consts.BOULDER_SECTION_LABEL);
+        JLabel dateLabel = new JLabel(Consts.BOULDER_DATE_LABEL);
 
         nameTextField = new JTextField();
         nameTextField.setEnabled(false);
@@ -47,7 +47,7 @@ public class BoulderSelect extends JPanel implements Observer
     @Override
     public void update(Observable o, Object arg)
     {
-        if (o instanceof ProgramData)
+        if (o instanceof ApplicationState)
         {
             if (arg instanceof Payload)
             {

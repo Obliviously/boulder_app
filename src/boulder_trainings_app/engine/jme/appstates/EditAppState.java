@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package boulder_trainings_app.jme.appstates;
+package boulder_trainings_app.engine.jme.appstates;
 
 import boulder_trainings_app.BoulderManager;
 import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.data.ProgramData;
+import boulder_trainings_app.ApplicationState;
 import boulder_trainings_app.data.enums.ProgramState;
-import boulder_trainings_app.jme.utils.AbstractInputController;
-import boulder_trainings_app.jme.utils.MeshUtils;
+import boulder_trainings_app.engine.jme.utils.AbstractInputController;
+import boulder_trainings_app.engine.jme.utils.MeshUtils;
 import boulder_trainings_app.ui.containers.components.View3d;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
@@ -37,6 +37,8 @@ public class EditAppState extends BaseAppState
     @Override
     protected void initialize(Application app)
     {
+        ApplicationState.getInstance().changeStateTo(ProgramState.SELECT);
+
         this.app = (View3d) app;
         this.input = new InputController();
         input.setUpInput();
@@ -84,14 +86,12 @@ public class EditAppState extends BaseAppState
         {
             if (name.equals("SWITCH_MODE") && !isPressed)
             {
-                ProgramData.getInstance().changeStateTo(ProgramState.SELECT);
                 getStateManager().detach(getState(EditAppState.class));
                 getStateManager().attach(new SelectAppState());
             }
 
             if (name.equals("MOUSE_LEFT_CLICK") && selectedVertices != null && contactPoint != null)
             {
-                ProgramData.getInstance().changeStateTo(ProgramState.EDIT);
                 Boulder boulder = BoulderManager.createBoulder(contactPoint);
                 getStateManager().detach(getState(EditAppState.class));
                 getStateManager().attach(new CreateBoulderAppState(boulder, selectedVertices));

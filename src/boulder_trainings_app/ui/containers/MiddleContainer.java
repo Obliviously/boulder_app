@@ -5,7 +5,7 @@
  */
 package boulder_trainings_app.ui.containers;
 
-import boulder_trainings_app.data.Const;
+import boulder_trainings_app.utils.Consts;
 import boulder_trainings_app.ui.containers.components.View3d;
 import com.jme3.system.JmeCanvasContext;
 import java.awt.Dimension;
@@ -26,7 +26,7 @@ public class MiddleContainer extends JPanel
     public MiddleContainer()
     {
         super.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        super.setPreferredSize(new Dimension(3 * Const.MIN_WIDTH / 5, HEIGHT));
+        super.setPreferredSize(new Dimension(3 * Consts.MIN_WIDTH / 5, HEIGHT));
 
         view3d = new View3d(this);
         view3d.createCanvas();

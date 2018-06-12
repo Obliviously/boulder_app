@@ -3,13 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package boulder_trainings_app.jme.appstates;
+package boulder_trainings_app.engine.jme.appstates;
 
 import boulder_trainings_app.BoulderManager;
 import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.jme.utils.AbstractInputController;
-import boulder_trainings_app.jme.utils.MeshUtils;
-import boulder_trainings_app.jme.utils.VertexUtils;
+import boulder_trainings_app.utils.Payload;
+import boulder_trainings_app.ApplicationState;
+import boulder_trainings_app.data.enums.ProgramState;
+import boulder_trainings_app.engine.jme.utils.AbstractInputController;
+import boulder_trainings_app.engine.jme.utils.MeshUtils;
+import boulder_trainings_app.engine.jme.utils.VertexUtils;
 import boulder_trainings_app.ui.containers.components.View3d;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
@@ -18,7 +21,6 @@ import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
@@ -56,17 +58,39 @@ public class CreateBoulderAppState extends BaseAppState implements Observer
     }
 
     @Override
+    @SuppressWarnings("empty-statement")
     public void update(Observable o, Object arg)
     {
         if (o instanceof Boulder)
         {
             defaultMaterial.setColor("Color", boulder.getColor().toColorRGBA());
         }
+
+        if (o instanceof ApplicationState)
+        {
+            if (arg instanceof Payload)
+            {
+                Payload payload = (Payload) arg;
+                switch (payload.getState())
+                {
+                case SAVE_BOULDER:
+                    while (rootNode.detachChildNamed(GEO_NAME) != -1);
+                    getStateManager().detach(getState(CreateBoulderAppState.class));
+                    getStateManager().attach(new EditAppState());
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
     }
 
     @Override
     protected void initialize(Application app)
     {
+        ApplicationState.getInstance().changeStateTo(ProgramState.EDIT);
+        ApplicationState.getInstance().addObserver(this);
+
         boulder.addObserver(this);
         this.app = (View3d) app;
         this.input = new InputController();
@@ -177,6 +201,8 @@ public class CreateBoulderAppState extends BaseAppState implements Observer
         {
             if (name.equals("SWITCH_MODE") && !isPressed)
             {
+                while (rootNode.detachChildNamed(GEO_NAME) != -1);
+
                 getStateManager().detach(getState(CreateBoulderAppState.class));
                 getStateManager().attach(new SelectAppState());
             }
@@ -192,14 +218,6 @@ public class CreateBoulderAppState extends BaseAppState implements Observer
                     extendBoulderTo(results.getClosestCollision());
                 }
             }
-
-            if (name.equals("SAVE_BOULDER") && !isPressed)
-            {
-                while (rootNode.detachChildNamed(GEO_NAME) != -1);
-                BoulderManager.saveBoulder(boulder);
-                getStateManager().detach(getState(CreateBoulderAppState.class));
-                getStateManager().attach(new EditAppState());
-            }
         }
 
         @Override
@@ -208,7 +226,6 @@ public class CreateBoulderAppState extends BaseAppState implements Observer
             app.getInputManager().addListener(this, "MOUSE_LEFT_CLICK");
             app.getInputManager().addListener(this, "MOUSE_MOVE");
             app.getInputManager().addListener(this, "SWITCH_MODE");
-            app.getInputManager().addListener(this, "SAVE_BOULDER");
         }
 
         @Override

@@ -5,9 +5,9 @@
  */
 package boulder_trainings_app.ui.containers;
 
-import boulder_trainings_app.data.Const;
-import boulder_trainings_app.data.Payload;
-import boulder_trainings_app.data.ProgramData;
+import boulder_trainings_app.utils.Consts;
+import boulder_trainings_app.utils.Payload;
+import boulder_trainings_app.ApplicationState;
 import boulder_trainings_app.data.enums.ProgramState;
 import boulder_trainings_app.ui.containers.components.BoulderEdit;
 import boulder_trainings_app.ui.containers.components.BoulderSelect;
@@ -16,6 +16,7 @@ import java.util.Observable;
 import java.util.Observer;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -29,10 +30,11 @@ public class RightContainer extends JPanel implements Observer
     public RightContainer()
     {
         super();
-        ProgramData.getInstance().addObserver(this);
+        ApplicationState.getInstance().addObserver(this);
 
         super.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        super.setPreferredSize(new Dimension(Const.MIN_WIDTH / 5, HEIGHT));
+        super.setPreferredSize(new Dimension(Consts.MIN_WIDTH / 5, HEIGHT));
+        super.setBorder(new EmptyBorder(5, 0, 5, 5));
 
         boulderInfo = new BoulderSelect();
         boulderEdit = new BoulderEdit();
@@ -43,7 +45,7 @@ public class RightContainer extends JPanel implements Observer
     @Override
     public void update(Observable o, Object arg)
     {
-        if (o instanceof ProgramData)
+        if (o instanceof ApplicationState)
         {
             if (arg instanceof Payload)
             {
@@ -57,7 +59,7 @@ public class RightContainer extends JPanel implements Observer
                     {
                         this.add(boulderEdit);
                         this.repaint();
-                        this.validate();                        
+                        this.validate();
                     }
                     if (state == ProgramState.SELECT)
                     {
