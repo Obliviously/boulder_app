@@ -7,6 +7,8 @@ package boulder_trainings_app.ui.containers.components;
 
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.ApplicationState;
+import boulder_trainings_app.data.enums.ProgramState;
+import boulder_trainings_app.ui.StateChanged;
 import boulder_trainings_app.utils.Consts;
 import boulder_trainings_app.utils.Payload;
 import java.awt.GridLayout;
@@ -21,7 +23,7 @@ import javax.swing.JTextField;
  *
  * @author fabian
  */
-public class BoulderSelect extends JPanel implements Observer
+public class BoulderSelect extends JPanel implements StateChanged
 {
     private final JTextField nameTextField;
 
@@ -29,8 +31,6 @@ public class BoulderSelect extends JPanel implements Observer
     {
         super();
         super.setLayout(new GridLayout(10, 2));
-
-        ApplicationState.getInstance().addObserver(this);
 
         JLabel nameLabel = new JLabel(Consts.BOULDER_NAME_LABEL);
         JLabel colorLabel = new JLabel(Consts.BOULDER_COLOR_LABEL);
@@ -44,33 +44,39 @@ public class BoulderSelect extends JPanel implements Observer
         super.add(nameTextField);
     }
 
-    @Override
-    public void update(Observable o, Object arg)
-    {
-        if (o instanceof ApplicationState)
-        {
-            if (arg instanceof Payload)
-            {
-                Payload payload = (Payload) arg;
-                Boulder boulder;
-                ArrayList<Boulder> boulderList;
-                switch (payload.getState())
-                {
-                case SELECT_BOULDER:
-                    boulder = (Boulder) payload.getData();
-                    selectBoulder(boulder);
-                    break;
-
-                default:
-                    break;
-                }
-            }
-        }
-    }
-
-    private void selectBoulder(Boulder boulder)
+    public void selectBoulder(Boulder boulder)
     {
         nameTextField.setBackground(boulder.getColor().toColor());
         nameTextField.setText(boulder.getId());
+    }
+
+    @Override
+    public void addBoulder(Boulder boulder)
+    {
+    }
+
+    @Override
+    public void removeBoulder(Boulder boulder)
+    {
+    }
+
+    @Override
+    public void highLightBoulder(Boulder boulder)
+    {
+    }
+
+    @Override
+    public void editBoulder(Boulder boulder)
+    {
+    }
+
+    @Override
+    public void saveBoulder(Boulder boulder)
+    {
+    }
+
+    @Override
+    public void changeState(ProgramState programState)
+    {
     }
 }

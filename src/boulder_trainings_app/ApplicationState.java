@@ -23,21 +23,7 @@ public class ApplicationState extends Observable
     private static final Logger LOGGER = Logger.getLogger(ApplicationState.class.getName());
 
     private final ArrayList<Boulder> boulderList = new ArrayList<>();
-    private static ApplicationState instance;
     private ProgramState programState = ProgramState.SELECT;
-
-    private ApplicationState()
-    {
-    }
-
-    public static ApplicationState getInstance()
-    {
-        if (ApplicationState.instance == null)
-        {
-            ApplicationState.instance = new ApplicationState();
-        }
-        return ApplicationState.instance;
-    }
 
     public void changeStateTo(ProgramState programState)
     {

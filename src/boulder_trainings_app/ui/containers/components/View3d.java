@@ -5,9 +5,12 @@
  */
 package boulder_trainings_app.ui.containers.components;
 
+import boulder_trainings_app.data.Boulder;
+import boulder_trainings_app.data.enums.ProgramState;
 import boulder_trainings_app.engine.jme.BoulderUpdater;
 import boulder_trainings_app.engine.jme.appstates.SelectAppState;
 import boulder_trainings_app.engine.jme.utils.AbstractInputController;
+import boulder_trainings_app.ui.StateChanged;
 import com.jme3.app.SimpleApplication;
 import com.jme3.font.BitmapText;
 import com.jme3.input.KeyInput;
@@ -25,9 +28,8 @@ import javax.swing.JPanel;
  *
  * @author Fabian Rauscher
  */
-public class View3d extends SimpleApplication
+public class View3d extends SimpleApplication implements StateChanged
 {
-
     //For the initial crosshair position caclculation (Couldnt figure out another way to do this).
     private final JPanel parentContainer;
     private BoulderUpdater boulderUpdater;
@@ -74,6 +76,48 @@ public class View3d extends SimpleApplication
         flyCam.setEnabled(!flyCam.isEnabled());
         toggleMouseCursor();
         toggleCrossHair();
+    }
+
+    @Override
+    public void addBoulder(Boulder boulder)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void removeBoulder(Boulder boulder)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void highLightBoulder(Boulder boulder)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void selectBoulder(Boulder boulder)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void editBoulder(Boulder boulder)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void saveBoulder(Boulder boulder)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void changeState(ProgramState programState)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private void toggleMouseCursor()

@@ -7,22 +7,20 @@ package boulder_trainings_app.ui.containers.components;
 
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.utils.Consts;
-import boulder_trainings_app.utils.Payload;
-import boulder_trainings_app.ApplicationState;
+import boulder_trainings_app.BoulderManager;
 import boulder_trainings_app.data.enums.BoulderColor;
 import boulder_trainings_app.data.enums.BoulderGrade;
 import boulder_trainings_app.data.enums.BoulderType;
 import boulder_trainings_app.data.enums.BoulderSection;
+import boulder_trainings_app.data.enums.ProgramState;
+import boulder_trainings_app.ui.StateChanged;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Properties;
-import javafx.scene.control.DatePicker;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField.AbstractFormatter;
@@ -41,7 +39,7 @@ import org.joda.time.DateTime;
  *
  * @author Fabian Rauscher
  */
-public class BoulderEdit extends JPanel implements Observer
+public class BoulderEdit extends JPanel implements StateChanged
 {
     private Boulder boulder;
 
@@ -59,8 +57,6 @@ public class BoulderEdit extends JPanel implements Observer
 
         super.setLayout(new BorderLayout());
         JPanel propertiesContainer = new JPanel(new GridLayout(20, 2));
-
-        ApplicationState.getInstance().addObserver(this);
 
         JLabel nameLabel = new JLabel(Consts.BOULDER_NAME_LABEL);
         nameTextField = new JTextField();
@@ -150,7 +146,7 @@ public class BoulderEdit extends JPanel implements Observer
 
         saveButton.addActionListener((ActionEvent e) ->
         {
-            ApplicationState.getInstance().saveBoulder(boulder);
+            BoulderManager.saveBoulder(boulder);
         });
 
     }
@@ -190,25 +186,40 @@ public class BoulderEdit extends JPanel implements Observer
     }
 
     @Override
-    public void update(Observable o, Object arg)
+    public void addBoulder(Boulder boulder)
     {
-        if (o instanceof ApplicationState)
-        {
-            if (arg instanceof Payload)
-            {
-                Payload payload = (Payload) arg;
-                switch (payload.getState())
-                {
-                case EDIT_BOULDER:
-                    boulder = (Boulder) payload.getData();
-                    initBoulder();
-                    break;
+    }
 
-                default:
-                    break;
-                }
-            }
-        }
+    @Override
+    public void removeBoulder(Boulder boulder)
+    {
+    }
+
+    @Override
+    public void highLightBoulder(Boulder boulder)
+    {
+    }
+
+    @Override
+    public void selectBoulder(Boulder boulder)
+    {
+    }
+
+    @Override
+    public void editBoulder(Boulder boulder)
+    {
+        this.boulder = boulder;
+        initBoulder();
+    }
+
+    @Override
+    public void saveBoulder(Boulder boulder)
+    {
+    }
+
+    @Override
+    public void changeState(ProgramState programState)
+    {
     }
 
     private void initBoulder()
