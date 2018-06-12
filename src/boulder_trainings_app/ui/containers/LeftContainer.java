@@ -7,10 +7,15 @@ package boulder_trainings_app.ui.containers;
 
 import boulder_trainings_app.data.Const;
 import boulder_trainings_app.ui.containers.components.Sections;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import static java.awt.image.ImageObserver.HEIGHT;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -21,8 +26,19 @@ public class LeftContainer extends JPanel
     public LeftContainer()
     {
         super.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        super.setPreferredSize(new Dimension(Const.MIN_WIDTH / 5, 0));
+        super.setBorder(new EmptyBorder(0, 5, 0, 0));
+        
         Sections sections = new Sections();
-        sections.setPreferredSize(new Dimension(Const.MIN_WIDTH / 5, HEIGHT));
-        super.add(sections);
+
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(sections, BorderLayout.NORTH);
+
+        JScrollPane scrollPane = new JScrollPane(panel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setWheelScrollingEnabled(true);
+        scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0));
+        scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+        scrollPane.setBorder(null);
+        super.add(scrollPane);
     }
 }

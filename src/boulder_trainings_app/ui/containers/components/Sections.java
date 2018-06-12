@@ -6,8 +6,12 @@
 package boulder_trainings_app.ui.containers.components;
 
 import boulder_trainings_app.data.Boulder;
+import boulder_trainings_app.data.Const;
 import boulder_trainings_app.data.ProgramData;
 import boulder_trainings_app.data.Payload;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -40,14 +44,13 @@ public class Sections extends JPanel implements Observer
     {
         super();
 
-        super.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        super.setLayout(new GridBagLayout());
         //create 8 sections
         for (int i = 0; i < 8; i++)
         {
             JPanel section = new JPanel();
             JLabel label = new JLabel("Section: " + (i + 1));
             JButton toggleButton = new JButton("+");
-            toggleButton.setFocusable(false);
             buttons.put(i + 1, toggleButton);
 
             DefaultListModel listModel = new DefaultListModel<>();
@@ -55,36 +58,28 @@ public class Sections extends JPanel implements Observer
             list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
             list.setVisibleRowCount(-1);
-            list.setFixedCellHeight(15);
+            list.setFixedCellHeight(20);
 
             list.setVisible(false);
 
             sections.put(i + 1, list);
 
-            GridBagLayout gbl = new GridBagLayout();
+            section.setLayout(new BorderLayout(0, 0));
+            section.add(label, BorderLayout.CENTER);
+            section.add(toggleButton, BorderLayout.LINE_END);
+            section.add(list, BorderLayout.SOUTH);
+
             GridBagConstraints c = new GridBagConstraints();
-            section.setLayout(gbl);
-            c.fill = GridBagConstraints.BOTH;
-            c.ipady = 0;
+            c.gridx = 0;
+            c.gridy = i;
+            c.weightx = 1.0;
+            c.weighty = 0.0;
+            c.ipady = 10;
             c.ipadx = 0;
-            c.gridy = 0;
-            c.weighty = 1.0;
+            c.anchor = GridBagConstraints.NORTHWEST;
+            c.fill = GridBagConstraints.HORIZONTAL;
 
-            c.weightx = 0.75;
-            c.gridx = 0;
-            section.add(label, c);
-
-            c.weightx = 0.25;
-            c.gridx = 1;
-            section.add(toggleButton, c);
-
-            c.weightx = 1;
-            c.gridy = 1;
-            c.gridx = 0;
-            c.gridwidth = 2;
-            section.add(list, c);
-
-            super.add(section);
+            super.add(section, c);
 
             list.addListSelectionListener((ListSelectionEvent e) ->
             {

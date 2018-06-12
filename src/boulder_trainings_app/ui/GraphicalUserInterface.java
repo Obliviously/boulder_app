@@ -7,7 +7,6 @@ package boulder_trainings_app.ui;
 
 import boulder_trainings_app.ui.containers.BottomContainer;
 import boulder_trainings_app.ui.containers.LeftContainer;
-import boulder_trainings_app.ui.containers.MiddleContainer;
 import boulder_trainings_app.ui.containers.RightContainer;
 import boulder_trainings_app.ui.containers.TopContainer;
 import boulder_trainings_app.ui.containers.MiddleContainer;
