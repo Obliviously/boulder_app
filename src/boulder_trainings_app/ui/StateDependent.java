@@ -13,9 +13,9 @@ import java.util.ArrayList;
  *
  * @author Fabian Rauscher
  */
-public interface StateChanged
+public interface StateDependent
 {
-    public final ArrayList<StateChanged> components = new ArrayList<>();
+    public final ArrayList<StateDependent> components = new ArrayList<>();
 
     public void addBoulder(Boulder boulder);
 

@@ -13,7 +13,6 @@ import boulder_trainings_app.data.enums.BoulderGrade;
 import boulder_trainings_app.data.enums.BoulderType;
 import boulder_trainings_app.data.enums.BoulderSection;
 import boulder_trainings_app.data.enums.ProgramState;
-import boulder_trainings_app.ui.StateChanged;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -34,12 +33,13 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import org.joda.time.DateTime;
+import boulder_trainings_app.ui.StateDependent;
 
 /**
  *
  * @author Fabian Rauscher
  */
-public class BoulderEdit extends JPanel implements StateChanged
+public class BoulderEdit extends JPanel implements StateDependent
 {
     private Boulder boulder;
 

@@ -22,7 +22,7 @@ import javax.swing.JFrame;
  *
  * @author Fabian Rauscher
  */
-public class SwingUserInterface implements GraphicalUserInterface, StateChanged
+public class SwingUserInterface implements GraphicalUserInterface, StateDependent
 {
     @Override
     public void display(String title, int minWidth, int minHeight)
@@ -79,6 +79,7 @@ public class SwingUserInterface implements GraphicalUserInterface, StateChanged
     @Override
     public void changeState(ProgramState programState)
     {
+        System.out.println("SIZE: "+components.size());
         components.forEach((c) -> c.changeState(programState));
     }
 

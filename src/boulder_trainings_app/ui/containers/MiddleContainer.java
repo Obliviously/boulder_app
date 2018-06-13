@@ -7,8 +7,7 @@ package boulder_trainings_app.ui.containers;
 
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.data.enums.ProgramState;
-import boulder_trainings_app.ui.StateChanged;
-import static boulder_trainings_app.ui.StateChanged.components;
+import static boulder_trainings_app.ui.StateDependent.components;
 import boulder_trainings_app.utils.Consts;
 import boulder_trainings_app.ui.containers.components.View3d;
 import com.jme3.system.JmeCanvasContext;
@@ -17,12 +16,13 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import boulder_trainings_app.ui.StateDependent;
 
 /**
  *
  * @author Fabian Rauscher
  */
-public class MiddleContainer extends JPanel implements StateChanged
+public class MiddleContainer extends JPanel implements StateDependent
 {
     private final View3d view3d;
     private final JmeCanvasContext ctx;

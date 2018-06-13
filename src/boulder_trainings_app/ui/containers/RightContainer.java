@@ -9,20 +9,20 @@ import boulder_trainings_app.utils.Consts;
 import boulder_trainings_app.ApplicationState;
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.data.enums.ProgramState;
-import boulder_trainings_app.ui.StateChanged;
-import static boulder_trainings_app.ui.StateChanged.components;
+import static boulder_trainings_app.ui.StateDependent.components;
 import boulder_trainings_app.ui.containers.components.BoulderEdit;
 import boulder_trainings_app.ui.containers.components.BoulderSelect;
 import java.awt.Dimension;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import boulder_trainings_app.ui.StateDependent;
 
 /**
  *
  * @author Fabian Rauscher
  */
-public class RightContainer extends JPanel implements StateChanged
+public class RightContainer extends JPanel implements StateDependent
 {
     private final BoulderSelect boulderSelect;
     private final BoulderEdit boulderEdit;

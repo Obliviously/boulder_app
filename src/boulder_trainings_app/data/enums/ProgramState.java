@@ -11,5 +11,5 @@ package boulder_trainings_app.data.enums;
  */
 public enum ProgramState
 {
-    SELECT, EDIT;
+    SELECT, EDIT, CREATE;
 }

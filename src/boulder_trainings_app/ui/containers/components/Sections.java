@@ -8,7 +8,6 @@ package boulder_trainings_app.ui.containers.components;
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.ApplicationState;
 import boulder_trainings_app.data.enums.ProgramState;
-import boulder_trainings_app.ui.StateChanged;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -21,12 +20,13 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
+import boulder_trainings_app.ui.StateDependent;
 
 /**
  *
  * @author Fabian Rauscher
  */
-public class Sections extends JPanel implements StateChanged
+public class Sections extends JPanel implements StateDependent
 {
 
     private final HashMap<Integer, JList> sections = new HashMap();

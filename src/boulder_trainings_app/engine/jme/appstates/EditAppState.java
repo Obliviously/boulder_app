@@ -5,22 +5,15 @@
  */
 package boulder_trainings_app.engine.jme.appstates;
 
-import boulder_trainings_app.BoulderManager;
-import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.ApplicationState;
-import boulder_trainings_app.data.enums.ProgramState;
 import boulder_trainings_app.engine.jme.utils.AbstractInputController;
-import boulder_trainings_app.engine.jme.utils.MeshUtils;
 import boulder_trainings_app.ui.containers.components.View3d;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.AnalogListener;
 import com.jme3.math.Ray;
-import com.jme3.math.Vector3f;
-import java.util.ArrayList;
 
 /**
  *
@@ -31,14 +24,9 @@ public class EditAppState extends BaseAppState
     private View3d app;
     private InputController input;
 
-    private Vector3f contactPoint = null;
-    private ArrayList<Vector3f> selectedVertices = null;
-
     @Override
     protected void initialize(Application app)
     {
-        ApplicationState.getInstance().changeStateTo(ProgramState.SELECT);
-
         this.app = (View3d) app;
         this.input = new InputController();
         input.setUpInput();
@@ -60,12 +48,13 @@ public class EditAppState extends BaseAppState
     {
     }
 
-    private class InputController extends AbstractInputController implements AnalogListener, ActionListener
+    private class InputController extends AbstractInputController implements ActionListener
     {
+
         @Override
-        public void onAnalog(String name, float value, float tpf)
+        public void onAction(String name, boolean isPressed, float tpf)
         {
-            if (name.equals("MOUSE_MOVE"))
+            if (name.equals("MOUSE_LEFT_CLICK"))
             {
                 CollisionResults results = new CollisionResults();
                 Ray ray = new Ray(app.getCamera().getLocation(), app.getCamera().getDirection());
@@ -74,27 +63,8 @@ public class EditAppState extends BaseAppState
                 if (results.size() > 0)
                 {
                     CollisionResult closest = results.getClosestCollision();
-                    contactPoint = closest.getContactPoint();
-                    selectedVertices = MeshUtils.calcFlatArea(closest);
-                    //VertexUtils.changeColorOfVertices(closest.getGeometry(), selectedVertices);
+                    ApplicationState.getInstance().selectBoulder(closest.getGeometry().getName());
                 }
-            }
-        }
-
-        @Override
-        public void onAction(String name, boolean isPressed, float tpf)
-        {
-            if (name.equals("SWITCH_MODE") && !isPressed)
-            {
-                getStateManager().detach(getState(EditAppState.class));
-                getStateManager().attach(new SelectAppState());
-            }
-
-            if (name.equals("MOUSE_LEFT_CLICK") && selectedVertices != null && contactPoint != null)
-            {
-                Boulder boulder = BoulderManager.createBoulder(contactPoint);
-                getStateManager().detach(getState(EditAppState.class));
-                getStateManager().attach(new CreateBoulderAppState(boulder, selectedVertices));
             }
         }
 
@@ -102,8 +72,6 @@ public class EditAppState extends BaseAppState
         public void setUpInput()
         {
             app.getInputManager().addListener(this, "MOUSE_LEFT_CLICK");
-            app.getInputManager().addListener(this, "MOUSE_MOVE");
-            app.getInputManager().addListener(this, "SWITCH_MODE");
         }
 
         @Override

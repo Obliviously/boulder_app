@@ -1,4 +1,4 @@
-package boulder_trainings_app.engine.jme;
+package boulder_trainings_app.engine.jme.utils;
 
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.ApplicationState;
@@ -24,7 +24,7 @@ import java.util.Observer;
  *
  * @author Fabian Rauscher
  */
-public class BoulderUpdater implements Observer
+public class BoulderUpdater
 {
     private final HashMap<String, Node> bouldersMap = new HashMap<>();
     private final Node rootNode;
@@ -37,73 +37,9 @@ public class BoulderUpdater implements Observer
     {
         this.rootNode = app.getRootNode();
         this.assetManager = app.getAssetManager();
-
-        ApplicationState applicationState = ApplicationState.getInstance();
-        applicationState.addObserver(this);
-
-        for (Boulder b : applicationState.getBoulderList())
-        {
-            addBoulder(b);
-        }
     }
 
-    @Override
-    public void update(Observable o, Object arg)
-    {
-        if (o instanceof ApplicationState)
-        {
-            if (arg instanceof Payload)
-            {
-                Payload payload = (Payload) arg;
-                Boulder boulder;
-                ArrayList<Boulder> boulderList;
-                switch (payload.getState())
-                {
-                case ADDED_BOULDER:
-                    boulder = (Boulder) payload.getData();
-                    addBoulder(boulder);
-
-                    break;
-                case REMOVED_BOULDER:
-                    boulder = (Boulder) payload.getData();
-                    removeBoulder(boulder);
-
-                    break;
-                case ADDED_BOULDER_LIST:
-                    boulderList = (ArrayList<Boulder>) payload.getData();
-
-                    for (Boulder b : boulderList)
-                    {
-                        addBoulder(b);
-                    }
-                    break;
-                case REMOVED_BOULDER_LIST:
-                    boulderList = (ArrayList<Boulder>) payload.getData();
-
-                    for (Boulder b : boulderList)
-                    {
-                        removeBoulder(b);
-                    }
-
-                    break;
-
-                case HIGHLIGHT_BOULDER:
-                    highLightBoulder(bouldersMap.get((String) payload.getData()));
-                    break;
-
-                case SELECT_BOULDER:
-                    boulder = (Boulder) payload.getData();
-                    selectBoulder(boulder);
-                    break;
-
-                default:
-                    break;
-                }
-            }
-        }
-    }
-
-    private void selectBoulder(Boulder boulder)
+    public void selectBoulder(Boulder boulder)
     {
         if (selectedBoulder != null)
         {
@@ -121,7 +57,7 @@ public class BoulderUpdater implements Observer
         selectedBoulder = boulder;
     }
 
-    private void deselectBoulder(Boulder boulder)
+    public void deselectBoulder(Boulder boulder)
     {
         Node boulderNode = bouldersMap.get(boulder.getId());
         Material selectionMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
@@ -135,22 +71,22 @@ public class BoulderUpdater implements Observer
         selectedBoulder = null;
     }
 
-    private void highLightBoulder(Node boulderNode)
+    public void highLightBoulder(Boulder boulder)
     {
         //TODO
     }
 
-    private void removeBoulder(Boulder boulder)
+    public void removeBoulder(Boulder boulder)
     {
         destroyBoulder(bouldersMap.remove(boulder.getId()));
     }
 
-    private void addBoulder(Boulder boulder)
+    public void addBoulder(Boulder boulder)
     {
         bouldersMap.put(boulder.getId(), createBoulder(boulder));
     }
 
-    private Node createBoulder(Boulder boulder)
+    public Node createBoulder(Boulder boulder)
     {
         Node boulderNode = new Node();
         boulderNode.setName(boulder.getId());

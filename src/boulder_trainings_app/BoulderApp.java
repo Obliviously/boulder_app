@@ -6,6 +6,7 @@
 package boulder_trainings_app;
 
 import boulder_trainings_app.data.Boulder;
+import boulder_trainings_app.data.enums.ProgramState;
 import boulder_trainings_app.utils.Consts;
 import boulder_trainings_app.ui.SwingUserInterface;
 import boulder_trainings_app.utils.Payload;
@@ -54,6 +55,7 @@ public class BoulderApp implements Observer
                 Payload payload = (Payload) arg;
                 Boulder boulder;
                 ArrayList<Boulder> boulderList;
+                ProgramState programState;
                 switch (payload.getState())
                 {
                 case ADDED_BOULDER:
@@ -83,6 +85,10 @@ public class BoulderApp implements Observer
                 case SELECT_BOULDER:
                     boulder = (Boulder) payload.getData();
                     userInterface.selectBoulder(boulder);
+                    break;
+                case PROGRAM_STATE_CHANGED:
+                    programState = (ProgramState) payload.getData();
+                    userInterface.changeState(programState);
                     break;
                 default:
                     break;

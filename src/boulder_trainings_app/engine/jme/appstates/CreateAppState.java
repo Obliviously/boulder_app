@@ -35,63 +35,25 @@ import java.util.logging.Logger;
  *
  * @author Fabian Rauscher
  */
-public class CreateBoulderAppState extends BaseAppState implements Observer
+public class CreateAppState extends BaseAppState
 {
-    private static final Logger LOGGER = Logger.getLogger(CreateBoulderAppState.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CreateAppState.class.getName());
 
     private View3d app;
     private InputController input;
     private Node rootNode;
     private AssetManager assetManager;
 
-    private final Boulder boulder;
-    private ArrayList<Vector3f> currSelectedVertices;
+    private final Boulder boulder = null;
+    private ArrayList<Vector3f> currSelectedVertices = null;
     private Material defaultMaterial;
 
     private final String GEO_NAME = "temp_geo";
     private Geometry geom;
 
-    public CreateBoulderAppState(Boulder boulder, ArrayList<Vector3f> currSelectedVertices)
-    {
-        this.boulder = boulder;
-        this.currSelectedVertices = currSelectedVertices;
-    }
-
-    @Override
-    @SuppressWarnings("empty-statement")
-    public void update(Observable o, Object arg)
-    {
-        if (o instanceof Boulder)
-        {
-            defaultMaterial.setColor("Color", boulder.getColor().toColorRGBA());
-        }
-
-        if (o instanceof ApplicationState)
-        {
-            if (arg instanceof Payload)
-            {
-                Payload payload = (Payload) arg;
-                switch (payload.getState())
-                {
-                case SAVE_BOULDER:
-                    while (rootNode.detachChildNamed(GEO_NAME) != -1);
-                    getStateManager().detach(getState(CreateBoulderAppState.class));
-                    getStateManager().attach(new EditAppState());
-                    break;
-                default:
-                    break;
-                }
-            }
-        }
-    }
-
     @Override
     protected void initialize(Application app)
     {
-        ApplicationState.getInstance().changeStateTo(ProgramState.EDIT);
-        ApplicationState.getInstance().addObserver(this);
-
-        boulder.addObserver(this);
         this.app = (View3d) app;
         this.input = new InputController();
         input.setUpInput();
@@ -178,8 +140,10 @@ public class CreateBoulderAppState extends BaseAppState implements Observer
     }
 
     @Override
+    @SuppressWarnings("empty-statement")
     protected void cleanup(Application app)
     {
+        while (rootNode.detachChildNamed(GEO_NAME) != -1);
         input.cleanUpInput();
     }
 
@@ -199,14 +163,6 @@ public class CreateBoulderAppState extends BaseAppState implements Observer
         @SuppressWarnings("empty-statement")
         public void onAction(String name, boolean isPressed, float tpf)
         {
-            if (name.equals("SWITCH_MODE") && !isPressed)
-            {
-                while (rootNode.detachChildNamed(GEO_NAME) != -1);
-
-                getStateManager().detach(getState(CreateBoulderAppState.class));
-                getStateManager().attach(new SelectAppState());
-            }
-
             if (name.equals("MOUSE_LEFT_CLICK") && !isPressed)
             {
                 CollisionResults results = new CollisionResults();
@@ -215,7 +171,18 @@ public class CreateBoulderAppState extends BaseAppState implements Observer
 
                 if (results.size() > 0)
                 {
-                    extendBoulderTo(results.getClosestCollision());
+                    CollisionResult closest = results.getClosestCollision();
+                    if (boulder == null)
+                    {
+                        Boulder boulder = new Boulder();
+                        boulder.addPosition(closest.getContactPoint());
+                        ApplicationState.getInstance().editBoulder(boulder);
+                        currSelectedVertices = MeshUtils.calcFlatArea(closest);
+                    }
+                    else
+                    {
+                        extendBoulderTo(results.getClosestCollision());
+                    }
                 }
             }
         }

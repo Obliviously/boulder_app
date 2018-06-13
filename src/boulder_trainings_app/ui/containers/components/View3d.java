@@ -5,12 +5,14 @@
  */
 package boulder_trainings_app.ui.containers.components;
 
+import boulder_trainings_app.ApplicationState;
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.data.enums.ProgramState;
-import boulder_trainings_app.engine.jme.BoulderUpdater;
+import boulder_trainings_app.engine.jme.appstates.CreateAppState;
+import boulder_trainings_app.engine.jme.appstates.EditAppState;
+import boulder_trainings_app.engine.jme.utils.BoulderUpdater;
 import boulder_trainings_app.engine.jme.appstates.SelectAppState;
 import boulder_trainings_app.engine.jme.utils.AbstractInputController;
-import boulder_trainings_app.ui.StateChanged;
 import com.jme3.app.SimpleApplication;
 import com.jme3.font.BitmapText;
 import com.jme3.input.KeyInput;
@@ -23,12 +25,13 @@ import com.jme3.scene.Node;
 import com.jme3.system.AppSettings;
 import java.awt.Dimension;
 import javax.swing.JPanel;
+import boulder_trainings_app.ui.StateDependent;
 
 /**
  *
  * @author Fabian Rauscher
  */
-public class View3d extends SimpleApplication implements StateChanged
+public class View3d extends SimpleApplication implements StateDependent
 {
     //For the initial crosshair position caclculation (Couldnt figure out another way to do this).
     private final JPanel parentContainer;
@@ -37,12 +40,12 @@ public class View3d extends SimpleApplication implements StateChanged
     private BitmapText crossHair;
     private boolean isMouseVisible = true;
     private boolean isCrossHairVisible = false;
+    private Class currentStateClass = SelectAppState.class;
 
     public View3d(JPanel parentContainer)
     {
         super();
         this.parentContainer = parentContainer;
-
         AppSettings appSetting = new AppSettings(true);
         appSetting.setFrameRate(60);
         this.showSettings = false;
@@ -81,43 +84,61 @@ public class View3d extends SimpleApplication implements StateChanged
     @Override
     public void addBoulder(Boulder boulder)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boulderUpdater.addBoulder(boulder);
     }
 
     @Override
     public void removeBoulder(Boulder boulder)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boulderUpdater.removeBoulder(boulder);
     }
 
     @Override
     public void highLightBoulder(Boulder boulder)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boulderUpdater.highLightBoulder(boulder);
     }
 
     @Override
     public void selectBoulder(Boulder boulder)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boulderUpdater.selectBoulder(boulder);
     }
 
     @Override
     public void editBoulder(Boulder boulder)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void saveBoulder(Boulder boulder)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void changeState(ProgramState programState)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("boulder_trainings_app.ui.containers.components.View3d.changeState()");
+        switch (programState)
+        {
+        case SELECT:
+            getStateManager().detach(stateManager.getState(currentStateClass));
+            getStateManager().attach(new SelectAppState());
+            currentStateClass = SelectAppState.class;
+            break;
+        case EDIT:
+            getStateManager().detach(stateManager.getState(currentStateClass));
+            getStateManager().attach(new EditAppState());
+            currentStateClass = EditAppState.class;
+            break;
+        case CREATE:
+            getStateManager().detach(stateManager.getState(currentStateClass));
+            getStateManager().attach(new CreateAppState());
+            currentStateClass = CreateAppState.class;
+            break;
+        default:
+            break;
+        }
     }
 
     private void toggleMouseCursor()
@@ -138,7 +159,9 @@ public class View3d extends SimpleApplication implements StateChanged
         inputManager.addMapping("MOUSE_MOVE", new MouseAxisTrigger(MouseInput.AXIS_X, false));
         inputManager.addMapping("MOUSE_MOVE", new MouseAxisTrigger(MouseInput.AXIS_Y, false));
         inputManager.addMapping("MOUSE_LEFT_CLICK", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-        inputManager.addMapping("SWITCH_MODE", new KeyTrigger(KeyInput.KEY_TAB));
+        inputManager.addMapping("SELECT_MODE", new KeyTrigger(KeyInput.KEY_1));
+        inputManager.addMapping("EDIT_MODE", new KeyTrigger(KeyInput.KEY_2));
+        inputManager.addMapping("CREATE_MODE", new KeyTrigger(KeyInput.KEY_3));
         inputManager.addMapping("SAVE_BOULDER", new KeyTrigger(KeyInput.KEY_S));
         inputManager.addMapping("EXIT_3DVIEW", new KeyTrigger(KeyInput.KEY_ESCAPE));
     }
@@ -184,6 +207,10 @@ public class View3d extends SimpleApplication implements StateChanged
         public void setUpInput()
         {
             inputManager.addListener(this, "EXIT_3DVIEW");
+            inputManager.addListener(this, "SELECT_MODE");
+            inputManager.addListener(this, "EDIT_MODE");
+            inputManager.addListener(this, "CREATE_MODE");
+
         }
 
         @Override
@@ -200,8 +227,18 @@ public class View3d extends SimpleApplication implements StateChanged
                 updateSize(parentContainer.getSize());
                 toogleInput();
             }
+            if (name.equals("SELECT_MODE") && !isPressed)
+            {
+                ApplicationState.getInstance().changeStateTo(ProgramState.SELECT);
+            }
+            if (name.equals("EDIT_MODE") && !isPressed)
+            {
+                ApplicationState.getInstance().changeStateTo(ProgramState.EDIT);
+            }
+            if (name.equals("CREATE_MODE") && !isPressed)
+            {
+                ApplicationState.getInstance().changeStateTo(ProgramState.CREATE);
+            }
         }
-
     }
-
 }

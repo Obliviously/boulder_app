@@ -7,8 +7,7 @@ package boulder_trainings_app.ui.containers;
 
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.data.enums.ProgramState;
-import boulder_trainings_app.ui.StateChanged;
-import static boulder_trainings_app.ui.StateChanged.components;
+import static boulder_trainings_app.ui.StateDependent.components;
 import boulder_trainings_app.utils.Consts;
 import boulder_trainings_app.ui.containers.components.Sections;
 import java.awt.BorderLayout;
@@ -18,12 +17,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
+import boulder_trainings_app.ui.StateDependent;
 
 /**
  *
  * @author Fabian Rauscher
  */
-public class LeftContainer extends JPanel implements StateChanged
+public class LeftContainer extends JPanel implements StateDependent
 {
     public LeftContainer()
     {

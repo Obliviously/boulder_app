@@ -7,16 +7,16 @@ package boulder_trainings_app.ui.containers.components;
 
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.data.enums.ProgramState;
-import boulder_trainings_app.ui.StateChanged;
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import boulder_trainings_app.ui.StateDependent;
 
 /**
  *
  * @author fabian
  */
-public class Options extends JPanel implements StateChanged
+public class Options extends JPanel implements StateDependent
 {
     public Options()
     {
