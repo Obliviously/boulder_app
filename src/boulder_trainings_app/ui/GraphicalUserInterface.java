@@ -5,14 +5,11 @@
  */
 package boulder_trainings_app.ui;
 
-import boulder_trainings_app.ApplicationState;
-import java.util.Observer;
-
 /**
  *
  * @author Fabian Rauscher
  */
-interface GraphicalUserInterface
+public interface GraphicalUserInterface
 {
     public void display(String title, int minWidth, int minHeight);
 }

@@ -6,7 +6,6 @@
 package boulder_trainings_app;
 
 import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.ui.GraphicalUserInterface;
 import boulder_trainings_app.utils.Consts;
 import boulder_trainings_app.ui.SwingUserInterface;
 import boulder_trainings_app.utils.Payload;
@@ -21,13 +20,13 @@ import org.joda.time.DateTime;
  */
 public class BoulderApp implements Observer
 {
-    private final GraphicalUserInterface userInterface;
+    private final SwingUserInterface userInterface;
     private final ApplicationState applicationState;
 
     public BoulderApp()
     {
         this.userInterface = new SwingUserInterface();
-        this.applicationState = new ApplicationState();
+        this.applicationState = ApplicationState.getInstance();
     }
 
     public void start()

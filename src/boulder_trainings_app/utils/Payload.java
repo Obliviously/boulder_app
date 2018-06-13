@@ -25,7 +25,7 @@ public class Payload
         REMOVED_BOULDER(Boulder.class),
         ADDED_BOULDER_LIST(ArrayList.class),
         REMOVED_BOULDER_LIST(ArrayList.class),
-        HIGHLIGHT_BOULDER(String.class),
+        HIGHLIGHT_BOULDER(Boulder.class),
         SELECT_BOULDER(Boulder.class),
         EDIT_BOULDER(Boulder.class),
         SAVE_BOULDER(Boulder.class),

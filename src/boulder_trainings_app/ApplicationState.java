@@ -24,6 +24,20 @@ public class ApplicationState extends Observable
 
     private final ArrayList<Boulder> boulderList = new ArrayList<>();
     private ProgramState programState = ProgramState.SELECT;
+    private static ApplicationState instance;
+
+    private ApplicationState()
+    {
+    }
+
+    public static ApplicationState getInstance()
+    {
+        if (ApplicationState.instance == null)
+        {
+            ApplicationState.instance = new ApplicationState();
+        }
+        return ApplicationState.instance;
+    }
 
     public void changeStateTo(ProgramState programState)
     {
@@ -106,14 +120,13 @@ public class ApplicationState extends Observable
         return null;
     }
 
-    public synchronized void highLightBoulder(String boulderId)
+    public synchronized void highLightBoulder(Boulder boulder)
     {
-        Boulder boulder = getBoulderById(boulderId);
         if (boulder != null && !boulder.isHighlighted())
         {
             setChanged();
             boulder.setHighlighted(true);
-            notifyObservers(new Payload(Payload.State.HIGHLIGHT_BOULDER, boulderId));
+            notifyObservers(new Payload(Payload.State.HIGHLIGHT_BOULDER, boulder));
         }
     }
 }

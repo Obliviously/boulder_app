@@ -81,7 +81,6 @@ public class SelectAppState extends BaseAppState
 
                 if (results.size() > 0)
                 {
-                    ApplicationState.getInstance().highLightBoulder(results.getClosestCollision().getGeometry().getName());
                 }
             }
         }

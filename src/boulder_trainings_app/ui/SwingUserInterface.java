@@ -5,7 +5,6 @@
  */
 package boulder_trainings_app.ui;
 
-import boulder_trainings_app.ApplicationState;
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.data.enums.ProgramState;
 import boulder_trainings_app.ui.containers.BottomContainer;
@@ -13,12 +12,9 @@ import boulder_trainings_app.ui.containers.LeftContainer;
 import boulder_trainings_app.ui.containers.RightContainer;
 import boulder_trainings_app.ui.containers.TopContainer;
 import boulder_trainings_app.ui.containers.MiddleContainer;
-import boulder_trainings_app.utils.Payload;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.Observable;
 import javax.swing.JFrame;
 
 /**
