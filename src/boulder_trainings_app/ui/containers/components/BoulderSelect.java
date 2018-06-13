@@ -6,14 +6,9 @@
 package boulder_trainings_app.ui.containers.components;
 
 import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.ApplicationState;
 import boulder_trainings_app.data.enums.ProgramState;
 import boulder_trainings_app.utils.Consts;
-import boulder_trainings_app.utils.Payload;
 import java.awt.GridLayout;
-import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -30,6 +25,8 @@ public class BoulderSelect extends JPanel implements StateDependent
     public BoulderSelect()
     {
         super();
+        COMPONENTS.add(this);
+
         super.setLayout(new GridLayout(10, 2));
 
         JLabel nameLabel = new JLabel(Consts.BOULDER_NAME_LABEL);
@@ -67,11 +64,6 @@ public class BoulderSelect extends JPanel implements StateDependent
 
     @Override
     public void editBoulder(Boulder boulder)
-    {
-    }
-
-    @Override
-    public void saveBoulder(Boulder boulder)
     {
     }
 

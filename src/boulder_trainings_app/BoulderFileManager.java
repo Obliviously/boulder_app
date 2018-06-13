@@ -8,7 +8,6 @@ package boulder_trainings_app;
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.utils.Consts;
 import boulder_trainings_app.data.enums.BoulderSection;
-import com.jme3.math.Vector3f;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -28,16 +27,8 @@ import org.joda.time.DateTime;
  *
  * @author Fabian Rauscher
  */
-public class BoulderManager
+public class BoulderFileManager
 {
-    public static Boulder createBoulder(Vector3f startPoint)
-    {
-        Boulder boulder = new Boulder();
-        boulder.addPosition(startPoint);
-        ApplicationState.getInstance().editBoulder(boulder);
-        return boulder;
-    }
-
     public static void saveBoulder(Boulder boulder)
     {
         Path path = Paths.get(Consts.DATAPATH.toString(), boulder.getDate().getYear() + "", "" + boulder.getDate().getWeekOfWeekyear(), "" + boulder.getSection().toInt(), boulder.getId() + ".boulder");
@@ -52,24 +43,25 @@ public class BoulderManager
         }
         catch (FileNotFoundException ex)
         {
-            Logger.getLogger(BoulderManager.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BoulderFileManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (IOException ex)
         {
-
+            Logger.getLogger(BoulderFileManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-        ApplicationState.getInstance().addBoulder(boulder);
     }
 
-    public static void loadBoulder(DateTime date)
+    public static ArrayList<Boulder> loadBoulder(DateTime date)
     {
+        ArrayList<Boulder> boulders = new ArrayList<>();
         for (BoulderSection section : BoulderSection.values())
         {
-            loadBoulderSection(date, section);
+            boulders.addAll(loadBoulderSection(date, section));
         }
+        return boulders;
     }
 
-    public static void loadBoulderSection(DateTime date, BoulderSection section)
+    public static ArrayList<Boulder> loadBoulderSection(DateTime date, BoulderSection section)
     {
         ArrayList<Boulder> boulders = new ArrayList<>();
         int year = date.getYear();
@@ -94,15 +86,15 @@ public class BoulderManager
                 }
                 catch (FileNotFoundException ex)
                 {
-                    Logger.getLogger(BoulderManager.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(BoulderFileManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 catch (IOException | ClassNotFoundException ex)
                 {
-                    Logger.getLogger(BoulderManager.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(BoulderFileManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            ApplicationState.getInstance().addBoulders(boulders);
         }
+        return boulders;
     }
 
     private static int findMinYear()

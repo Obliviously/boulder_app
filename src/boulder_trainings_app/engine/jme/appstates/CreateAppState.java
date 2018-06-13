@@ -5,11 +5,8 @@
  */
 package boulder_trainings_app.engine.jme.appstates;
 
-import boulder_trainings_app.BoulderManager;
 import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.utils.Payload;
 import boulder_trainings_app.ApplicationState;
-import boulder_trainings_app.data.enums.ProgramState;
 import boulder_trainings_app.engine.jme.utils.AbstractInputController;
 import boulder_trainings_app.engine.jme.utils.MeshUtils;
 import boulder_trainings_app.engine.jme.utils.VertexUtils;
@@ -26,8 +23,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,7 +39,7 @@ public class CreateAppState extends BaseAppState
     private Node rootNode;
     private AssetManager assetManager;
 
-    private final Boulder boulder = null;
+    private Boulder boulder = null;
     private ArrayList<Vector3f> currSelectedVertices = null;
     private Material defaultMaterial;
 
@@ -56,13 +51,10 @@ public class CreateAppState extends BaseAppState
     {
         this.app = (View3d) app;
         this.input = new InputController();
-        input.setUpInput();
+        input.setUp();
         this.rootNode = this.app.getRootNode();
         this.assetManager = this.app.getAssetManager();
         this.defaultMaterial = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-
-        Geometry mark = MeshUtils.createMark(boulder.getLastPosition(), GEO_NAME, defaultMaterial, boulder.getColor().toColorRGBA());
-        rootNode.attachChild(mark);
     }
 
     private void extendBoulderTo(CollisionResult closest)
@@ -144,7 +136,7 @@ public class CreateAppState extends BaseAppState
     protected void cleanup(Application app)
     {
         while (rootNode.detachChildNamed(GEO_NAME) != -1);
-        input.cleanUpInput();
+        input.cleanUp();
     }
 
     @Override
@@ -174,8 +166,9 @@ public class CreateAppState extends BaseAppState
                     CollisionResult closest = results.getClosestCollision();
                     if (boulder == null)
                     {
-                        Boulder boulder = new Boulder();
+                        boulder = new Boulder();
                         boulder.addPosition(closest.getContactPoint());
+                        ApplicationState.getInstance().addBoulder(boulder);
                         ApplicationState.getInstance().editBoulder(boulder);
                         currSelectedVertices = MeshUtils.calcFlatArea(closest);
                     }
@@ -188,7 +181,7 @@ public class CreateAppState extends BaseAppState
         }
 
         @Override
-        public void setUpInput()
+        public void setUp()
         {
             app.getInputManager().addListener(this, "MOUSE_LEFT_CLICK");
             app.getInputManager().addListener(this, "MOUSE_MOVE");
@@ -196,7 +189,7 @@ public class CreateAppState extends BaseAppState
         }
 
         @Override
-        public void cleanUpInput()
+        public void cleanUp()
         {
             app.getInputManager().removeListener(this);
         }

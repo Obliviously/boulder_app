@@ -31,20 +31,19 @@ import boulder_trainings_app.ui.StateDependent;
  *
  * @author Fabian Rauscher
  */
-public class View3d extends SimpleApplication implements StateDependent
+public class View3d extends SimpleApplication
 {
-    //For the initial crosshair position caclculation (Couldnt figure out another way to do this).
     private final JPanel parentContainer;
     private BoulderUpdater boulderUpdater;
     private final InputController input;
     private BitmapText crossHair;
     private boolean isMouseVisible = true;
     private boolean isCrossHairVisible = false;
-    private Class currentStateClass = SelectAppState.class;
 
     public View3d(JPanel parentContainer)
     {
         super();
+
         this.parentContainer = parentContainer;
         AppSettings appSetting = new AppSettings(true);
         appSetting.setFrameRate(60);
@@ -57,13 +56,14 @@ public class View3d extends SimpleApplication implements StateDependent
     @Override
     public void simpleInitApp()
     {
+        boulderUpdater = new BoulderUpdater(this);
         setPauseOnLostFocus(false);
         setDisplayFps(false);
         setDisplayStatView(false);
         flyCam.setEnabled(false);
 
         initInputMappings();
-        input.setUpInput();
+        input.setUp();
 
         initCrossHair();
 
@@ -71,7 +71,6 @@ public class View3d extends SimpleApplication implements StateDependent
 
         //initial state
         this.getStateManager().attach(new SelectAppState());
-
     }
 
     public void toogleInput()
@@ -79,66 +78,6 @@ public class View3d extends SimpleApplication implements StateDependent
         flyCam.setEnabled(!flyCam.isEnabled());
         toggleMouseCursor();
         toggleCrossHair();
-    }
-
-    @Override
-    public void addBoulder(Boulder boulder)
-    {
-        boulderUpdater.addBoulder(boulder);
-    }
-
-    @Override
-    public void removeBoulder(Boulder boulder)
-    {
-        boulderUpdater.removeBoulder(boulder);
-    }
-
-    @Override
-    public void highLightBoulder(Boulder boulder)
-    {
-        boulderUpdater.highLightBoulder(boulder);
-    }
-
-    @Override
-    public void selectBoulder(Boulder boulder)
-    {
-        boulderUpdater.selectBoulder(boulder);
-    }
-
-    @Override
-    public void editBoulder(Boulder boulder)
-    {
-    }
-
-    @Override
-    public void saveBoulder(Boulder boulder)
-    {
-    }
-
-    @Override
-    public void changeState(ProgramState programState)
-    {
-        System.out.println("boulder_trainings_app.ui.containers.components.View3d.changeState()");
-        switch (programState)
-        {
-        case SELECT:
-            getStateManager().detach(stateManager.getState(currentStateClass));
-            getStateManager().attach(new SelectAppState());
-            currentStateClass = SelectAppState.class;
-            break;
-        case EDIT:
-            getStateManager().detach(stateManager.getState(currentStateClass));
-            getStateManager().attach(new EditAppState());
-            currentStateClass = EditAppState.class;
-            break;
-        case CREATE:
-            getStateManager().detach(stateManager.getState(currentStateClass));
-            getStateManager().attach(new CreateAppState());
-            currentStateClass = CreateAppState.class;
-            break;
-        default:
-            break;
-        }
     }
 
     private void toggleMouseCursor()
@@ -149,7 +88,6 @@ public class View3d extends SimpleApplication implements StateDependent
 
     private void initWorld()
     {
-        boulderUpdater = new BoulderUpdater(this);
         Node box = (Node) assetManager.loadModel("Models/box.blend");
         rootNode.attachChild(box);
     }
@@ -204,17 +142,16 @@ public class View3d extends SimpleApplication implements StateDependent
     private class InputController extends AbstractInputController implements ActionListener
     {
         @Override
-        public void setUpInput()
+        public void setUp()
         {
             inputManager.addListener(this, "EXIT_3DVIEW");
             inputManager.addListener(this, "SELECT_MODE");
             inputManager.addListener(this, "EDIT_MODE");
             inputManager.addListener(this, "CREATE_MODE");
-
         }
 
         @Override
-        public void cleanUpInput()
+        public void cleanUp()
         {
             inputManager.removeListener(this);
         }
@@ -229,15 +166,15 @@ public class View3d extends SimpleApplication implements StateDependent
             }
             if (name.equals("SELECT_MODE") && !isPressed)
             {
-                ApplicationState.getInstance().changeStateTo(ProgramState.SELECT);
+                ApplicationState.getInstance().changeState(ProgramState.SELECT);
             }
             if (name.equals("EDIT_MODE") && !isPressed)
             {
-                ApplicationState.getInstance().changeStateTo(ProgramState.EDIT);
+                ApplicationState.getInstance().changeState(ProgramState.EDIT);
             }
             if (name.equals("CREATE_MODE") && !isPressed)
             {
-                ApplicationState.getInstance().changeStateTo(ProgramState.CREATE);
+                ApplicationState.getInstance().changeState(ProgramState.CREATE);
             }
         }
     }

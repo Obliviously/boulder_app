@@ -5,95 +5,35 @@
  */
 package boulder_trainings_app;
 
-import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.data.enums.ProgramState;
+import boulder_trainings_app.ui.GraphicalUserInterface;
 import boulder_trainings_app.utils.Consts;
 import boulder_trainings_app.ui.SwingUserInterface;
-import boulder_trainings_app.utils.Payload;
-import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.joda.time.DateTime;
 
 /**
  *
  * @author Fabian Rauscher
  */
-public class BoulderApp implements Observer
+public class BoulderApp
 {
-    private final SwingUserInterface userInterface;
-    private final ApplicationState applicationState;
+    private final GraphicalUserInterface userInterface;
 
     public BoulderApp()
     {
         this.userInterface = new SwingUserInterface();
-        this.applicationState = ApplicationState.getInstance();
     }
 
     public void start()
     {
         userInterface.display(Consts.PROGRAM_NAME, Consts.MIN_WIDTH, Consts.MIN_HEIGHT);
-        BoulderManager.loadBoulder(DateTime.now());
-
-        applicationState.addObserver(this);
-
+        ApplicationState.getInstance().loadBoulder(DateTime.now());
     }
 
     public static void main(String[] args)
     {
         BoulderApp app = new BoulderApp();
         app.start();
-    }
-
-    @Override
-    public void update(Observable o, Object arg)
-    {
-        if (o instanceof ApplicationState)
-        {
-            if (arg instanceof Payload)
-            {
-                Payload payload = (Payload) arg;
-                Boulder boulder;
-                ArrayList<Boulder> boulderList;
-                ProgramState programState;
-                switch (payload.getState())
-                {
-                case ADDED_BOULDER:
-                    boulder = (Boulder) payload.getData();
-                    userInterface.addBoulder(boulder);
-
-                    break;
-                case REMOVED_BOULDER:
-                    boulder = (Boulder) payload.getData();
-                    userInterface.removeBoulder(boulder);
-
-                    break;
-                case ADDED_BOULDER_LIST:
-                    boulderList = (ArrayList<Boulder>) payload.getData();
-                    boulderList.forEach((b) -> userInterface.addBoulder(b));
-                    break;
-                case REMOVED_BOULDER_LIST:
-                    boulderList = (ArrayList<Boulder>) payload.getData();
-                    boulderList.forEach((b) -> userInterface.removeBoulder(b));
-                    break;
-
-                case HIGHLIGHT_BOULDER:
-                    boulder = (Boulder) payload.getData();
-                    userInterface.highLightBoulder(boulder);
-                    break;
-
-                case SELECT_BOULDER:
-                    boulder = (Boulder) payload.getData();
-                    userInterface.selectBoulder(boulder);
-                    break;
-                case PROGRAM_STATE_CHANGED:
-                    programState = (ProgramState) payload.getData();
-                    userInterface.changeState(programState);
-                    break;
-                default:
-                    break;
-                }
-            }
-        }
     }
 }

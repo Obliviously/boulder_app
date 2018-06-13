@@ -5,9 +5,9 @@
  */
 package boulder_trainings_app.ui.containers.components;
 
+import boulder_trainings_app.ApplicationState;
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.utils.Consts;
-import boulder_trainings_app.BoulderManager;
 import boulder_trainings_app.data.enums.BoulderColor;
 import boulder_trainings_app.data.enums.BoulderGrade;
 import boulder_trainings_app.data.enums.BoulderType;
@@ -54,7 +54,7 @@ public class BoulderEdit extends JPanel implements StateDependent
     public BoulderEdit()
     {
         super();
-
+        COMPONENTS.add(this);
         super.setLayout(new BorderLayout());
         JPanel propertiesContainer = new JPanel(new GridLayout(20, 2));
 
@@ -146,7 +146,7 @@ public class BoulderEdit extends JPanel implements StateDependent
 
         saveButton.addActionListener((ActionEvent e) ->
         {
-            BoulderManager.saveBoulder(boulder);
+            ApplicationState.getInstance().saveBoulder(boulder);
         });
 
     }
@@ -213,11 +213,6 @@ public class BoulderEdit extends JPanel implements StateDependent
     }
 
     @Override
-    public void saveBoulder(Boulder boulder)
-    {
-    }
-
-    @Override
     public void changeState(ProgramState programState)
     {
     }
@@ -248,7 +243,6 @@ public class BoulderEdit extends JPanel implements StateDependent
                 Calendar cal = (Calendar) value;
                 return dateFormatter.format(cal.getTime());
             }
-
             return "";
         }
     }

@@ -28,13 +28,13 @@ public class SelectAppState extends BaseAppState
     {
         this.app = (View3d) app;
         this.input = new InputController();
-        input.setUpInput();
+        input.setUp();
     }
 
     @Override
     protected void cleanup(Application app)
     {
-        input.cleanUpInput();
+        input.cleanUp();
     }
 
     @Override
@@ -50,13 +50,13 @@ public class SelectAppState extends BaseAppState
     private class InputController extends AbstractInputController implements ActionListener
     {
         @Override
-        public void setUpInput()
+        public void setUp()
         {
             app.getInputManager().addListener(this, "MOUSE_LEFT_CLICK");
         }
 
         @Override
-        public void cleanUpInput()
+        public void cleanUp()
         {
             app.getInputManager().removeListener(this);
         }
@@ -71,7 +71,7 @@ public class SelectAppState extends BaseAppState
                 app.getRootNode().collideWith(ray, results);
                 if (results.size() > 0)
                 {
-                    ApplicationState.getInstance().selectBoulder(results.getClosestCollision().getGeometry().getName());
+                    ApplicationState.getInstance().selectBoulder(ApplicationState.getInstance().getBoulderById(results.getClosestCollision().getGeometry().getName()));
                 }
             }
         }

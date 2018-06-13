@@ -1,24 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package boulder_trainings_app;
 
 import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.utils.Payload;
 import boulder_trainings_app.data.enums.BoulderSection;
 import boulder_trainings_app.data.enums.ProgramState;
-import java.util.Observable;
+import boulder_trainings_app.ui.StateDependent;
+import static boulder_trainings_app.ui.StateDependent.COMPONENTS;
 import java.util.ArrayList;
-import java.util.logging.Level;
+import java.util.List;
 import java.util.logging.Logger;
+import javafx.collections.ListChangeListener;
+import org.joda.time.DateTime;
 
 /**
  *
  * @author Fabian Rauscher
  */
-public class ApplicationState extends Observable
+public class ApplicationState
 {
     private static final Logger LOGGER = Logger.getLogger(ApplicationState.class.getName());
 
@@ -28,6 +25,18 @@ public class ApplicationState extends Observable
 
     private ApplicationState()
     {
+        COMPONENTS.addListener((ListChangeListener.Change<? extends StateDependent> c) ->
+        {
+            c.next();
+            List<StateDependent> newItems = (List<StateDependent>) c.getAddedSubList();
+            for (Boulder b : boulderList)
+            {
+                for (StateDependent sd : newItems)
+                {
+                    sd.addBoulder(b);
+                }
+            }
+        });
     }
 
     public static ApplicationState getInstance()
@@ -39,72 +48,67 @@ public class ApplicationState extends Observable
         return ApplicationState.instance;
     }
 
-    public void changeStateTo(ProgramState programState)
+    public void changeState(ProgramState programState)
     {
         if (this.programState != programState)
         {
-            setChanged();
             this.programState = programState;
-            notifyObservers(new Payload(Payload.State.PROGRAM_STATE_CHANGED, programState));
+            COMPONENTS.forEach((c) -> c.changeState(programState));
         }
-
     }
 
     public void editBoulder(Boulder boulder)
     {
-        setChanged();
-        notifyObservers(new Payload(Payload.State.EDIT_BOULDER, boulder));
+        COMPONENTS.forEach((c) -> c.editBoulder(boulder));
+    }
+
+    public void addBoulder(Boulder boulder)
+    {
+        COMPONENTS.forEach((c) -> c.addBoulder(boulder));
+    }
+
+    public void addBoulders(ArrayList<Boulder> boulderList)
+    {
+        boulderList.forEach((b) -> COMPONENTS.forEach((c) -> c.addBoulder(b)));
+        this.boulderList.addAll(boulderList);
+    }
+
+    public void removeBoulders(ArrayList<Boulder> boulderList)
+    {
+        boulderList.forEach((b) -> COMPONENTS.forEach((c) -> c.removeBoulder(b)));
+        this.boulderList.addAll(boulderList);
     }
 
     public void saveBoulder(Boulder boulder)
     {
-        setChanged();
-        BoulderManager.saveBoulder(boulder);
-        notifyObservers(new Payload(Payload.State.SAVE_BOULDER, boulder));
+        BoulderFileManager.saveBoulder(boulder);
     }
 
-    public ArrayList<Boulder> getBoulderList()
+    public void loadBoulder(DateTime date)
     {
-        return new ArrayList<>(boulderList);
+        removeBoulders(boulderList);
+        boulderList.clear();
+        boulderList.addAll(BoulderFileManager.loadBoulder(date));
+        addBoulders(boulderList);
     }
 
-    public synchronized void addBoulder(Boulder boulder)
+    public void removeSection(BoulderSection section)
     {
-        setChanged();
-        boulderList.add(boulder);
-        notifyObservers(new Payload(Payload.State.ADDED_BOULDER, boulder));
-    }
-
-    public synchronized void addBoulders(ArrayList<Boulder> boulders)
-    {
-        setChanged();
-        LOGGER.log(Level.INFO, "Added {0} boulders!", boulders.size());
-        boulderList.addAll(boulders);
-        notifyObservers(new Payload(Payload.State.ADDED_BOULDER_LIST, boulders));
-    }
-
-    public synchronized void removeSection(BoulderSection section)
-    {
-        setChanged();
-        ArrayList<Boulder> removedBoulders = new ArrayList<Boulder>();
         for (Boulder boulder : boulderList)
         {
             if (boulder.getSection().equals(section))
             {
                 boulderList.remove(boulder);
-                removedBoulders.add(boulder);
+                removeBoulder(boulder);
             }
         }
-        notifyObservers(new Payload(Payload.State.REMOVED_BOULDER_LIST, removedBoulders));
     }
 
-    public synchronized void selectBoulder(String boulderId)
+    public void selectBoulder(Boulder boulder)
     {
-        Boulder boulder;
-        if ((boulder = getBoulderById(boulderId)) != null)
+        if (boulder != null)
         {
-            setChanged();
-            notifyObservers(new Payload(Payload.State.SELECT_BOULDER, boulder));
+            COMPONENTS.forEach((c) -> c.selectBoulder(boulder));
         }
     }
 
@@ -120,13 +124,16 @@ public class ApplicationState extends Observable
         return null;
     }
 
-    public synchronized void highLightBoulder(Boulder boulder)
+    public void highLightBoulder(Boulder boulder)
     {
         if (boulder != null && !boulder.isHighlighted())
         {
-            setChanged();
-            boulder.setHighlighted(true);
-            notifyObservers(new Payload(Payload.State.HIGHLIGHT_BOULDER, boulder));
+            COMPONENTS.forEach((c) -> c.highLightBoulder(boulder));
         }
+    }
+
+    public void removeBoulder(Boulder boulder)
+    {
+        COMPONENTS.forEach((c) -> c.removeBoulder(boulder));
     }
 }

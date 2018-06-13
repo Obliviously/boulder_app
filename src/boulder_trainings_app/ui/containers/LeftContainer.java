@@ -5,9 +5,6 @@
  */
 package boulder_trainings_app.ui.containers;
 
-import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.data.enums.ProgramState;
-import static boulder_trainings_app.ui.StateDependent.components;
 import boulder_trainings_app.utils.Consts;
 import boulder_trainings_app.ui.containers.components.Sections;
 import java.awt.BorderLayout;
@@ -17,13 +14,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
-import boulder_trainings_app.ui.StateDependent;
 
 /**
  *
  * @author Fabian Rauscher
  */
-public class LeftContainer extends JPanel implements StateDependent
+public class LeftContainer extends JPanel
 {
     public LeftContainer()
     {
@@ -42,49 +38,5 @@ public class LeftContainer extends JPanel implements StateDependent
         scrollPane.getVerticalScrollBar().setUnitIncrement(20);
         scrollPane.setBorder(null);
         super.add(scrollPane);
-
-        components.add(sections);
-    }
-
-    @Override
-    public void addBoulder(Boulder boulder)
-    {
-        components.forEach((c) -> c.addBoulder(boulder));
-    }
-
-    @Override
-    public void removeBoulder(Boulder boulder)
-    {
-        components.forEach((c) -> c.removeBoulder(boulder));
-    }
-
-    @Override
-    public void highLightBoulder(Boulder boulder)
-    {
-        components.forEach((c) -> c.highLightBoulder(boulder));
-    }
-
-    @Override
-    public void selectBoulder(Boulder boulder)
-    {
-        components.forEach((c) -> c.selectBoulder(boulder));
-    }
-
-    @Override
-    public void editBoulder(Boulder boulder)
-    {
-        components.forEach((c) -> c.editBoulder(boulder));
-    }
-
-    @Override
-    public void saveBoulder(Boulder boulder)
-    {
-        components.forEach((c) -> c.saveBoulder(boulder));
-    }
-
-    @Override
-    public void changeState(ProgramState programState)
-    {
-        components.forEach((c) -> c.changeState(programState));
     }
 }

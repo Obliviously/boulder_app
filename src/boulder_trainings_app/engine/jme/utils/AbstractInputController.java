@@ -14,11 +14,11 @@ public abstract class AbstractInputController
     /**
      * Initialize all listeners
      */
-    public abstract void setUpInput();
+    public abstract void setUp();
 
     /**
      * Remove all listeners
      */
-    public abstract void cleanUpInput();
+    public abstract void cleanUp();
 
 }

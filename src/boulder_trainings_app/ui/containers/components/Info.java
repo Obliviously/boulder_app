@@ -22,52 +22,48 @@ public class Info extends JPanel implements StateDependent
     JLabel programState;
     JLabel programName;
     JLabel programVersion;
-    
+
     public Info()
     {
         super();
-        
+        COMPONENTS.add(this);
+
         programState = new JLabel(ProgramState.SELECT.toString());
         programName = new JLabel(Consts.PROGRAM_NAME);
         programVersion = new JLabel(Consts.PROGRAM_VERSION);
-        
+
         super.add(programState);
         super.add(programName);
         super.add(programVersion);
         super.setBackground(Color.GRAY);
-        
+
     }
-    
+
     @Override
     public void addBoulder(Boulder boulder)
     {
     }
-    
+
     @Override
     public void removeBoulder(Boulder boulder)
     {
     }
-    
+
     @Override
     public void highLightBoulder(Boulder boulder)
     {
     }
-    
+
     @Override
     public void selectBoulder(Boulder boulder)
     {
     }
-    
+
     @Override
     public void editBoulder(Boulder boulder)
     {
     }
-    
-    @Override
-    public void saveBoulder(Boulder boulder)
-    {
-    }
-    
+
     @Override
     public void changeState(ProgramState programState)
     {

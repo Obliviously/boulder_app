@@ -29,13 +29,13 @@ public class EditAppState extends BaseAppState
     {
         this.app = (View3d) app;
         this.input = new InputController();
-        input.setUpInput();
+        input.setUp();
     }
 
     @Override
     protected void cleanup(Application app)
     {
-        input.cleanUpInput();
+        input.cleanUp();
     }
 
     @Override
@@ -63,19 +63,19 @@ public class EditAppState extends BaseAppState
                 if (results.size() > 0)
                 {
                     CollisionResult closest = results.getClosestCollision();
-                    ApplicationState.getInstance().selectBoulder(closest.getGeometry().getName());
+                    ApplicationState.getInstance().selectBoulder(ApplicationState.getInstance().getBoulderById(closest.getGeometry().getName()));
                 }
             }
         }
 
         @Override
-        public void setUpInput()
+        public void setUp()
         {
             app.getInputManager().addListener(this, "MOUSE_LEFT_CLICK");
         }
 
         @Override
-        public void cleanUpInput()
+        public void cleanUp()
         {
             app.getInputManager().removeListener(this);
         }

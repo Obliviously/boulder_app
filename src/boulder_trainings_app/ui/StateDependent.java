@@ -1,13 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package boulder_trainings_app.ui;
 
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.data.enums.ProgramState;
 import java.util.ArrayList;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  *
@@ -15,7 +12,8 @@ import java.util.ArrayList;
  */
 public interface StateDependent
 {
-    public final ArrayList<StateDependent> components = new ArrayList<>();
+
+    public static final ObservableList<StateDependent> COMPONENTS = FXCollections.observableList(new ArrayList<StateDependent>());
 
     public void addBoulder(Boulder boulder);
 
@@ -26,8 +24,6 @@ public interface StateDependent
     public void selectBoulder(Boulder boulder);
 
     public void editBoulder(Boulder boulder);
-
-    public void saveBoulder(Boulder boulder);
 
     public void changeState(ProgramState programState);
 }

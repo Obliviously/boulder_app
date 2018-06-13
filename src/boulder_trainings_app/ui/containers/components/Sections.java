@@ -35,6 +35,7 @@ public class Sections extends JPanel implements StateDependent
     public Sections()
     {
         super();
+        COMPONENTS.add(this);
 
         super.setLayout(new GridBagLayout());
         //create 8 sections
@@ -87,7 +88,7 @@ public class Sections extends JPanel implements StateDependent
                                 otherList.clearSelection();
                             }
                         });
-                        ApplicationState.getInstance().selectBoulder(list.getSelectedValue());
+                        ApplicationState.getInstance().selectBoulder(ApplicationState.getInstance().getBoulderById(list.getSelectedValue()));
                     }
                 }
             });
@@ -100,11 +101,13 @@ public class Sections extends JPanel implements StateDependent
         }
     }
 
+    @Override
     public void addBoulder(Boulder boulder)
     {
         ((DefaultListModel) sections.get(boulder.getSection().toInt()).getModel()).addElement(boulder.getId());
     }
 
+    @Override
     public void removeBoulder(Boulder boulder)
     {
         DefaultListModel listModel = (DefaultListModel) sections.get(boulder.getSection().toInt()).getModel();
@@ -129,11 +132,6 @@ public class Sections extends JPanel implements StateDependent
 
     @Override
     public void editBoulder(Boulder boulder)
-    {
-    }
-
-    @Override
-    public void saveBoulder(Boulder boulder)
     {
     }
 
