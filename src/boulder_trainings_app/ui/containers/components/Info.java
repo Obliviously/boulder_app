@@ -70,4 +70,14 @@ public class Info extends JPanel implements StateDependent
         this.programState.setText(programState.toString());
         this.validate();
     }
+
+    @Override
+    public void deselect()
+    {
+    }
+
+    @Override
+    public void updateBoulder(Boulder boulder)
+    {
+    }
 }

@@ -138,4 +138,16 @@ public class Boulder extends Observable implements Serializable
         this.type = type;
     }
 
+    @Override
+    public int hashCode()
+    {
+        return this.positions.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        return (obj instanceof Boulder) && (((Boulder) obj).getId()).equals(this.getId());
+    }
+
 }

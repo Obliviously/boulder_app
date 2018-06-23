@@ -1,15 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package boulder_trainings_app.ui.containers.components;
 
 import boulder_trainings_app.ApplicationState;
-import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.data.enums.ProgramState;
-import boulder_trainings_app.engine.jme.appstates.CreateAppState;
-import boulder_trainings_app.engine.jme.appstates.EditAppState;
 import boulder_trainings_app.engine.jme.utils.BoulderUpdater;
 import boulder_trainings_app.engine.jme.appstates.SelectAppState;
 import boulder_trainings_app.engine.jme.utils.AbstractInputController;
@@ -25,7 +17,6 @@ import com.jme3.scene.Node;
 import com.jme3.system.AppSettings;
 import java.awt.Dimension;
 import javax.swing.JPanel;
-import boulder_trainings_app.ui.StateDependent;
 
 /**
  *
@@ -100,8 +91,9 @@ public class View3d extends SimpleApplication
         inputManager.addMapping("SELECT_MODE", new KeyTrigger(KeyInput.KEY_1));
         inputManager.addMapping("EDIT_MODE", new KeyTrigger(KeyInput.KEY_2));
         inputManager.addMapping("CREATE_MODE", new KeyTrigger(KeyInput.KEY_3));
-        inputManager.addMapping("SAVE_BOULDER", new KeyTrigger(KeyInput.KEY_S));
         inputManager.addMapping("EXIT_3DVIEW", new KeyTrigger(KeyInput.KEY_ESCAPE));
+        inputManager.addMapping("DELETE", new KeyTrigger(KeyInput.KEY_DELETE));
+
     }
 
     /**
@@ -148,6 +140,8 @@ public class View3d extends SimpleApplication
             inputManager.addListener(this, "SELECT_MODE");
             inputManager.addListener(this, "EDIT_MODE");
             inputManager.addListener(this, "CREATE_MODE");
+            inputManager.addListener(this, "DELETE");
+
         }
 
         @Override
@@ -175,6 +169,10 @@ public class View3d extends SimpleApplication
             if (name.equals("CREATE_MODE") && !isPressed)
             {
                 ApplicationState.getInstance().changeState(ProgramState.CREATE);
+            }
+            if (name.equals("DELETE") && !isPressed)
+            {
+                ApplicationState.getInstance().removeSelectedBoulder();
             }
         }
     }

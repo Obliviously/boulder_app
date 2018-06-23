@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package boulder_trainings_app.engine.jme.appstates;
 
 import boulder_trainings_app.ApplicationState;
@@ -71,6 +66,7 @@ public class SelectAppState extends BaseAppState
                 app.getRootNode().collideWith(ray, results);
                 if (results.size() > 0)
                 {
+                    System.out.println(results.getClosestCollision().getGeometry().getName());
                     ApplicationState.getInstance().selectBoulder(ApplicationState.getInstance().getBoulderById(results.getClosestCollision().getGeometry().getName()));
                 }
             }

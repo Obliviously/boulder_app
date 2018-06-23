@@ -29,4 +29,6 @@ public class Consts
     public final static String BOULDER_TYPE_LABEL = "Type";
     public final static String BOULDER_GRADE_LABEL = "Grade";
     public final static String BOULDER_SAVE_BUTTON = "SAVE";
+    public final static String NOTHING_SELECTED_MESSAGE = "SELECT A BOULDER";
+
 }

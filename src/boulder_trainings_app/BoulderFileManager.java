@@ -15,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -29,6 +30,8 @@ import org.joda.time.DateTime;
  */
 public class BoulderFileManager
 {
+    private final static Logger LOGGER = Logger.getLogger(BoulderFileManager.class.getName());
+
     public static void saveBoulder(Boulder boulder)
     {
         Path path = Paths.get(Consts.DATAPATH.toString(), boulder.getDate().getYear() + "", "" + boulder.getDate().getWeekOfWeekyear(), "" + boulder.getSection().toInt(), boulder.getId() + ".boulder");
@@ -43,12 +46,29 @@ public class BoulderFileManager
         }
         catch (FileNotFoundException ex)
         {
-            Logger.getLogger(BoulderFileManager.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
         catch (IOException ex)
         {
-            Logger.getLogger(BoulderFileManager.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
+    }
+
+    public static void deleteBoulder(Boulder boulder)
+    {
+        Path path = Paths.get(Consts.DATAPATH.toString(), boulder.getDate().getYear() + "", "" + boulder.getDate().getWeekOfWeekyear(), "" + boulder.getSection().toInt(), boulder.getId() + ".boulder");
+        if (path.toFile().exists())
+        {
+            try
+            {
+                Files.delete(path);
+            }
+            catch (IOException ex)
+            {
+                LOGGER.log(Level.SEVERE, null, ex);
+            }
+        }
+
     }
 
     public static ArrayList<Boulder> loadBoulder(DateTime date)
@@ -58,6 +78,10 @@ public class BoulderFileManager
         {
             boulders.addAll(loadBoulderSection(date, section));
         }
+        LOGGER.log(Level.INFO, "Loaded {0} problems for date {1}", new Object[]
+        {
+            boulders.size(), date.toString()
+        });
         return boulders;
     }
 

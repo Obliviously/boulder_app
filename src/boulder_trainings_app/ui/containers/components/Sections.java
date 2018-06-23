@@ -21,6 +21,8 @@ import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import boulder_trainings_app.ui.StateDependent;
+import java.awt.Font;
+import javax.swing.UIManager;
 
 /**
  *
@@ -31,11 +33,11 @@ public class Sections extends JPanel implements StateDependent
 
     private final HashMap<Integer, JList> sections = new HashMap();
     private final HashMap<Integer, JButton> buttons = new HashMap();
+    private final HashMap<Integer, JLabel> listSizes = new HashMap();
 
     public Sections()
     {
         super();
-        COMPONENTS.add(this);
 
         super.setLayout(new GridBagLayout());
         //create 8 sections
@@ -43,11 +45,19 @@ public class Sections extends JPanel implements StateDependent
         {
             JPanel section = new JPanel();
             JLabel label = new JLabel("Section: " + (i + 1));
+            JLabel listSize = new JLabel(" | (0)");
+            listSizes.put(i + 1, listSize);
+
             JButton toggleButton = new JButton("+");
+            toggleButton.setOpaque(false);
+            toggleButton.setContentAreaFilled(false);
+            toggleButton.setBorderPainted(false);
+            toggleButton.setFont(new Font("Arial", Font.BOLD, 15));
             buttons.put(i + 1, toggleButton);
 
             DefaultListModel listModel = new DefaultListModel<>();
             JList<String> list = new JList<>(listModel);
+            list.setBackground(UIManager.getColor ( "Panel.background" ));
             list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
             list.setVisibleRowCount(-1);
@@ -57,7 +67,8 @@ public class Sections extends JPanel implements StateDependent
             sections.put(i + 1, list);
 
             section.setLayout(new BorderLayout(0, 0));
-            section.add(label, BorderLayout.CENTER);
+            section.add(listSize, BorderLayout.CENTER);
+            section.add(label, BorderLayout.LINE_START);
             section.add(toggleButton, BorderLayout.LINE_END);
             section.add(list, BorderLayout.SOUTH);
 
@@ -95,23 +106,42 @@ public class Sections extends JPanel implements StateDependent
 
             toggleButton.addActionListener((ActionEvent e) ->
             {
-                list.setVisible(!list.isVisible());
+                JButton button = (JButton) e.getSource();
+                if (!list.isVisible())
+                {
+                    list.setVisible(true);
+                    button.setText("-");
+                }
+                else
+                {
+                    list.setVisible(false);
+                    button.setText("+");
+                }
             });
 
         }
+        COMPONENTS.add(this);
     }
 
     @Override
     public void addBoulder(Boulder boulder)
     {
-        ((DefaultListModel) sections.get(boulder.getSection().toInt()).getModel()).addElement(boulder.getId());
+        JList list = sections.get(boulder.getSection().toInt());
+        ((DefaultListModel) list.getModel()).addElement(boulder.getId());
+        
+        JLabel listSize = listSizes.get(boulder.getSection().toInt());
+        listSize.setText(" | ("+(list.getModel().getSize()) + ")");
     }
 
     @Override
     public void removeBoulder(Boulder boulder)
     {
-        DefaultListModel listModel = (DefaultListModel) sections.get(boulder.getSection().toInt()).getModel();
+        JList list = sections.get(boulder.getSection().toInt());
+        DefaultListModel listModel = (DefaultListModel) list.getModel();
         listModel.removeElement(boulder.getId());
+
+        JLabel listSize = listSizes.get(boulder.getSection().toInt());
+        listSize.setText(" | ("+(list.getModel().getSize()) + ")");
     }
 
     @Override
@@ -137,6 +167,17 @@ public class Sections extends JPanel implements StateDependent
 
     @Override
     public void changeState(ProgramState programState)
+    {
+    }
+
+    @Override
+    public void deselect()
+    {
+        sections.forEach((key, list) -> list.clearSelection());
+    }
+
+    @Override
+    public void updateBoulder(Boulder boulder)
     {
     }
 }

@@ -31,9 +31,9 @@ public class BoulderUpdater implements StateDependent
     private final AppStateManager stateManager;
     private final ColorRGBA SELECTION_COLOR = ColorRGBA.Magenta;
     private Class currentStateClass = SelectAppState.class;
-
+    
     private Boulder selectedBoulder = null;
-
+    
     public BoulderUpdater(SimpleApplication app)
     {
         this.rootNode = app.getRootNode();
@@ -41,7 +41,7 @@ public class BoulderUpdater implements StateDependent
         this.stateManager = app.getStateManager();
         COMPONENTS.add(this);
     }
-
+    
     @Override
     public void selectBoulder(Boulder boulder)
     {
@@ -52,7 +52,7 @@ public class BoulderUpdater implements StateDependent
         Node boulderNode = bouldersMap.get(boulder.getId());
         Material selectionMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         selectionMat.setColor("Color", SELECTION_COLOR);
-
+        
         for (Spatial s : boulderNode.getChildren())
         {
             Geometry geom = (Geometry) s;
@@ -60,13 +60,13 @@ public class BoulderUpdater implements StateDependent
         }
         selectedBoulder = boulder;
     }
-
+    
     public void deselectBoulder(Boulder boulder)
     {
         Node boulderNode = bouldersMap.get(boulder.getId());
         Material selectionMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         selectionMat.setColor("Color", boulder.getColor().toColorRGBA());
-
+        
         for (Spatial s : boulderNode.getChildren())
         {
             Geometry geom = (Geometry) s;
@@ -74,31 +74,32 @@ public class BoulderUpdater implements StateDependent
         }
         selectedBoulder = null;
     }
-
+    
     @Override
     public void highLightBoulder(Boulder boulder)
     {
         //TODO
     }
-
+    
     @Override
     public void removeBoulder(Boulder boulder)
     {
         destroyBoulder(bouldersMap.remove(boulder.getId()));
+        selectedBoulder = null;
     }
-
+    
     @Override
     public void addBoulder(Boulder boulder)
     {
         bouldersMap.put(boulder.getId(), createBoulder(boulder));
     }
-
+    
     public Node createBoulder(Boulder boulder)
     {
         Node boulderNode = new Node();
         boulderNode.setName(boulder.getId());
         Material defaultMaterial = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-
+        
         Geometry geom;
         Vector3f previousPoint = null;
         for (Vector3f vector : boulder.getPositions())
@@ -115,13 +116,12 @@ public class BoulderUpdater implements StateDependent
         rootNode.attachChild(boulderNode);
         return boulderNode;
     }
-
+    
     @Override
     public void editBoulder(Boulder boulder)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     @Override
     public void changeState(ProgramState programState)
     {
@@ -146,7 +146,27 @@ public class BoulderUpdater implements StateDependent
             break;
         }
     }
-
+    
+    @Override
+    public void deselect()
+    {
+        deselectBoulder(selectedBoulder);
+    }
+    
+    @Override
+    public void updateBoulder(Boulder boulder)
+    {
+        if (bouldersMap.containsKey(boulder.getId()))
+        {
+            destroyBoulder(bouldersMap.get(boulder.getId()));
+            createBoulder(boulder);
+        }
+        else
+        {
+            addBoulder(boulder);
+        }
+    }
+    
     private void destroyBoulder(Node boulderNode)
     {
         rootNode.detachChildNamed(boulderNode.getName());

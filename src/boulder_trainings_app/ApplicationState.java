@@ -6,7 +6,9 @@ import boulder_trainings_app.data.enums.ProgramState;
 import boulder_trainings_app.ui.StateDependent;
 import static boulder_trainings_app.ui.StateDependent.COMPONENTS;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 import javafx.collections.ListChangeListener;
 import org.joda.time.DateTime;
@@ -19,9 +21,10 @@ public class ApplicationState
 {
     private static final Logger LOGGER = Logger.getLogger(ApplicationState.class.getName());
 
-    private final ArrayList<Boulder> boulderList = new ArrayList<>();
+    private final Set<Boulder> boulderList = new HashSet<>();
     private ProgramState programState = ProgramState.SELECT;
     private static ApplicationState instance;
+    private static Boulder selectedBoulder = null;
 
     private ApplicationState()
     {
@@ -54,6 +57,11 @@ public class ApplicationState
         {
             this.programState = programState;
             COMPONENTS.forEach((c) -> c.changeState(programState));
+
+            if (programState == ProgramState.CREATE && selectedBoulder != null)
+            {
+                selectBoulder(null);
+            }
         }
     }
 
@@ -64,32 +72,41 @@ public class ApplicationState
 
     public void addBoulder(Boulder boulder)
     {
-        COMPONENTS.forEach((c) -> c.addBoulder(boulder));
+        if (boulderList.add(boulder))
+        {
+            COMPONENTS.forEach((c) -> c.addBoulder(boulder));
+        }
     }
 
     public void addBoulders(ArrayList<Boulder> boulderList)
     {
-        boulderList.forEach((b) -> COMPONENTS.forEach((c) -> c.addBoulder(b)));
-        this.boulderList.addAll(boulderList);
+        boulderList.forEach((b) -> addBoulder(b));
     }
 
-    public void removeBoulders(ArrayList<Boulder> boulderList)
+    public void removeBoulders(Set<Boulder> boulderList)
     {
         boulderList.forEach((b) -> COMPONENTS.forEach((c) -> c.removeBoulder(b)));
-        this.boulderList.addAll(boulderList);
     }
 
     public void saveBoulder(Boulder boulder)
     {
         BoulderFileManager.saveBoulder(boulder);
+
+        if (boulderList.contains(boulder))
+        {
+            COMPONENTS.forEach((c) -> c.updateBoulder(boulder));
+        }
+        else
+        {
+            addBoulder(boulder);
+        }
+        changeState(ProgramState.SELECT);
     }
 
     public void loadBoulder(DateTime date)
     {
         removeBoulders(boulderList);
-        boulderList.clear();
-        boulderList.addAll(BoulderFileManager.loadBoulder(date));
-        addBoulders(boulderList);
+        addBoulders(BoulderFileManager.loadBoulder(date));
     }
 
     public void removeSection(BoulderSection section)
@@ -98,18 +115,31 @@ public class ApplicationState
         {
             if (boulder.getSection().equals(section))
             {
-                boulderList.remove(boulder);
                 removeBoulder(boulder);
             }
         }
     }
 
+    /**
+     * Selects the given boulder. If boulder is null everything gets deselected.
+     *
+     * @param boulder The boulder to select.
+     *
+     */
     public void selectBoulder(Boulder boulder)
     {
         if (boulder != null)
         {
             COMPONENTS.forEach((c) -> c.selectBoulder(boulder));
         }
+        else
+        {
+            if (selectedBoulder != null)
+            {
+                COMPONENTS.forEach((c) -> c.deselect());
+            }
+        }
+        selectedBoulder = boulder;
     }
 
     public Boulder getBoulderById(String boulderId)
@@ -134,6 +164,27 @@ public class ApplicationState
 
     public void removeBoulder(Boulder boulder)
     {
-        COMPONENTS.forEach((c) -> c.removeBoulder(boulder));
+        if (boulder == selectedBoulder)
+        {
+            removeSelectedBoulder();
+        }
+        else
+        {
+            boulderList.remove(boulder);
+
+            BoulderFileManager.deleteBoulder(boulder);
+            COMPONENTS.forEach((c) -> c.removeBoulder(boulder));
+        }
+    }
+
+    public void removeSelectedBoulder()
+    {
+        if (selectedBoulder != null)
+        {
+            boulderList.remove(selectedBoulder);
+            BoulderFileManager.deleteBoulder(selectedBoulder);
+            COMPONENTS.forEach((c) -> c.removeBoulder(selectedBoulder));
+            selectedBoulder = null;
+        }
     }
 }

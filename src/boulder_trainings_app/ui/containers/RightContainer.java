@@ -87,4 +87,14 @@ public class RightContainer extends JPanel implements StateDependent
         this.repaint();
         this.validate();
     }
+
+    @Override
+    public void deselect()
+    {
+    }
+
+    @Override
+    public void updateBoulder(Boulder boulder)
+    {
+    }
 }

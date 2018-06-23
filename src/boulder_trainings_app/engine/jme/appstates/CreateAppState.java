@@ -168,7 +168,8 @@ public class CreateAppState extends BaseAppState
                     {
                         boulder = new Boulder();
                         boulder.addPosition(closest.getContactPoint());
-                        ApplicationState.getInstance().addBoulder(boulder);
+                        Geometry mark = MeshUtils.createMark(closest.getContactPoint(), GEO_NAME, defaultMaterial, boulder.getColor().toColorRGBA());
+                        rootNode.attachChild(mark);
                         ApplicationState.getInstance().editBoulder(boulder);
                         currSelectedVertices = MeshUtils.calcFlatArea(closest);
                     }
@@ -184,8 +185,6 @@ public class CreateAppState extends BaseAppState
         public void setUp()
         {
             app.getInputManager().addListener(this, "MOUSE_LEFT_CLICK");
-            app.getInputManager().addListener(this, "MOUSE_MOVE");
-            app.getInputManager().addListener(this, "SWITCH_MODE");
         }
 
         @Override

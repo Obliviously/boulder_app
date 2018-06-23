@@ -23,7 +23,11 @@ public interface StateDependent
 
     public void selectBoulder(Boulder boulder);
 
+    public void deselect();
+
     public void editBoulder(Boulder boulder);
 
     public void changeState(ProgramState programState);
+
+    public void updateBoulder(Boulder boulder);
 }
