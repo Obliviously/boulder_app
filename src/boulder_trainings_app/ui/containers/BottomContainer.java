@@ -5,13 +5,10 @@
  */
 package boulder_trainings_app.ui.containers;
 
-import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.data.enums.ProgramState;
 import boulder_trainings_app.ui.containers.components.Info;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.JPanel;
-import boulder_trainings_app.ui.StateDependent;
 
 /**
  *

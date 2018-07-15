@@ -66,7 +66,6 @@ public class SelectAppState extends BaseAppState
                 app.getRootNode().collideWith(ray, results);
                 if (results.size() > 0)
                 {
-                    System.out.println(results.getClosestCollision().getGeometry().getName());
                     ApplicationState.getInstance().selectBoulder(ApplicationState.getInstance().getBoulderById(results.getClosestCollision().getGeometry().getName()));
                 }
             }

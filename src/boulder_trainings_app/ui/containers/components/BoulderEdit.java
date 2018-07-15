@@ -102,6 +102,8 @@ public class BoulderEdit extends JPanel implements StateDependent
         super.add(propertiesContainer, BorderLayout.CENTER);
         super.add(saveButton, BorderLayout.SOUTH);
 
+        setViewEnabled(false);
+
         nameTextField.getDocument().addDocumentListener(new DocumentListener()
         {
             @Override

@@ -25,6 +25,7 @@ public class ApplicationState
     private ProgramState programState = ProgramState.SELECT;
     private static ApplicationState instance;
     private static Boulder selectedBoulder = null;
+    private static DateTime gymDate = null;
 
     private ApplicationState()
     {
@@ -105,8 +106,12 @@ public class ApplicationState
 
     public void loadBoulder(DateTime date)
     {
-        removeBoulders(boulderList);
-        addBoulders(BoulderFileManager.loadBoulder(date));
+        if (date != null && !date.equals(date))
+        {
+            date = date;
+            removeBoulders(boulderList);
+            addBoulders(BoulderFileManager.loadBoulder(date));
+        }
     }
 
     public void removeSection(BoulderSection section)
@@ -186,5 +191,10 @@ public class ApplicationState
             COMPONENTS.forEach((c) -> c.removeBoulder(selectedBoulder));
             selectedBoulder = null;
         }
+    }
+
+    public DateTime getDate()
+    {
+        return gymDate;
     }
 }
