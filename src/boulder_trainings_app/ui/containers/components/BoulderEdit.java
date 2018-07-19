@@ -16,13 +16,9 @@ import boulder_trainings_app.data.enums.ProgramState;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -34,6 +30,7 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import org.joda.time.DateTime;
 import boulder_trainings_app.ui.StateDependent;
+import boulder_trainings_app.ui.utils.DateLabelFormatter;
 
 /**
  *
@@ -289,28 +286,5 @@ public class BoulderEdit extends JPanel implements StateDependent
         typeComboBox.setSelectedItem(boulder.getType());
         gradeComboBox.setSelectedItem(boulder.getGrade());
         sectionComboBox.setSelectedItem(boulder.getSection());
-    }
-
-    private class DateLabelFormatter extends AbstractFormatter
-    {
-        private final String datePattern = "dd-MM-yyyy";
-        private final SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
-
-        @Override
-        public Object stringToValue(String text) throws ParseException
-        {
-            return dateFormatter.parseObject(text);
-        }
-
-        @Override
-        public String valueToString(Object value) throws ParseException
-        {
-            if (value != null)
-            {
-                Calendar cal = (Calendar) value;
-                return dateFormatter.format(cal.getTime());
-            }
-            return "";
-        }
     }
 }

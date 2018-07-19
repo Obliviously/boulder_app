@@ -93,6 +93,7 @@ public class BoulderFileManager
         int week = date.getWeekOfWeekyear();
 
         Path latestSectionPath = getPath(year, week, section, MIN_YEAR);
+        System.out.println(latestSectionPath);
         if (latestSectionPath != null)
         {
             File[] boulderFiles = latestSectionPath.toFile().listFiles();
@@ -107,6 +108,7 @@ public class BoulderFileManager
                     objectInputStream = new ObjectInputStream(streamIn);
                     boulder = (Boulder) objectInputStream.readObject();
                     boulders.add(boulder);
+                    System.out.println("added one boulder");
                 }
                 catch (FileNotFoundException ex)
                 {
@@ -140,10 +142,18 @@ public class BoulderFileManager
     {
         Path path = Paths.get(Consts.DATAPATH.toString(), year + "", week + "", section.toInt() + "");
 
-        if (path.toFile().exists())
+        try
         {
-            return path;
+            if (path.toFile().exists() && Files.list(path).count() != 0)
+            {
+                return path;
+            }
         }
+        catch (IOException ex)
+        {
+            Logger.getLogger(BoulderFileManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         if (week == 1)
         {
             if (year <= MIN_YEAR)

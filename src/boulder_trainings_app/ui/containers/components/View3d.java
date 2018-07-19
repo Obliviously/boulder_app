@@ -172,7 +172,7 @@ public class View3d extends SimpleApplication
             }
             if (name.equals("DELETE") && !isPressed)
             {
-                ApplicationState.getInstance().removeSelectedBoulder();
+                ApplicationState.getInstance().deleteSelectedBoulder();
             }
         }
     }

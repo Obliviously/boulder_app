@@ -1,23 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package boulder_trainings_app.ui.containers.components;
 
 import boulder_trainings_app.ApplicationState;
+import boulder_trainings_app.ui.utils.DateLabelFormatter;
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Properties;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.event.ChangeEvent;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import org.joda.time.DateTime;
 
 /**
  *
@@ -33,9 +25,6 @@ public class DateSelect extends JPanel
     {
         super();
         super.setLayout(new BorderLayout());
-        JButton dateButton = new JButton("Date...");
-        super.add(dateButton);
-
         dateModel = new UtilDateModel();
         dateModel.setSelected(true);
         Properties p = new Properties();
@@ -43,14 +32,14 @@ public class DateSelect extends JPanel
         p.put("text.month", "Month");
         p.put("text.year", "Year");
         datePanel = new JDatePanelImpl(dateModel, p);
-        datePicker = new JDatePickerImpl(datePanel, new BoulderEdit.DateLabelFormatter());
+        datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+        datePicker.setSize(datePanel.getSize());
+        super.add(datePicker);
 
-        dateButton.addActionListener(new ActionListener()
+        dateModel.addChangeListener((ChangeEvent e) ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-            }
+            DateTime date = new DateTime(dateModel.getYear(), dateModel.getMonth() + 1, dateModel.getDay(), 0, 0, 0, 0);
+            ApplicationState.getInstance().loadBoulder(date);
         });
     }
 }

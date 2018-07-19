@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ListChangeListener;
 import org.joda.time.DateTime;
@@ -86,7 +87,22 @@ public class ApplicationState
 
     public void removeBoulders(Set<Boulder> boulderList)
     {
-        boulderList.forEach((b) -> COMPONENTS.forEach((c) -> c.removeBoulder(b)));
+        boulderList.forEach((b) -> COMPONENTS.forEach((c) ->
+        {
+            c.removeBoulder(b);
+            this.boulderList.remove(b);
+        }
+        ));
+    }
+
+    public void removeAllBoulders()
+    {
+        boulderList.forEach((b) -> COMPONENTS.forEach((c) ->
+        {
+            c.removeBoulder(b);
+            boulderList.remove(b);
+        }
+        ));
     }
 
     public void saveBoulder(Boulder boulder)
@@ -106,11 +122,11 @@ public class ApplicationState
 
     public void loadBoulder(DateTime date)
     {
-        if (date != null && !date.equals(date))
+        if (gymDate == null || !date.equals(gymDate))
         {
-            date = date;
+            gymDate = date;
             removeBoulders(boulderList);
-            addBoulders(BoulderFileManager.loadBoulder(date));
+            addBoulders(BoulderFileManager.loadBoulder(gymDate));
         }
     }
 
@@ -120,8 +136,9 @@ public class ApplicationState
         {
             if (boulder.getSection().equals(section))
             {
-                removeBoulder(boulder);
+                deleteBoulder(boulder);
             }
+            boulderList.remove(boulder);
         }
     }
 
@@ -167,11 +184,11 @@ public class ApplicationState
         }
     }
 
-    public void removeBoulder(Boulder boulder)
+    public void deleteBoulder(Boulder boulder)
     {
         if (boulder == selectedBoulder)
         {
-            removeSelectedBoulder();
+            deleteSelectedBoulder();
         }
         else
         {
@@ -182,7 +199,7 @@ public class ApplicationState
         }
     }
 
-    public void removeSelectedBoulder()
+    public void deleteSelectedBoulder()
     {
         if (selectedBoulder != null)
         {
