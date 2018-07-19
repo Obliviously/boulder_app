@@ -57,13 +57,18 @@ public class ApplicationState
     {
         if (this.programState != programState)
         {
-            this.programState = programState;
+            
             COMPONENTS.forEach((c) -> c.changeState(programState));
 
             if (programState == ProgramState.CREATE && selectedBoulder != null)
             {
                 selectBoulder(null);
             }
+            if(this.programState == ProgramState.CREATE){
+                selectBoulder(null);
+            }
+            
+            this.programState = programState;
         }
     }
 

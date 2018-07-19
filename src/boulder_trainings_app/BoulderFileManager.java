@@ -93,7 +93,6 @@ public class BoulderFileManager
         int week = date.getWeekOfWeekyear();
 
         Path latestSectionPath = getPath(year, week, section, MIN_YEAR);
-        System.out.println(latestSectionPath);
         if (latestSectionPath != null)
         {
             File[] boulderFiles = latestSectionPath.toFile().listFiles();
@@ -108,7 +107,6 @@ public class BoulderFileManager
                     objectInputStream = new ObjectInputStream(streamIn);
                     boulder = (Boulder) objectInputStream.readObject();
                     boulders.add(boulder);
-                    System.out.println("added one boulder");
                 }
                 catch (FileNotFoundException ex)
                 {

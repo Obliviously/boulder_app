@@ -186,6 +186,7 @@ public class BoulderEdit extends JPanel implements StateDependent
 
     private void updateName()
     {
+        System.out.println("boulder_trainings_app.ui.containers.components.BoulderEdit.updateName()");
         boulder.setName(nameTextField.getText());
     }
 
@@ -268,6 +269,7 @@ public class BoulderEdit extends JPanel implements StateDependent
     @Override
     public void editBoulder(Boulder boulder)
     {
+        setViewEnabled(true);
         this.boulder = boulder;
         initBoulder();
     }
