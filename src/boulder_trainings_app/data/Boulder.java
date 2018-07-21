@@ -27,10 +27,9 @@ public class Boulder extends Observable implements Serializable
     private BoulderSection section = BoulderSection.ONE;
     private BoulderColor color = BoulderColor.PINK;
     private final ArrayList<Vector3f> positions = new ArrayList<>();
-    private boolean isHighlighted = false;
     private String name = "NAME";
-    private BoulderGrade grade;
-    private BoulderType type;
+    private BoulderGrade grade = BoulderGrade.TWO;
+    private BoulderType type = BoulderType.JUGS;
 
     public ArrayList<Vector3f> getPositions()
     {
@@ -95,17 +94,7 @@ public class Boulder extends Observable implements Serializable
     {
         return this.date;
     }
-
-    public void setHighlighted(boolean isHighlighted)
-    {
-        this.isHighlighted = isHighlighted;
-    }
-
-    public boolean isHighlighted()
-    {
-        return this.isHighlighted;
-    }
-
+    
     public String getName()
     {
         return this.name;

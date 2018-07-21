@@ -78,12 +78,14 @@ public class BoulderSelect extends JPanel implements StateDependent
         {
             this.add(propertiesContainer);
             this.boulder = boulder;
-            //initValues();
+            initValues();
         }
         else
         {
-            this.add(nothingSelectedMessage);
+            this.add(nothingSelectedMessage, BorderLayout.CENTER);
         }
+        this.repaint();
+        this.validate();
     }
 
     private void initValues()

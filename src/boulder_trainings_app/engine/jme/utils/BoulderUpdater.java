@@ -51,6 +51,7 @@ public class BoulderUpdater implements StateDependent
         }
         if (boulder != null)
         {
+            System.out.println("boulder_trainings_app.engine.jme.utils.BoulderUpdater.selectBoulder()");
             changeBoulderColor(boulder, SELECTION_COLOR);
         }
         selectedBoulder = boulder;
@@ -141,16 +142,13 @@ public class BoulderUpdater implements StateDependent
         if (bouldersMap.containsKey(boulder.getId()))
         {
             destroyBoulder(bouldersMap.get(boulder.getId()));
-            createBoulder(boulder);
-        }
-        else
-        {
-            addBoulder(boulder);
+            bouldersMap.put(boulder.getId(), createBoulder(boulder));
         }
     }
 
+    @SuppressWarnings("empty-statement")
     private void destroyBoulder(Node boulderNode)
     {
-        rootNode.detachChildNamed(boulderNode.getName());
+        while (rootNode.detachChildNamed(boulderNode.getName()) != -1);
     }
 }

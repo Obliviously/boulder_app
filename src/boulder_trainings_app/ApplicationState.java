@@ -119,6 +119,8 @@ public class ApplicationState
             addBoulder(boulder);
         }
         changeState(ProgramState.SELECT);
+        selectBoulder(boulder);
+
     }
 
     public void loadBoulder(DateTime date)
