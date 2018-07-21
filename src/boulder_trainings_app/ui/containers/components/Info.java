@@ -47,12 +47,7 @@ public class Info extends JPanel implements StateDependent
     @Override
     public void removeBoulder(Boulder boulder)
     {
-    }
-
-    @Override
-    public void highLightBoulder(Boulder boulder)
-    {
-    }
+    }  
 
     @Override
     public void selectBoulder(Boulder boulder)
@@ -69,12 +64,7 @@ public class Info extends JPanel implements StateDependent
     {
         this.programState.setText(programState.toString());
         this.validate();
-    }
-
-    @Override
-    public void deselect()
-    {
-    }
+    }   
 
     @Override
     public void updateBoulder(Boulder boulder)

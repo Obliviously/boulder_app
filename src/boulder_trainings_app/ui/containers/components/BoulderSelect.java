@@ -6,67 +6,94 @@ import boulder_trainings_app.utils.Consts;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import boulder_trainings_app.ui.StateDependent;
 import java.awt.BorderLayout;
 import java.awt.Font;
 
 /**
  *
- * @author fabian
+ * @author Fabian Rauscher
  */
 public class BoulderSelect extends JPanel implements StateDependent
 
 {
-    private final JPanel properties;
-    private final JTextField nameTextField;
+    private final JPanel propertiesContainer;
+
+    private final JLabel nameValue;
+    private final JLabel dateValue;
+    private final JLabel colorValue;
+    private final JLabel typeValue;
+    private final JLabel gradeValue;
+    private final JLabel sectionValue;
 
     private final JLabel nothingSelectedMessage;
-    private boolean nothingSelected = true;
+    private Boulder boulder = null;
 
     public BoulderSelect()
     {
         super();
-        COMPONENTS.add(this);
 
         super.setLayout(new BorderLayout());
+
+        JLabel nameLabel = new JLabel(Consts.BOULDER_NAME_LABEL);
+        nameValue = new JLabel();
+        JLabel dateLabel = new JLabel(Consts.BOULDER_DATE_LABEL);
+        dateValue = new JLabel();
+        JLabel colorLabel = new JLabel(Consts.BOULDER_COLOR_LABEL);
+        colorValue = new JLabel();
+        JLabel typeLabel = new JLabel(Consts.BOULDER_TYPE_LABEL);
+        typeValue = new JLabel();
+        JLabel gradeLabel = new JLabel(Consts.BOULDER_GRADE_LABEL);
+        gradeValue = new JLabel();
+        JLabel sectionLabel = new JLabel(Consts.BOULDER_SECTION_LABEL);
+        sectionValue = new JLabel();
 
         nothingSelectedMessage = new JLabel(Consts.NOTHING_SELECTED_MESSAGE);
         nothingSelectedMessage.setFont(new Font("Arial", Font.BOLD, 20));
         nothingSelectedMessage.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 
-        properties = new JPanel();
-        properties.setLayout(new GridLayout(0, 2));
-
-        JLabel nameLabel = new JLabel(Consts.BOULDER_NAME_LABEL);
-        JLabel colorLabel = new JLabel(Consts.BOULDER_COLOR_LABEL);
-        JLabel sectionLabel = new JLabel(Consts.BOULDER_SECTION_LABEL);
-        JLabel dateLabel = new JLabel(Consts.BOULDER_DATE_LABEL);
-        properties.add(nameLabel);
-        properties.add(colorLabel);
-        properties.add(sectionLabel);
-        properties.add(dateLabel);
-
-        nameTextField = new JTextField();
-        nameTextField.setEnabled(false);
-        properties.add(nameTextField);
-
+        propertiesContainer = new JPanel(new GridLayout(20, 2));
+        propertiesContainer.add(nameLabel);
+        propertiesContainer.add(nameValue);
+        propertiesContainer.add(dateLabel);
+        propertiesContainer.add(dateValue);
+        propertiesContainer.add(colorLabel);
+        propertiesContainer.add(colorValue);
+        propertiesContainer.add(typeLabel);
+        propertiesContainer.add(typeValue);
+        propertiesContainer.add(gradeLabel);
+        propertiesContainer.add(gradeValue);
+        propertiesContainer.add(sectionLabel);
+        propertiesContainer.add(sectionValue);
         super.add(nothingSelectedMessage, BorderLayout.CENTER);
+
+        COMPONENTS.add(this);
     }
 
     @Override
     public void selectBoulder(Boulder boulder)
     {
-        if (nothingSelected)
+        this.removeAll();
+        if (boulder != null)
         {
-            this.remove(nothingSelectedMessage);
-            this.add(properties);
-            this.repaint();
-            this.validate();
-            nothingSelected = false;
+            this.add(propertiesContainer);
+            this.boulder = boulder;
+            //initValues();
         }
-        nameTextField.setBackground(boulder.getColor().toColor());
-        nameTextField.setText(boulder.getId());
+        else
+        {
+            this.add(nothingSelectedMessage);
+        }
+    }
+
+    private void initValues()
+    {
+        nameValue.setText(boulder.getName());
+        dateValue.setText(boulder.getDate().toString());
+        colorValue.setText(boulder.getColor().toString());
+        typeValue.setText(boulder.getType().toString());
+        gradeValue.setText(boulder.getGrade().toString());
+        sectionValue.setText(boulder.getSection().toString());
     }
 
     @Override
@@ -80,11 +107,6 @@ public class BoulderSelect extends JPanel implements StateDependent
     }
 
     @Override
-    public void highLightBoulder(Boulder boulder)
-    {
-    }
-
-    @Override
     public void editBoulder(Boulder boulder)
     {
     }
@@ -92,19 +114,6 @@ public class BoulderSelect extends JPanel implements StateDependent
     @Override
     public void changeState(ProgramState programState)
     {
-    }
-
-    @Override
-    public void deselect()
-    {
-        if (!nothingSelected)
-        {
-            this.remove(properties);
-            this.add(nothingSelectedMessage);
-            this.repaint();
-            this.validate();
-            nothingSelected = true;
-        }
     }
 
     @Override

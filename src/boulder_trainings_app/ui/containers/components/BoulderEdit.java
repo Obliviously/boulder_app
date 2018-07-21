@@ -135,7 +135,11 @@ public class BoulderEdit extends JPanel implements StateDependent
 
     private void updateColor()
     {
-        boulder.setColor((BoulderColor) colorComboBox.getSelectedItem());
+        BoulderColor color = (BoulderColor) colorComboBox.getSelectedItem();
+        if (color != null)
+        {
+            boulder.setColor(color);
+        }
     }
 
     private void updateGrade()
@@ -167,34 +171,30 @@ public class BoulderEdit extends JPanel implements StateDependent
     }
 
     @Override
-    public void highLightBoulder(Boulder boulder)
-    {
-    }
-
-    @Override
     public void selectBoulder(Boulder boulder)
     {
-        setViewEnabled(true);
-        this.boulder = boulder;
-        initBoulder();
-    }
+        if (boulder != null)
+        {
+            setViewEnabled(true);
+            this.boulder = boulder;
+            initBoulder();
+        }
+        else
+        {
+            setViewEnabled(false);
+            nameTextField.setText("");
+            dateModel.setDate(0, 0, 0);
+            colorComboBox.setSelectedItem(null);
+            typeComboBox.setSelectedItem(null);
+            gradeComboBox.setSelectedItem(null);
+            sectionComboBox.setSelectedItem(null);
+        }
 
-    @Override
-    public void deselect()
-    {
-        boulder = null;
-        setViewEnabled(false);
-        nameTextField.setText("");
-        dateModel.setDate(0, 0, 0);
-        colorComboBox.setSelectedItem(null);
-        typeComboBox.setSelectedItem(null);
-        gradeComboBox.setSelectedItem(null);
-        sectionComboBox.setSelectedItem(null);
     }
 
     private void setViewEnabled(boolean enabled)
-    {        
-        nameTextField.setEnabled(enabled);       
+    {
+        nameTextField.setEnabled(enabled);
         datePanel.setEnabled(enabled);
         datePicker.setEnabled(enabled);
         colorComboBox.setEnabled(enabled);

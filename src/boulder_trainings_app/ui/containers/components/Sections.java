@@ -23,6 +23,7 @@ import javax.swing.event.ListSelectionEvent;
 import boulder_trainings_app.ui.StateDependent;
 import java.awt.Font;
 import javax.swing.UIManager;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -57,7 +58,7 @@ public class Sections extends JPanel implements StateDependent
 
             DefaultListModel listModel = new DefaultListModel<>();
             JList<String> list = new JList<>(listModel);
-            list.setBackground(UIManager.getColor ( "Panel.background" ));
+            list.setBackground(UIManager.getColor("Panel.background"));
             list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
             list.setVisibleRowCount(-1);
@@ -128,9 +129,9 @@ public class Sections extends JPanel implements StateDependent
     {
         JList list = sections.get(boulder.getSection().toInt());
         ((DefaultListModel) list.getModel()).addElement(boulder.getId());
-        
+
         JLabel listSize = listSizes.get(boulder.getSection().toInt());
-        listSize.setText(" | ("+(list.getModel().getSize()) + ")");
+        listSize.setText(" | (" + (list.getModel().getSize()) + ")");
     }
 
     @Override
@@ -141,23 +142,25 @@ public class Sections extends JPanel implements StateDependent
         listModel.removeElement(boulder.getId());
 
         JLabel listSize = listSizes.get(boulder.getSection().toInt());
-        listSize.setText(" | ("+(list.getModel().getSize()) + ")");
-    }
-
-    @Override
-    public void highLightBoulder(Boulder boulder)
-    {
+        listSize.setText(" | (" + (list.getModel().getSize()) + ")");
     }
 
     @Override
     public void selectBoulder(Boulder boulder)
     {
-        JList list = sections.get(boulder.getSection().toInt());
-        if (!list.isVisible())
+        if (boulder != null)
         {
-            buttons.get(boulder.getSection().toInt()).doClick();
+            JList list = sections.get(boulder.getSection().toInt());
+            if (!list.isVisible())
+            {
+                buttons.get(boulder.getSection().toInt()).doClick();
+            }
+            list.setSelectedValue(boulder.getId(), true);
         }
-        list.setSelectedValue(boulder.getId(), true);
+        else
+        {
+            sections.forEach((key, list) -> list.clearSelection());
+        }
     }
 
     @Override
@@ -168,12 +171,6 @@ public class Sections extends JPanel implements StateDependent
     @Override
     public void changeState(ProgramState programState)
     {
-    }
-
-    @Override
-    public void deselect()
-    {
-        sections.forEach((key, list) -> list.clearSelection());
     }
 
     @Override

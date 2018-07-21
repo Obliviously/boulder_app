@@ -9,9 +9,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.collections.ListChangeListener;
+import javafx.collections.SetChangeListener;
 import org.joda.time.DateTime;
 
 /**
@@ -30,16 +29,12 @@ public class ApplicationState
 
     private ApplicationState()
     {
-        COMPONENTS.addListener((ListChangeListener.Change<? extends StateDependent> c) ->
+        COMPONENTS.addListener((SetChangeListener.Change<? extends StateDependent> c) ->
         {
-            c.next();
-            List<StateDependent> newItems = (List<StateDependent>) c.getAddedSubList();
+            StateDependent sd = (StateDependent) c.getElementAdded();
             for (Boulder b : boulderList)
             {
-                for (StateDependent sd : newItems)
-                {
-                    sd.addBoulder(b);
-                }
+                sd.addBoulder(b);
             }
         });
     }
@@ -57,17 +52,18 @@ public class ApplicationState
     {
         if (this.programState != programState)
         {
-            
+
             COMPONENTS.forEach((c) -> c.changeState(programState));
 
             if (programState == ProgramState.CREATE && selectedBoulder != null)
             {
                 selectBoulder(null);
             }
-            if(this.programState == ProgramState.CREATE){
+            if (this.programState == ProgramState.CREATE)
+            {
                 selectBoulder(null);
             }
-            
+
             this.programState = programState;
         }
     }
@@ -155,17 +151,7 @@ public class ApplicationState
      */
     public void selectBoulder(Boulder boulder)
     {
-        if (boulder != null)
-        {
-            COMPONENTS.forEach((c) -> c.selectBoulder(boulder));
-        }
-        else
-        {
-            if (selectedBoulder != null)
-            {
-                COMPONENTS.forEach((c) -> c.deselect());
-            }
-        }
+        COMPONENTS.forEach(c -> c.selectBoulder(boulder));
         selectedBoulder = boulder;
     }
 
@@ -179,14 +165,6 @@ public class ApplicationState
             }
         }
         return null;
-    }
-
-    public void highLightBoulder(Boulder boulder)
-    {
-        if (boulder != null && !boulder.isHighlighted())
-        {
-            COMPONENTS.forEach((c) -> c.highLightBoulder(boulder));
-        }
     }
 
     public void deleteBoulder(Boulder boulder)

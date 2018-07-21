@@ -47,11 +47,6 @@ public class RightContainer extends JPanel implements StateDependent
     }
 
     @Override
-    public void highLightBoulder(Boulder boulder)
-    {
-    }
-
-    @Override
     public void selectBoulder(Boulder boulder)
     {
     }
@@ -81,11 +76,6 @@ public class RightContainer extends JPanel implements StateDependent
         }
         this.repaint();
         this.validate();
-    }
-
-    @Override
-    public void deselect()
-    {
     }
 
     @Override
