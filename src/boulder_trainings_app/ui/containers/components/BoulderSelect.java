@@ -32,9 +32,7 @@ public class BoulderSelect extends JPanel implements StateDependent
     public BoulderSelect()
     {
         super();
-
-        super.setLayout(new BorderLayout());
-
+        
         JLabel nameLabel = new JLabel(Consts.BOULDER_NAME_LABEL);
         nameValue = new JLabel();
         JLabel dateLabel = new JLabel(Consts.BOULDER_DATE_LABEL);
@@ -51,7 +49,7 @@ public class BoulderSelect extends JPanel implements StateDependent
         nothingSelectedMessage = new JLabel(Consts.NOTHING_SELECTED_MESSAGE);
         nothingSelectedMessage.setFont(new Font("Arial", Font.BOLD, 20));
         nothingSelectedMessage.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-
+        
         propertiesContainer = new JPanel(new GridLayout(20, 2));
         propertiesContainer.add(nameLabel);
         propertiesContainer.add(nameValue);
@@ -65,7 +63,7 @@ public class BoulderSelect extends JPanel implements StateDependent
         propertiesContainer.add(gradeValue);
         propertiesContainer.add(sectionLabel);
         propertiesContainer.add(sectionValue);
-        super.add(nothingSelectedMessage, BorderLayout.CENTER);
+        super.add(nothingSelectedMessage);
 
         COMPONENTS.add(this);
     }
@@ -82,7 +80,7 @@ public class BoulderSelect extends JPanel implements StateDependent
         }
         else
         {
-            this.add(nothingSelectedMessage, BorderLayout.CENTER);
+            this.add(nothingSelectedMessage);
         }
         this.repaint();
         this.validate();
