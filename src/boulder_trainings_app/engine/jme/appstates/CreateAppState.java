@@ -74,14 +74,12 @@ public class CreateAppState extends BaseAppState
         {
             /**
              * New point is NOT on the same flat polygon as the last one. Now we
-             * have to distinguish between three cases.
-             * 1. New and old have no vertices in common -> Cant connect the
-             * points.
-             * 2. New and old have one vertex in common -> The points are
-             * connected over this vertex.
-             * 3. New and old have 2 vertices in common -> Calculate the closest
-             * point on the line (that is created by these vertices) to the old
-             * point and use it as the connecting point.
+             * have to distinguish between three cases. 1. New and old have no
+             * vertices in common -> Cant connect the points. 2. New and old
+             * have one vertex in common -> The points are connected over this
+             * vertex. 3. New and old have 2 vertices in common -> Calculate the
+             * closest point on the line (that is created by these vertices) to
+             * the old point and use it as the connecting point.
              */
             ArrayList<Vector3f> tempSelectedVertices = new ArrayList<>(newSelectedVertices);
             newSelectedVertices.retainAll(currSelectedVertices);
@@ -155,30 +153,34 @@ public class CreateAppState extends BaseAppState
         @SuppressWarnings("empty-statement")
         public void onAction(String name, boolean isPressed, float tpf)
         {
-            if (name.equals("MOUSE_LEFT_CLICK") && !isPressed)
+            if (app.isEnabled())
             {
-                CollisionResults results = new CollisionResults();
-                Ray ray = new Ray(app.getCamera().getLocation(), app.getCamera().getDirection());
-                app.getRootNode().collideWith(ray, results);
-
-                if (results.size() > 0)
+                if (name.equals("MOUSE_LEFT_CLICK") && !isPressed)
                 {
-                    CollisionResult closest = results.getClosestCollision();
-                    if (boulder == null)
+                    CollisionResults results = new CollisionResults();
+                    Ray ray = new Ray(app.getCamera().getLocation(), app.getCamera().getDirection());
+                    app.getRootNode().collideWith(ray, results);
+
+                    if (results.size() > 0)
                     {
-                        boulder = new Boulder();
-                        boulder.addPosition(closest.getContactPoint());
-                        Geometry mark = MeshUtils.createMark(closest.getContactPoint(), GEO_NAME, defaultMaterial, boulder.getColor().toColorRGBA());
-                        rootNode.attachChild(mark);
-                        ApplicationState.getInstance().editBoulder(boulder);
-                        currSelectedVertices = MeshUtils.calcFlatArea(closest);
-                    }
-                    else
-                    {
-                        extendBoulderTo(results.getClosestCollision());
+                        CollisionResult closest = results.getClosestCollision();
+                        if (boulder == null)
+                        {
+                            boulder = new Boulder();
+                            boulder.addPosition(closest.getContactPoint());
+                            Geometry mark = MeshUtils.createMark(closest.getContactPoint(), GEO_NAME, defaultMaterial, boulder.getColor().toColorRGBA());
+                            rootNode.attachChild(mark);
+                            ApplicationState.getInstance().editBoulder(boulder);
+                            currSelectedVertices = MeshUtils.calcFlatArea(closest);
+                        }
+                        else
+                        {
+                            extendBoulderTo(results.getClosestCollision());
+                        }
                     }
                 }
             }
+
         }
 
         @Override

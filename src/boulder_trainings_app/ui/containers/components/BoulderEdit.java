@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package boulder_trainings_app.ui.containers.components;
 
 import boulder_trainings_app.ApplicationState;
@@ -22,9 +17,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -49,12 +41,11 @@ public class BoulderEdit extends JPanel implements StateDependent
     private final JComboBox gradeComboBox;
     private final JComboBox sectionComboBox;
     private final JButton saveButton;
+    private final JPanel propertiesContainer;
 
     public BoulderEdit()
     {
         super();
-        super.setLayout(new BorderLayout());
-        JPanel propertiesContainer = new JPanel(new GridLayout(20, 2));
 
         JLabel nameLabel = new JLabel(Consts.BOULDER_NAME_LABEL);
         nameTextField = new JTextField();
@@ -83,6 +74,7 @@ public class BoulderEdit extends JPanel implements StateDependent
 
         saveButton = new JButton(Consts.BOULDER_SAVE_BUTTON);
 
+        propertiesContainer = new JPanel(new GridLayout(20, 2));
         propertiesContainer.add(nameLabel);
         propertiesContainer.add(nameTextField);
         propertiesContainer.add(dateLabel);
@@ -101,44 +93,6 @@ public class BoulderEdit extends JPanel implements StateDependent
 
         setViewEnabled(false);
 
-        nameTextField.getDocument().addDocumentListener(new DocumentListener()
-        {
-            @Override
-            public void insertUpdate(DocumentEvent e)
-            {
-                if (boulder != null)
-                {
-                    updateName();
-                }
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e)
-            {
-                if (boulder != null)
-                {
-                    updateName();
-                }
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e)
-            {
-                if (boulder != null)
-                {
-                    updateName();
-                }
-            }
-
-        });
-
-        dateModel.addChangeListener((ChangeEvent e) ->
-        {
-            if (boulder != null)
-            {
-                updateDate();
-            }
-        });
         colorComboBox.addActionListener((ActionEvent e) ->
         {
             if (boulder != null)
@@ -146,36 +100,20 @@ public class BoulderEdit extends JPanel implements StateDependent
                 updateColor();
             }
         });
-        typeComboBox.addActionListener((ActionEvent e) ->
-        {
-            if (boulder != null)
-            {
-                updateType();
-            }
-        });
-        gradeComboBox.addActionListener((ActionEvent e) ->
-        {
-            if (boulder != null)
-            {
-                updateGrade();
-            }
-        });
-        sectionComboBox.addActionListener((ActionEvent e) ->
-        {
-            if (boulder != null)
-            {
-                updateSection();
-            }
-        });
 
         saveButton.addActionListener((ActionEvent e) ->
         {
             if (boulder != null)
             {
+                updateName();
+                updateGrade();
+                updateColor();
+                updateDate();
+                updateSection();
+                updateType();
                 ApplicationState.getInstance().saveBoulder(boulder);
             }
         });
-
         COMPONENTS.add(this);
     }
 
@@ -186,7 +124,6 @@ public class BoulderEdit extends JPanel implements StateDependent
 
     private void updateName()
     {
-        System.out.println("boulder_trainings_app.ui.containers.components.BoulderEdit.updateName()");
         boulder.setName(nameTextField.getText());
     }
 
@@ -256,8 +193,8 @@ public class BoulderEdit extends JPanel implements StateDependent
     }
 
     private void setViewEnabled(boolean enabled)
-    {
-        nameTextField.setEnabled(enabled);
+    {        
+        nameTextField.setEnabled(enabled);       
         datePanel.setEnabled(enabled);
         datePicker.setEnabled(enabled);
         colorComboBox.setEnabled(enabled);

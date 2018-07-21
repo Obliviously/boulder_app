@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package boulder_trainings_app.engine.jme.appstates;
 
 import boulder_trainings_app.ApplicationState;
@@ -54,16 +49,19 @@ public class EditAppState extends BaseAppState
         @Override
         public void onAction(String name, boolean isPressed, float tpf)
         {
-            if (name.equals("MOUSE_LEFT_CLICK"))
+            if (app.isEnabled())
             {
-                CollisionResults results = new CollisionResults();
-                Ray ray = new Ray(app.getCamera().getLocation(), app.getCamera().getDirection());
-                app.getRootNode().collideWith(ray, results);
-
-                if (results.size() > 0)
+                if (name.equals("MOUSE_LEFT_CLICK") && !isPressed)
                 {
-                    CollisionResult closest = results.getClosestCollision();
-                    ApplicationState.getInstance().selectBoulder(ApplicationState.getInstance().getBoulderById(closest.getGeometry().getName()));
+                    CollisionResults results = new CollisionResults();
+                    Ray ray = new Ray(app.getCamera().getLocation(), app.getCamera().getDirection());
+                    app.getRootNode().collideWith(ray, results);
+
+                    if (results.size() > 0)
+                    {
+                        CollisionResult closest = results.getClosestCollision();
+                        ApplicationState.getInstance().selectBoulder(ApplicationState.getInstance().getBoulderById(closest.getGeometry().getName()));
+                    }
                 }
             }
         }

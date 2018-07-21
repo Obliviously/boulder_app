@@ -59,14 +59,17 @@ public class SelectAppState extends BaseAppState
         @Override
         public void onAction(String name, boolean isPressed, float tpf)
         {
-            if (name.equals("MOUSE_LEFT_CLICK") && !isPressed)
+            if (app.isEnabled())
             {
-                CollisionResults results = new CollisionResults();
-                Ray ray = new Ray(app.getCamera().getLocation(), app.getCamera().getDirection());
-                app.getRootNode().collideWith(ray, results);
-                if (results.size() > 0)
+                if (name.equals("MOUSE_LEFT_CLICK") && !isPressed)
                 {
-                    ApplicationState.getInstance().selectBoulder(ApplicationState.getInstance().getBoulderById(results.getClosestCollision().getGeometry().getName()));
+                    CollisionResults results = new CollisionResults();
+                    Ray ray = new Ray(app.getCamera().getLocation(), app.getCamera().getDirection());
+                    app.getRootNode().collideWith(ray, results);
+                    if (results.size() > 0)
+                    {
+                        ApplicationState.getInstance().selectBoulder(ApplicationState.getInstance().getBoulderById(results.getClosestCollision().getGeometry().getName()));
+                    }
                 }
             }
         }

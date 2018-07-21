@@ -1,16 +1,8 @@
 package boulder_trainings_app.ui;
 
-import boulder_trainings_app.ui.containers.BottomContainer;
-import boulder_trainings_app.ui.containers.LeftContainer;
-import boulder_trainings_app.ui.containers.RightContainer;
-import boulder_trainings_app.ui.containers.TopContainer;
-import boulder_trainings_app.ui.containers.MiddleContainer;
+import boulder_trainings_app.ui.containers.*;
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import javax.swing.JFrame;
 
 /**
@@ -21,8 +13,7 @@ import javax.swing.JFrame;
 public class SwingUserInterface implements GraphicalUserInterface
 {
     private JFrame frame;
-    private boolean isLoaded = false;
-
+    
     @Override
     public void display(String title, int minWidth, int minHeight)
     {
@@ -32,29 +23,28 @@ public class SwingUserInterface implements GraphicalUserInterface
             frame.setTitle(title);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             //frame.setUndecorated(true);
-            loadComponents(frame);
+            loadComponents();
             frame.setSize(minWidth, minHeight);
             frame.setMinimumSize(new Dimension(minWidth, minHeight));
             frame.setVisible(true);
         });
     }
-
-    private void loadComponents(JFrame frame)
+    
+    private void loadComponents()
     {
-        Container pane = frame.getContentPane();
         final int HGAP = 5;
         final int VGAP = 0;
         BorderLayout borderLayout = new BorderLayout(HGAP, VGAP);
-        pane.setLayout(borderLayout);
+        frame.setLayout(borderLayout);        
         TopContainer top = new TopContainer();
         MiddleContainer middle = new MiddleContainer();
         LeftContainer left = new LeftContainer();
         RightContainer right = new RightContainer();
         BottomContainer bottom = new BottomContainer();
-        pane.add(top, BorderLayout.PAGE_START);
-        pane.add(left, BorderLayout.LINE_START);
-        pane.add(middle, BorderLayout.CENTER);
-        pane.add(right, BorderLayout.LINE_END);
-        pane.add(bottom, BorderLayout.PAGE_END);
-    }
+        frame.add(top, BorderLayout.PAGE_START);
+        frame.add(left, BorderLayout.LINE_START);
+        frame.add(middle, BorderLayout.CENTER);
+        frame.add(right, BorderLayout.LINE_END);
+        frame.add(bottom, BorderLayout.PAGE_END);
+    }   
 }

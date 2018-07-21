@@ -28,13 +28,11 @@ public class View3d extends SimpleApplication
     private BoulderUpdater boulderUpdater;
     private final InputController input;
     private BitmapText crossHair;
-    private boolean isMouseVisible = true;
-    private boolean isCrossHairVisible = false;
+    private boolean isEnabled = false;
 
     public View3d(JPanel parentContainer)
     {
         super();
-
         this.parentContainer = parentContainer;
         AppSettings appSetting = new AppSettings(true);
         appSetting.setFrameRate(60);
@@ -64,17 +62,27 @@ public class View3d extends SimpleApplication
         this.getStateManager().attach(new SelectAppState());
     }
 
-    public void toogleInput()
+    public void setInput(boolean enable)
     {
-        flyCam.setEnabled(!flyCam.isEnabled());
-        toggleMouseCursor();
-        toggleCrossHair();
+        isEnabled = enable;
+        flyCam.setEnabled(enable);
+        setMouseCursor(!enable);
+        setCrossHair(enable);
     }
 
-    private void toggleMouseCursor()
+    public void setEnabled(boolean enabled)
     {
-        mouseInput.setCursorVisible(!isMouseVisible);
-        isMouseVisible = !isMouseVisible;
+        this.isEnabled = enabled;
+    }
+
+    public boolean isEnabled()
+    {
+        return this.isEnabled;
+    }
+
+    private void setMouseCursor(boolean enabled)
+    {
+        mouseInput.setCursorVisible(enabled);
     }
 
     private void initWorld()
@@ -93,15 +101,14 @@ public class View3d extends SimpleApplication
         inputManager.addMapping("CREATE_MODE", new KeyTrigger(KeyInput.KEY_3));
         inputManager.addMapping("EXIT_3DVIEW", new KeyTrigger(KeyInput.KEY_ESCAPE));
         inputManager.addMapping("DELETE", new KeyTrigger(KeyInput.KEY_DELETE));
-
     }
 
     /**
      * A centred plus sign to help the player aim.
      */
-    private void toggleCrossHair()
+    private void setCrossHair(boolean enable)
     {
-        if (isCrossHairVisible)
+        if (!enable)
         {
             guiNode.detachChild(crossHair);
         }
@@ -114,7 +121,7 @@ public class View3d extends SimpleApplication
 
             guiNode.attachChild(crossHair);
         }
-        isCrossHairVisible = !isCrossHairVisible;
+
     }
 
     private void initCrossHair()
@@ -141,6 +148,7 @@ public class View3d extends SimpleApplication
             inputManager.addListener(this, "EDIT_MODE");
             inputManager.addListener(this, "CREATE_MODE");
             inputManager.addListener(this, "DELETE");
+            inputManager.addListener(this, "MOUSE_LEFT_CLICK");
 
         }
 
@@ -153,11 +161,26 @@ public class View3d extends SimpleApplication
         @Override
         public void onAction(String name, boolean isPressed, float tpf)
         {
-            if (name.equals("EXIT_3DVIEW") && !isPressed)
+            if (isEnabled)
+            {
+                if (name.equals("EXIT_3DVIEW") && !isPressed)
+                {
+                    updateSize(parentContainer.getSize());
+                    setInput(false);
+                }
+
+                if (name.equals("DELETE") && !isPressed)
+                {
+                    ApplicationState.getInstance().deleteSelectedBoulder();
+                }
+            }
+
+            if (name.equals("MOUSE_LEFT_CLICK") && !isPressed)
             {
                 updateSize(parentContainer.getSize());
-                toogleInput();
+                setInput(true);
             }
+
             if (name.equals("SELECT_MODE") && !isPressed)
             {
                 ApplicationState.getInstance().changeState(ProgramState.SELECT);
@@ -169,10 +192,6 @@ public class View3d extends SimpleApplication
             if (name.equals("CREATE_MODE") && !isPressed)
             {
                 ApplicationState.getInstance().changeState(ProgramState.CREATE);
-            }
-            if (name.equals("DELETE") && !isPressed)
-            {
-                ApplicationState.getInstance().deleteSelectedBoulder();
             }
         }
     }
