@@ -114,7 +114,7 @@ public class View3d extends SimpleApplication
     private void initWorld()
     {
         Spatial gym = assetManager.loadModel("Models/boulderhalle.blend");
-      
+
         CollisionShape sceneShape
                 = CollisionShapeFactory.createMeshShape(gym);
         landscape = new RigidBodyControl(sceneShape, 0);
@@ -148,55 +148,11 @@ public class View3d extends SimpleApplication
         viewPort.addProcessor(fpp);
         SSAOFilter ssaoFilter = new SSAOFilter(12.94f, 43.93f, 0.33f, 0.60f);
         fpp.addFilter(ssaoFilter);
-
-        /**
-         * A white, directional light source
-         */
-//        DirectionalLight sun = new DirectionalLight();
-//        sun.setDirection((new Vector3f(-0.2f, -0.2f, -0.2f)).normalizeLocal());
-//        sun.setColor(ColorRGBA.White);
-//        rootNode.addLight(sun);
-        /**
-         * A cone-shaped spotlight with location, direction, range
-         */
-//        SpotLight spot;
-//        spot = new SpotLight();
-//        spot.setSpotRange(1000);
-//        spot.setSpotOuterAngle(89 * FastMath.DEG_TO_RAD);
-//        spot.setSpotInnerAngle(89 * FastMath.DEG_TO_RAD);
-//        spot.setDirection(new Vector3f(5f, -0.5f, 5f));
-//        spot.setPosition(new Vector3f(-52, 46, -30));
-//        rootNode.addLight(spot);
-
-//        spot = new SpotLight();
-//        spot.setSpotRange(1000);
-//        spot.setSpotOuterAngle(89 * FastMath.DEG_TO_RAD);
-//        spot.setSpotInnerAngle(89 * FastMath.DEG_TO_RAD);
-//        spot.setDirection(new Vector3f(-0.64f, -0.5f, 0.64f));
-//        spot.setPosition(new Vector3f(64, 46, -30));
-//        rootNode.addLight(spot);
-
-//        spot = new SpotLight();
-//        spot.setSpotRange(1000);
-//        spot.setSpotOuterAngle(89 * FastMath.DEG_TO_RAD);
-//        spot.setSpotInnerAngle(89 * FastMath.DEG_TO_RAD);
-//        spot.setDirection(new Vector3f(-0.60f, -0.5f, 0.57f));
-//        spot.setPosition(new Vector3f(64, 46, 48));
-//        rootNode.addLight(spot);
-
-//        spot = new SpotLight();
-//        spot.setSpotRange(1000);
-//        spot.setSpotOuterAngle(89 * FastMath.DEG_TO_RAD);
-//        spot.setSpotInnerAngle(89 * FastMath.DEG_TO_RAD);
-//        spot.setDirection(new Vector3f(5f, -0.5f, -5f));
-//        spot.setPosition(new Vector3f(-52, 46, 48));
-//        rootNode.addLight(spot);
     }
 
     @Override
     public void simpleUpdate(float tpf)
     {
-        System.out.println(cam.getDirection().toString());
         camDir.set(cam.getDirection()).multLocal(0.6f);
         camLeft.set(cam.getLeft()).multLocal(0.4f);
         walkDirection.set(0, 0, 0);
