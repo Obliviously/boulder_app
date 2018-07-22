@@ -6,6 +6,12 @@ import boulder_trainings_app.engine.jme.utils.BoulderUpdater;
 import boulder_trainings_app.engine.jme.appstates.SelectAppState;
 import boulder_trainings_app.engine.jme.utils.AbstractInputController;
 import com.jme3.app.SimpleApplication;
+import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
+import com.jme3.bullet.collision.shapes.CollisionShape;
+import com.jme3.bullet.control.CharacterControl;
+import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.font.BitmapText;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
@@ -13,7 +19,15 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
-import com.jme3.scene.Node;
+import com.jme3.light.AmbientLight;
+import com.jme3.light.SpotLight;
+import com.jme3.material.TechniqueDef.LightMode;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
+import com.jme3.math.Vector3f;
+import com.jme3.post.FilterPostProcessor;
+import com.jme3.post.ssao.SSAOFilter;
+import com.jme3.scene.Spatial;
 import com.jme3.system.AppSettings;
 import java.awt.Dimension;
 import javax.swing.JPanel;
@@ -29,6 +43,17 @@ public class View3d extends SimpleApplication
     private final InputController input;
     private BitmapText crossHair;
     private boolean isEnabled = false;
+
+    private RigidBodyControl landscape;
+    private CharacterControl player;
+    private BulletAppState bulletAppState;
+    private Vector3f walkDirection = new Vector3f();
+    private boolean left = false, right = false, up = false, down = false;
+
+    //Temporary vectors used on each frame.
+    //They here to avoid instanciating new vectors on each frame
+    private Vector3f camDir = new Vector3f();
+    private Vector3f camLeft = new Vector3f();
 
     public View3d(JPanel parentContainer)
     {
@@ -57,6 +82,7 @@ public class View3d extends SimpleApplication
         initCrossHair();
 
         initWorld();
+        setUpLight();
 
         //initial state
         this.getStateManager().attach(new SelectAppState());
@@ -87,8 +113,111 @@ public class View3d extends SimpleApplication
 
     private void initWorld()
     {
-        Node box = (Node) assetManager.loadModel("Models/box.blend");
-        rootNode.attachChild(box);
+        Spatial gym = assetManager.loadModel("Models/boulderhalle.blend");
+      
+        CollisionShape sceneShape
+                = CollisionShapeFactory.createMeshShape(gym);
+        landscape = new RigidBodyControl(sceneShape, 0);
+        gym.addControl(landscape);
+
+        CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(1.5f, 6f, 1);
+        player = new CharacterControl(capsuleShape, 0.05f);
+        player.setJumpSpeed(20);
+        player.setFallSpeed(30);
+        player.setGravity(new Vector3f(0, -30f, 0));
+        player.setPhysicsLocation(new Vector3f(0, 10, 0));
+
+        rootNode.attachChild(gym);
+        bulletAppState = new BulletAppState();
+        stateManager.attach(bulletAppState);
+        bulletAppState.getPhysicsSpace().add(landscape);
+        bulletAppState.getPhysicsSpace().add(player);
+
+    }
+
+    private void setUpLight()
+    {
+        renderManager.setPreferredLightMode(LightMode.SinglePass);
+        renderManager.setSinglePassLightBatchSize(16);
+
+        AmbientLight al = new AmbientLight();
+        al.setColor(ColorRGBA.White.mult(0.2f));
+        rootNode.addLight(al);
+
+        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        viewPort.addProcessor(fpp);
+        SSAOFilter ssaoFilter = new SSAOFilter(12.94f, 43.93f, 0.33f, 0.60f);
+        fpp.addFilter(ssaoFilter);
+
+        /**
+         * A white, directional light source
+         */
+//        DirectionalLight sun = new DirectionalLight();
+//        sun.setDirection((new Vector3f(-0.2f, -0.2f, -0.2f)).normalizeLocal());
+//        sun.setColor(ColorRGBA.White);
+//        rootNode.addLight(sun);
+        /**
+         * A cone-shaped spotlight with location, direction, range
+         */
+//        SpotLight spot;
+//        spot = new SpotLight();
+//        spot.setSpotRange(1000);
+//        spot.setSpotOuterAngle(89 * FastMath.DEG_TO_RAD);
+//        spot.setSpotInnerAngle(89 * FastMath.DEG_TO_RAD);
+//        spot.setDirection(new Vector3f(5f, -0.5f, 5f));
+//        spot.setPosition(new Vector3f(-52, 46, -30));
+//        rootNode.addLight(spot);
+
+//        spot = new SpotLight();
+//        spot.setSpotRange(1000);
+//        spot.setSpotOuterAngle(89 * FastMath.DEG_TO_RAD);
+//        spot.setSpotInnerAngle(89 * FastMath.DEG_TO_RAD);
+//        spot.setDirection(new Vector3f(-0.64f, -0.5f, 0.64f));
+//        spot.setPosition(new Vector3f(64, 46, -30));
+//        rootNode.addLight(spot);
+
+//        spot = new SpotLight();
+//        spot.setSpotRange(1000);
+//        spot.setSpotOuterAngle(89 * FastMath.DEG_TO_RAD);
+//        spot.setSpotInnerAngle(89 * FastMath.DEG_TO_RAD);
+//        spot.setDirection(new Vector3f(-0.60f, -0.5f, 0.57f));
+//        spot.setPosition(new Vector3f(64, 46, 48));
+//        rootNode.addLight(spot);
+
+//        spot = new SpotLight();
+//        spot.setSpotRange(1000);
+//        spot.setSpotOuterAngle(89 * FastMath.DEG_TO_RAD);
+//        spot.setSpotInnerAngle(89 * FastMath.DEG_TO_RAD);
+//        spot.setDirection(new Vector3f(5f, -0.5f, -5f));
+//        spot.setPosition(new Vector3f(-52, 46, 48));
+//        rootNode.addLight(spot);
+    }
+
+    @Override
+    public void simpleUpdate(float tpf)
+    {
+        System.out.println(cam.getDirection().toString());
+        camDir.set(cam.getDirection()).multLocal(0.6f);
+        camLeft.set(cam.getLeft()).multLocal(0.4f);
+        walkDirection.set(0, 0, 0);
+        if (left)
+        {
+            walkDirection.addLocal(camLeft);
+        }
+        if (right)
+        {
+            walkDirection.addLocal(camLeft.negate());
+        }
+        if (up)
+        {
+            walkDirection.addLocal(camDir);
+        }
+        if (down)
+        {
+            walkDirection.addLocal(camDir.negate());
+        }
+        player.setWalkDirection(walkDirection);
+        cam.setLocation(player.getPhysicsLocation());
     }
 
     private void initInputMappings()
@@ -101,6 +230,11 @@ public class View3d extends SimpleApplication
         inputManager.addMapping("CREATE_MODE", new KeyTrigger(KeyInput.KEY_3));
         inputManager.addMapping("EXIT_3DVIEW", new KeyTrigger(KeyInput.KEY_ESCAPE));
         inputManager.addMapping("DELETE", new KeyTrigger(KeyInput.KEY_DELETE));
+        inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
+        inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
+        inputManager.addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
+        inputManager.addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
+        inputManager.addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
     }
 
     /**
@@ -149,6 +283,11 @@ public class View3d extends SimpleApplication
             inputManager.addListener(this, "CREATE_MODE");
             inputManager.addListener(this, "DELETE");
             inputManager.addListener(this, "MOUSE_LEFT_CLICK");
+            inputManager.addListener(this, "Left");
+            inputManager.addListener(this, "Right");
+            inputManager.addListener(this, "Up");
+            inputManager.addListener(this, "Down");
+            inputManager.addListener(this, "Jump");
 
         }
 
@@ -192,6 +331,31 @@ public class View3d extends SimpleApplication
             if (name.equals("CREATE_MODE") && !isPressed)
             {
                 ApplicationState.getInstance().changeState(ProgramState.CREATE);
+            }
+
+            if (name.equals("Left"))
+            {
+                left = isPressed;
+            }
+            if (name.equals("Right"))
+            {
+                right = isPressed;
+            }
+            if (name.equals("Up"))
+            {
+                up = isPressed;
+            }
+            if (name.equals("Down"))
+            {
+                down = isPressed;
+            }
+
+            if (name.equals("Jump"))
+            {
+                if (isPressed)
+                {
+                    player.jump(new Vector3f(0, 20f, 0));
+                }
             }
         }
     }
