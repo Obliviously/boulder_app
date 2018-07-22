@@ -5,6 +5,8 @@ import boulder_trainings_app.data.enums.ProgramState;
 import boulder_trainings_app.engine.jme.appstates.CreateAppState;
 import boulder_trainings_app.engine.jme.appstates.EditAppState;
 import boulder_trainings_app.engine.jme.appstates.SelectAppState;
+import boulder_trainings_app.ui.BoulderDependent;
+import boulder_trainings_app.ui.SelectDependent;
 import boulder_trainings_app.ui.StateDependent;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
@@ -23,7 +25,7 @@ import java.util.HashMap;
  *
  * @author Fabian Rauscher
  */
-public class BoulderUpdater implements StateDependent
+public class BoulderUpdater implements StateDependent, BoulderDependent, SelectDependent
 {
     private final HashMap<String, Node> bouldersMap = new HashMap<>();
     private final Node rootNode;
@@ -39,7 +41,9 @@ public class BoulderUpdater implements StateDependent
         this.rootNode = app.getRootNode();
         this.assetManager = app.getAssetManager();
         this.stateManager = app.getStateManager();
-        COMPONENTS.add(this);
+        StateDependent.COMPONENTS.add(this);
+        BoulderDependent.COMPONENTS.add(this);
+        SelectDependent.COMPONENTS.add(this);
     }
 
     @Override
@@ -59,13 +63,16 @@ public class BoulderUpdater implements StateDependent
     private void changeBoulderColor(Boulder boulder, ColorRGBA color)
     {
         Node boulderNode = bouldersMap.get(boulder.getId());
-        Material selectionMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        selectionMat.setColor("Color", color);
-
-        for (Spatial s : boulderNode.getChildren())
+        if (boulderNode != null)
         {
-            Geometry geom = (Geometry) s;
-            geom.setMaterial(selectionMat);
+            Material selectionMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+            selectionMat.setColor("Color", color);
+
+            for (Spatial s : boulderNode.getChildren())
+            {
+                Geometry geom = (Geometry) s;
+                geom.setMaterial(selectionMat);
+            }
         }
     }
 
@@ -103,11 +110,6 @@ public class BoulderUpdater implements StateDependent
         }
         rootNode.attachChild(boulderNode);
         return boulderNode;
-    }
-
-    @Override
-    public void editBoulder(Boulder boulder)
-    {
     }
 
     @Override

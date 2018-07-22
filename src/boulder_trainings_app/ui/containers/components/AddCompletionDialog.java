@@ -81,12 +81,17 @@ public class AddCompletionDialog extends JDialog
         panel.add(addButton);
         panel.add(cancelButton);
 
-        cancelButton.addActionListener(new ActionListener()
+        cancelButton.addActionListener((ActionEvent ae) ->
+        {
+            AddCompletionDialog.this.dispose();
+        });
+        
+        addButton.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent ae)
             {
-                AddCompletionDialog.this.dispose();
+                
             }
         });
 

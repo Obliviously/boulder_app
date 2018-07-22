@@ -8,6 +8,8 @@ package boulder_trainings_app.ui.containers.components;
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.ApplicationState;
 import boulder_trainings_app.data.enums.ProgramState;
+import boulder_trainings_app.ui.BoulderDependent;
+import boulder_trainings_app.ui.SelectDependent;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -20,16 +22,14 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
-import boulder_trainings_app.ui.StateDependent;
 import java.awt.Font;
 import javax.swing.UIManager;
-import javax.swing.event.ListSelectionListener;
 
 /**
  *
  * @author Fabian Rauscher
  */
-public class Sections extends JPanel implements StateDependent
+public class Sections extends JPanel implements SelectDependent, BoulderDependent
 {
 
     private final HashMap<Integer, JList> sections = new HashMap();
@@ -121,7 +121,8 @@ public class Sections extends JPanel implements StateDependent
             });
 
         }
-        COMPONENTS.add(this);
+        SelectDependent.COMPONENTS.add(this);
+        BoulderDependent.COMPONENTS.add(this);
     }
 
     @Override
@@ -161,16 +162,6 @@ public class Sections extends JPanel implements StateDependent
         {
             sections.forEach((key, list) -> list.clearSelection());
         }
-    }
-
-    @Override
-    public void editBoulder(Boulder boulder)
-    {
-    }
-
-    @Override
-    public void changeState(ProgramState programState)
-    {
     }
 
     @Override

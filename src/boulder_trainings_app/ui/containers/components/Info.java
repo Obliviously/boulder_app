@@ -5,7 +5,6 @@
  */
 package boulder_trainings_app.ui.containers.components;
 
-import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.data.enums.ProgramState;
 import boulder_trainings_app.utils.Consts;
 import java.awt.Color;
@@ -40,34 +39,9 @@ public class Info extends JPanel implements StateDependent
     }
 
     @Override
-    public void addBoulder(Boulder boulder)
-    {
-    }
-
-    @Override
-    public void removeBoulder(Boulder boulder)
-    {
-    }  
-
-    @Override
-    public void selectBoulder(Boulder boulder)
-    {
-    }
-
-    @Override
-    public void editBoulder(Boulder boulder)
-    {
-    }
-
-    @Override
     public void changeState(ProgramState programState)
     {
         this.programState.setText(programState.toString());
         this.validate();
-    }   
-
-    @Override
-    public void updateBoulder(Boulder boulder)
-    {
     }
 }

@@ -171,7 +171,7 @@ public class View3d extends SimpleApplication
 
                 if (name.equals("DELETE") && !isPressed)
                 {
-                    ApplicationState.getInstance().deleteSelectedBoulder();
+                    ApplicationState.getInstance().deleteBoulder();
                 }
             }
 

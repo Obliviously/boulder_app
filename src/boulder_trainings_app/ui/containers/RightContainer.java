@@ -37,26 +37,6 @@ public class RightContainer extends JPanel implements StateDependent
     }
 
     @Override
-    public void addBoulder(Boulder boulder)
-    {
-    }
-
-    @Override
-    public void removeBoulder(Boulder boulder)
-    {
-    }
-
-    @Override
-    public void selectBoulder(Boulder boulder)
-    {
-    }
-
-    @Override
-    public void editBoulder(Boulder boulder)
-    {
-    }
-
-    @Override
     public void changeState(ProgramState programState)
     {
         this.removeAll();
@@ -66,7 +46,7 @@ public class RightContainer extends JPanel implements StateDependent
             this.add(boulderSelect);
             break;
         case EDIT:
-            this.add(boulderEdit);        
+            this.add(boulderEdit);
             break;
         case CREATE:
             this.add(boulderEdit);
@@ -76,10 +56,5 @@ public class RightContainer extends JPanel implements StateDependent
         }
         this.repaint();
         this.validate();
-    }
-
-    @Override
-    public void updateBoulder(Boulder boulder)
-    {
     }
 }

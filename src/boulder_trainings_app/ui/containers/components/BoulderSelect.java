@@ -1,14 +1,12 @@
 package boulder_trainings_app.ui.containers.components;
 
 import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.data.enums.ProgramState;
+import boulder_trainings_app.ui.SelectDependent;
 import boulder_trainings_app.utils.Consts;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import boulder_trainings_app.ui.StateDependent;
 import boulder_trainings_app.ui.utils.UIUtilities;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -19,8 +17,7 @@ import javax.swing.JButton;
  *
  * @author Fabian Rauscher
  */
-public class BoulderSelect extends JPanel implements StateDependent
-
+public class BoulderSelect extends JPanel implements SelectDependent
 {
     private final JPanel propertiesContainer;
 
@@ -114,30 +111,5 @@ public class BoulderSelect extends JPanel implements StateDependent
         typeValue.setText(boulder.getType().toString());
         gradeValue.setText(boulder.getGrade().toString());
         sectionValue.setText(boulder.getSection().toString());
-    }
-
-    @Override
-    public void addBoulder(Boulder boulder)
-    {
-    }
-
-    @Override
-    public void removeBoulder(Boulder boulder)
-    {
-    }
-
-    @Override
-    public void editBoulder(Boulder boulder)
-    {
-    }
-
-    @Override
-    public void changeState(ProgramState programState)
-    {
-    }
-
-    @Override
-    public void updateBoulder(Boulder boulder)
-    {
     }
 }

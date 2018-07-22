@@ -7,7 +7,7 @@ import boulder_trainings_app.data.enums.BoulderColor;
 import boulder_trainings_app.data.enums.BoulderGrade;
 import boulder_trainings_app.data.enums.BoulderType;
 import boulder_trainings_app.data.enums.BoulderSection;
-import boulder_trainings_app.data.enums.ProgramState;
+import boulder_trainings_app.ui.SelectDependent;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -21,14 +21,13 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import org.joda.time.DateTime;
-import boulder_trainings_app.ui.StateDependent;
 import boulder_trainings_app.ui.utils.DateLabelFormatter;
 
 /**
  *
  * @author Fabian Rauscher
  */
-public class BoulderEdit extends JPanel implements StateDependent
+public class BoulderEdit extends JPanel implements SelectDependent
 {
     private Boulder boulder;
 
@@ -117,11 +116,6 @@ public class BoulderEdit extends JPanel implements StateDependent
         COMPONENTS.add(this);
     }
 
-    @Override
-    public void updateBoulder(Boulder boulder)
-    {
-    }
-
     private void updateName()
     {
         boulder.setName(nameTextField.getText());
@@ -161,16 +155,6 @@ public class BoulderEdit extends JPanel implements StateDependent
     }
 
     @Override
-    public void addBoulder(Boulder boulder)
-    {
-    }
-
-    @Override
-    public void removeBoulder(Boulder boulder)
-    {
-    }
-
-    @Override
     public void selectBoulder(Boulder boulder)
     {
         if (boulder != null)
@@ -201,19 +185,6 @@ public class BoulderEdit extends JPanel implements StateDependent
         typeComboBox.setEnabled(enabled);
         gradeComboBox.setEnabled(enabled);
         sectionComboBox.setEnabled(enabled);
-    }
-
-    @Override
-    public void editBoulder(Boulder boulder)
-    {
-        setViewEnabled(true);
-        this.boulder = boulder;
-        initBoulder();
-    }
-
-    @Override
-    public void changeState(ProgramState programState)
-    {
     }
 
     private void initBoulder()
