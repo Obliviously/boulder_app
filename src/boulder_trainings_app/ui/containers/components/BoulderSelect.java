@@ -7,8 +7,13 @@ import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import boulder_trainings_app.ui.StateDependent;
-import java.awt.BorderLayout;
+import boulder_trainings_app.ui.utils.UIUtilities;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 
 /**
  *
@@ -25,14 +30,16 @@ public class BoulderSelect extends JPanel implements StateDependent
     private final JLabel typeValue;
     private final JLabel gradeValue;
     private final JLabel sectionValue;
+    private final JButton addCompletion;
 
     private final JLabel nothingSelectedMessage;
     private Boulder boulder = null;
 
+    private Frame parentFrame;
+
     public BoulderSelect()
     {
         super();
-        
         JLabel nameLabel = new JLabel(Consts.BOULDER_NAME_LABEL);
         nameValue = new JLabel();
         JLabel dateLabel = new JLabel(Consts.BOULDER_DATE_LABEL);
@@ -46,10 +53,22 @@ public class BoulderSelect extends JPanel implements StateDependent
         JLabel sectionLabel = new JLabel(Consts.BOULDER_SECTION_LABEL);
         sectionValue = new JLabel();
 
+        addCompletion = new JButton("Add Completion");
+
+        addCompletion.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae)
+            {
+                parentFrame = UIUtilities.getParentFrame(BoulderSelect.this);
+                AddCompletionDialog acd = new AddCompletionDialog(parentFrame, boulder.getName());
+            }
+        });
+
         nothingSelectedMessage = new JLabel(Consts.NOTHING_SELECTED_MESSAGE);
         nothingSelectedMessage.setFont(new Font("Arial", Font.BOLD, 20));
         nothingSelectedMessage.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        
+
         propertiesContainer = new JPanel(new GridLayout(20, 2));
         propertiesContainer.add(nameLabel);
         propertiesContainer.add(nameValue);
@@ -63,6 +82,7 @@ public class BoulderSelect extends JPanel implements StateDependent
         propertiesContainer.add(gradeValue);
         propertiesContainer.add(sectionLabel);
         propertiesContainer.add(sectionValue);
+        propertiesContainer.add(addCompletion);
         super.add(nothingSelectedMessage);
 
         COMPONENTS.add(this);

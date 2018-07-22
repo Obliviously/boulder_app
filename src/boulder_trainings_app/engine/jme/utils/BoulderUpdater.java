@@ -51,7 +51,6 @@ public class BoulderUpdater implements StateDependent
         }
         if (boulder != null)
         {
-            System.out.println("boulder_trainings_app.engine.jme.utils.BoulderUpdater.selectBoulder()");
             changeBoulderColor(boulder, SELECTION_COLOR);
         }
         selectedBoulder = boulder;
