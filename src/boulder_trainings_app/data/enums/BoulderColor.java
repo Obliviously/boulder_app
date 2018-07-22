@@ -14,31 +14,31 @@ import java.awt.Color;
  */
 public enum BoulderColor
 {
-    PINK(Color.PINK),
+
+    PINK(new Color(255, 0, 255)),
     GREEN(Color.GREEN),
     BLUE(Color.BLUE),
     YELLOW(Color.YELLOW),
-    ORANGE(Color.ORANGE),
+    ORANGE(new Color(255, 109, 25)),
     RED(Color.RED),
     BLACK(Color.BLACK),
     WHITE(Color.WHITE),
-    BROWN(new Color(176, 82, 2));
-    
+    BROWN(new Color(114, 69, 43));
+
     Color color;
     ColorRGBA colorRGBA;
-    
+
     private BoulderColor(Color color)
     {
         this.color = color;
-        this.colorRGBA = new ColorRGBA(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
-        
+        this.colorRGBA = new ColorRGBA(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha());
     }
-    
+
     public Color toColor()
     {
         return this.color;
     }
-    
+
     public ColorRGBA toColorRGBA()
     {
         return this.colorRGBA;

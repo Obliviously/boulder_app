@@ -5,6 +5,7 @@ import boulder_trainings_app.data.enums.ProgramState;
 import boulder_trainings_app.engine.jme.utils.BoulderUpdater;
 import boulder_trainings_app.engine.jme.appstates.SelectAppState;
 import boulder_trainings_app.engine.jme.utils.AbstractInputController;
+import boulder_trainings_app.ui.StateDependent;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
@@ -47,13 +48,14 @@ public class View3d extends SimpleApplication
     private RigidBodyControl landscape;
     private CharacterControl player;
     private BulletAppState bulletAppState;
-    private Vector3f walkDirection = new Vector3f();
     private boolean left = false, right = false, up = false, down = false;
+    private boolean walkMode = true;
 
     //Temporary vectors used on each frame.
     //They here to avoid instanciating new vectors on each frame
-    private Vector3f camDir = new Vector3f();
-    private Vector3f camLeft = new Vector3f();
+    private final Vector3f walkDirection = new Vector3f();
+    private final Vector3f camDir = new Vector3f();
+    private final Vector3f camLeft = new Vector3f();
 
     public View3d(JPanel parentContainer)
     {
@@ -88,10 +90,16 @@ public class View3d extends SimpleApplication
         this.getStateManager().attach(new SelectAppState());
     }
 
+    public void enableWalkMode(boolean enable)
+    {
+        this.walkMode = enable;
+    }
+
     public void setInput(boolean enable)
     {
         isEnabled = enable;
         flyCam.setEnabled(enable);
+        flyCam.setMoveSpeed(30f);
         setMouseCursor(!enable);
         setCrossHair(enable);
     }
@@ -120,7 +128,7 @@ public class View3d extends SimpleApplication
         landscape = new RigidBodyControl(sceneShape, 0);
         gym.addControl(landscape);
 
-        CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(1.5f, 6f, 1);
+        CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(1.5f, 2f, 1);
         player = new CharacterControl(capsuleShape, 0.05f);
         player.setJumpSpeed(20);
         player.setFallSpeed(30);
@@ -146,34 +154,37 @@ public class View3d extends SimpleApplication
 
         FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
         viewPort.addProcessor(fpp);
-        SSAOFilter ssaoFilter = new SSAOFilter(12.94f, 43.93f, 0.33f, 0.60f);
+        SSAOFilter ssaoFilter = new SSAOFilter(12.94f, 43.93f / 2, 0.33f, 0.60f);
         fpp.addFilter(ssaoFilter);
     }
 
     @Override
     public void simpleUpdate(float tpf)
     {
-        camDir.set(cam.getDirection()).multLocal(0.6f);
-        camLeft.set(cam.getLeft()).multLocal(0.4f);
-        walkDirection.set(0, 0, 0);
-        if (left)
+        if (walkMode)
         {
-            walkDirection.addLocal(camLeft);
+            camDir.set(cam.getDirection()).multLocal(0.3f);
+            camLeft.set(cam.getLeft()).multLocal(0.2f);
+            walkDirection.set(0, 0, 0);
+            if (left)
+            {
+                walkDirection.addLocal(camLeft);
+            }
+            if (right)
+            {
+                walkDirection.addLocal(camLeft.negate());
+            }
+            if (up)
+            {
+                walkDirection.addLocal(camDir);
+            }
+            if (down)
+            {
+                walkDirection.addLocal(camDir.negate());
+            }
+            player.setWalkDirection(walkDirection);
+            cam.setLocation(player.getPhysicsLocation());
         }
-        if (right)
-        {
-            walkDirection.addLocal(camLeft.negate());
-        }
-        if (up)
-        {
-            walkDirection.addLocal(camDir);
-        }
-        if (down)
-        {
-            walkDirection.addLocal(camDir.negate());
-        }
-        player.setWalkDirection(walkDirection);
-        cam.setLocation(player.getPhysicsLocation());
     }
 
     private void initInputMappings()
@@ -310,7 +321,7 @@ public class View3d extends SimpleApplication
             {
                 if (isPressed)
                 {
-                    player.jump(new Vector3f(0, 20f, 0));
+                    player.jump(new Vector3f(0, 10f, 0));
                 }
             }
         }

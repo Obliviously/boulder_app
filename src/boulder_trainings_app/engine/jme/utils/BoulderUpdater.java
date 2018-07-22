@@ -8,6 +8,7 @@ import boulder_trainings_app.engine.jme.appstates.SelectAppState;
 import boulder_trainings_app.ui.BoulderDependent;
 import boulder_trainings_app.ui.SelectDependent;
 import boulder_trainings_app.ui.StateDependent;
+import boulder_trainings_app.ui.containers.components.View3d;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
@@ -27,17 +28,19 @@ import java.util.HashMap;
  */
 public class BoulderUpdater implements StateDependent, BoulderDependent, SelectDependent
 {
+    private final View3d view3d;
     private final HashMap<String, Node> bouldersMap = new HashMap<>();
     private final Node rootNode;
     private final AssetManager assetManager;
     private final AppStateManager stateManager;
-    private final ColorRGBA SELECTION_COLOR = ColorRGBA.Magenta;
+    private final ColorRGBA SELECTION_COLOR = ColorRGBA.Cyan;
     private Class currentStateClass = SelectAppState.class;
 
     private Boulder selectedBoulder = null;
 
-    public BoulderUpdater(SimpleApplication app)
+    public BoulderUpdater(View3d app)
     {
+        this.view3d = app;
         this.rootNode = app.getRootNode();
         this.assetManager = app.getAssetManager();
         this.stateManager = app.getStateManager();
@@ -120,16 +123,19 @@ public class BoulderUpdater implements StateDependent, BoulderDependent, SelectD
         case SELECT:
             stateManager.detach(stateManager.getState(currentStateClass));
             stateManager.attach(new SelectAppState());
+            view3d.enableWalkMode(true);
             currentStateClass = SelectAppState.class;
             break;
         case EDIT:
             stateManager.detach(stateManager.getState(currentStateClass));
             stateManager.attach(new EditAppState());
+            view3d.enableWalkMode(true);
             currentStateClass = EditAppState.class;
             break;
         case CREATE:
             stateManager.detach(stateManager.getState(currentStateClass));
             stateManager.attach(new CreateAppState());
+            view3d.enableWalkMode(false);
             currentStateClass = CreateAppState.class;
             break;
         default:

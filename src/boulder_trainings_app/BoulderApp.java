@@ -19,7 +19,7 @@ public class BoulderApp
     }
 
     public void start()
-    {
+    {        
         userInterface.display(Consts.PROGRAM_NAME, Consts.MIN_WIDTH, Consts.MIN_HEIGHT);
         ApplicationState.getInstance().loadBoulder(DateTime.now());
     }

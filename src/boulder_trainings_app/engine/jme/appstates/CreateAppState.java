@@ -161,12 +161,15 @@ public class CreateAppState extends BaseAppState
                         CollisionResult closest = results.getClosestCollision();
                         if (boulder == null)
                         {
-                            boulder = new Boulder();
-                            boulder.addPosition(closest.getContactPoint());
-                            Geometry mark = MeshUtils.createMark(closest.getContactPoint(), GEO_NAME, defaultMaterial, boulder.getColor().toColorRGBA());
-                            rootNode.attachChild(mark);
-                            ApplicationState.getInstance().selectBoulder(boulder);
-                            currSelectedVertices = MeshUtils.calcFlatArea(closest);
+                            if (closest.getGeometry().getName().startsWith("wall"))
+                            {
+                                boulder = new Boulder();
+                                boulder.addPosition(closest.getContactPoint());
+                                Geometry mark = MeshUtils.createMark(closest.getContactPoint(), GEO_NAME, defaultMaterial, boulder.getColor().toColorRGBA());
+                                rootNode.attachChild(mark);
+                                ApplicationState.getInstance().selectBoulder(boulder);
+                                currSelectedVertices = MeshUtils.calcFlatArea(closest);
+                            }
                         }
                         else
                         {
