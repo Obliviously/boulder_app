@@ -100,7 +100,7 @@ public class Sections extends JPanel implements SelectDependent, BoulderDependen
                                 otherList.clearSelection();
                             }
                         });
-                        ApplicationState.getInstance().selectBoulder(ApplicationState.getInstance().getBoulderById(list.getSelectedValue()));
+                        ApplicationState.getInstance().selectBoulder(ApplicationState.getInstance().getBoulderById(htmlToBoulderId(list.getSelectedValue())));
                     }
                 }
             });
@@ -129,7 +129,7 @@ public class Sections extends JPanel implements SelectDependent, BoulderDependen
     public void addBoulder(Boulder boulder)
     {
         JList list = sections.get(boulder.getSection().toInt());
-        ((DefaultListModel) list.getModel()).addElement(boulder.getId());
+        ((DefaultListModel) list.getModel()).addElement(boulderToHtml(boulder.getName(), boulder.getId()));
 
         JLabel listSize = listSizes.get(boulder.getSection().toInt());
         listSize.setText(" | (" + (list.getModel().getSize()) + ")");
@@ -140,10 +140,24 @@ public class Sections extends JPanel implements SelectDependent, BoulderDependen
     {
         JList list = sections.get(boulder.getSection().toInt());
         DefaultListModel listModel = (DefaultListModel) list.getModel();
-        listModel.removeElement(boulder.getId());
+        listModel.removeElement(boulderToHtml(boulder.getName(), boulder.getId()));
 
         JLabel listSize = listSizes.get(boulder.getSection().toInt());
         listSize.setText(" | (" + (list.getModel().getSize()) + ")");
+    }
+
+    private String boulderToHtml(String name, String id)
+    {
+        return "<html><span boulder_id='" + id + "'>" + name + "</span></html>";
+    }
+
+    private String htmlToBoulderId(String html)
+    {
+        System.out.println(html);
+        html = html.replaceAll("'>.*", "");
+        html = html.replaceAll(".*='", "");
+        System.out.println(html);
+        return html;
     }
 
     @Override
@@ -156,7 +170,7 @@ public class Sections extends JPanel implements SelectDependent, BoulderDependen
             {
                 buttons.get(boulder.getSection().toInt()).doClick();
             }
-            list.setSelectedValue(boulder.getId(), true);
+            list.setSelectedValue(boulderToHtml(boulder.getName(), boulder.getId()), true);
         }
         else
         {

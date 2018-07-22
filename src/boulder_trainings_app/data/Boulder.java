@@ -139,4 +139,12 @@ public class Boulder extends Observable implements Serializable
         return (obj instanceof Boulder) && (((Boulder) obj).getId()).equals(this.getId());
     }
 
+    @Override
+    public String toString()
+    {
+        return this.getName();
+    }
+    
+    
+
 }
