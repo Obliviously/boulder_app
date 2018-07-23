@@ -1,13 +1,10 @@
-package boulder_trainings_app;
+package boulder_trainings_app.controller;
 
+import boulder_trainings_app.BoulderFileManager;
+import boulder_trainings_app.controller.interfaces.BoulderDependent;
 import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.data.User;
 import boulder_trainings_app.data.enums.BoulderSection;
 import boulder_trainings_app.data.enums.ProgramState;
-import boulder_trainings_app.ui.BoulderDependent;
-import boulder_trainings_app.ui.SelectDependent;
-import boulder_trainings_app.ui.StateDependent;
-import boulder_trainings_app.ui.UserDependent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,55 +16,33 @@ import org.joda.time.DateTime;
  *
  * @author Fabian Rauscher
  */
-public class ApplicationState
+public class BoulderController
 {
-    private static final Logger LOGGER = Logger.getLogger(ApplicationState.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BoulderController.class.getName());
 
+    private static BoulderController instance;
     private final Set<Boulder> boulderList = new HashSet<>();
-    private ProgramState programState = ProgramState.SELECT;
-    private static ApplicationState instance;
-    private static Boulder selectedBoulder = null;
     private static DateTime gymDate = null;
 
-    private ApplicationState()
+    private BoulderController()
     {
         BoulderDependent.COMPONENTS.addListener((SetChangeListener.Change<? extends BoulderDependent> c) ->
         {
-            BoulderDependent bd = (BoulderDependent) c.getElementAdded();
+            BoulderDependent d = (BoulderDependent) c.getElementAdded();
             for (Boulder b : boulderList)
             {
-                bd.addBoulder(b);
+                d.addBoulder(b);
             }
         });
     }
 
-    public static ApplicationState getInstance()
+    public static BoulderController getInstance()
     {
-        if (ApplicationState.instance == null)
+        if (BoulderController.instance == null)
         {
-            ApplicationState.instance = new ApplicationState();
+            BoulderController.instance = new BoulderController();
         }
-        return ApplicationState.instance;
-    }
-
-    public void changeState(ProgramState programState)
-    {
-        if (this.programState != programState)
-        {
-
-            StateDependent.COMPONENTS.forEach((c) -> c.changeState(programState));
-
-            if (programState == ProgramState.CREATE && selectedBoulder != null)
-            {
-                selectBoulder(null);
-            }
-            if (this.programState == ProgramState.CREATE)
-            {
-                selectBoulder(null);
-            }
-
-            this.programState = programState;
-        }
+        return BoulderController.instance;
     }
 
     public void addBoulder(Boulder boulder)
@@ -115,8 +90,7 @@ public class ApplicationState
         {
             addBoulder(boulder);
         }
-        changeState(ProgramState.SELECT);
-        selectBoulder(boulder);
+      
     }
 
     public void loadBoulder(DateTime date)
@@ -141,18 +115,6 @@ public class ApplicationState
         }
     }
 
-    /**
-     * Selects the given boulder. If boulder is null everything gets deselected.
-     *
-     * @param boulder The boulder to select.
-     *
-     */
-    public void selectBoulder(Boulder boulder)
-    {
-        SelectDependent.COMPONENTS.forEach(c -> c.selectBoulder(boulder));
-        selectedBoulder = boulder;
-    }
-
     public Boulder getBoulderById(String boulderId)
     {
         for (Boulder b : boulderList)
@@ -165,24 +127,13 @@ public class ApplicationState
         return null;
     }
 
-    public void deleteBoulder()
-    {
-        System.out.println("boulder_trainings_app.ApplicationState.deleteBoulder()");
-        deleteBoulder(selectedBoulder);
-    }
-
     public void deleteBoulder(Boulder boulder)
     {
         if (boulder != null)
         {
-            if (boulder == selectedBoulder)
-            {
-                selectedBoulder = null;
-            }
             boulderList.remove(boulder);
             BoulderFileManager.deleteBoulder(boulder);
             BoulderDependent.COMPONENTS.forEach((c) -> c.removeBoulder(boulder));
-            SelectDependent.COMPONENTS.forEach((c) -> c.selectBoulder(null));
         }
     }
 
@@ -191,23 +142,4 @@ public class ApplicationState
         return gymDate;
     }
 
-    public boolean loadUser()
-    {
-        User user = UserFileManager.loadUser();
-        if (user != null)
-        {
-            UserDependent.COMPONENTS.forEach((c) -> c.setUser(user));
-            return true;
-        }
-        return false;
-    }
-
-    public void setUser(User user)
-    {
-        if (user != null)
-        {
-            UserFileManager.saveUser(user);
-            UserDependent.COMPONENTS.forEach((c) -> c.setUser(user));
-        }
-    }
 }

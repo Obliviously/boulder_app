@@ -1,6 +1,6 @@
 package boulder_trainings_app.ui.containers.components;
 
-import boulder_trainings_app.ApplicationState;
+import boulder_trainings_app.controller.BoulderController;
 import boulder_trainings_app.ui.utils.DateLabelFormatter;
 import java.awt.BorderLayout;
 import java.util.Properties;
@@ -39,7 +39,7 @@ public class DateSelect extends JPanel
         dateModel.addChangeListener((ChangeEvent e) ->
         {
             DateTime date = new DateTime(dateModel.getYear(), dateModel.getMonth() + 1, dateModel.getDay(), 0, 0, 0, 0);
-            ApplicationState.getInstance().loadBoulder(date);
+            BoulderController.getInstance().loadBoulder(date);
         });
     }
 }

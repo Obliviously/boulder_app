@@ -1,5 +1,7 @@
 package boulder_trainings_app;
 
+import boulder_trainings_app.controller.BoulderController;
+import boulder_trainings_app.controller.UserController;
 import boulder_trainings_app.ui.GraphicalUserInterface;
 import boulder_trainings_app.utils.Consts;
 import boulder_trainings_app.ui.SwingUserInterface;
@@ -21,8 +23,8 @@ public class BoulderApp
     public void start()
     {
         userInterface.display(Consts.PROGRAM_NAME, Consts.MIN_WIDTH, Consts.MIN_HEIGHT);
-        ApplicationState.getInstance().loadBoulder(DateTime.now());
-        if (!ApplicationState.getInstance().loadUser())
+        BoulderController.getInstance().loadBoulder(DateTime.now());
+        if (!UserController.getInstance().loadUser())
         {
             System.out.println("boulder_trainings_app.BoulderApp.start()");
             userInterface.createUser();

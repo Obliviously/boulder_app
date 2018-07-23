@@ -1,4 +1,4 @@
-package boulder_trainings_app.ui;
+package boulder_trainings_app.controller.interfaces;
 
 import boulder_trainings_app.data.User;
 import java.util.HashSet;

@@ -1,7 +1,7 @@
 package boulder_trainings_app.engine.jme.appstates;
 
+import boulder_trainings_app.controller.SelectionController;
 import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.ApplicationState;
 import boulder_trainings_app.engine.jme.utils.AbstractInputController;
 import boulder_trainings_app.engine.jme.utils.MeshUtils;
 import boulder_trainings_app.engine.jme.utils.VertexUtils;
@@ -167,7 +167,7 @@ public class CreateAppState extends BaseAppState
                                 boulder.addPosition(closest.getContactPoint());
                                 Geometry mark = MeshUtils.createMark(closest.getContactPoint(), GEO_NAME, defaultMaterial, boulder.getColor().toColorRGBA());
                                 rootNode.attachChild(mark);
-                                ApplicationState.getInstance().selectBoulder(boulder);
+                                SelectionController.getInstance().selectBoulder(boulder);
                                 currSelectedVertices = MeshUtils.calcFlatArea(closest);
                             }
                         }

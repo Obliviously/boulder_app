@@ -1,13 +1,14 @@
 package boulder_trainings_app.ui.containers.components;
 
-import boulder_trainings_app.ApplicationState;
+import boulder_trainings_app.controller.BoulderController;
+import boulder_trainings_app.controller.SelectionController;
+import boulder_trainings_app.controller.StateController;
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.utils.Consts;
 import boulder_trainings_app.data.enums.BoulderColor;
 import boulder_trainings_app.data.enums.BoulderGrade;
 import boulder_trainings_app.data.enums.BoulderType;
 import boulder_trainings_app.data.enums.BoulderSection;
-import boulder_trainings_app.ui.SelectDependent;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -22,12 +23,14 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import org.joda.time.DateTime;
 import boulder_trainings_app.ui.utils.DateLabelFormatter;
+import boulder_trainings_app.controller.interfaces.SelectionDependent;
+import boulder_trainings_app.data.enums.ProgramState;
 
 /**
  *
  * @author Fabian Rauscher
  */
-public class BoulderEdit extends JPanel implements SelectDependent
+public class BoulderEdit extends JPanel implements SelectionDependent
 {
     private Boulder boulder;
 
@@ -110,7 +113,9 @@ public class BoulderEdit extends JPanel implements SelectDependent
                 updateDate();
                 updateSection();
                 updateType();
-                ApplicationState.getInstance().saveBoulder(boulder);
+                BoulderController.getInstance().saveBoulder(boulder);
+                StateController.getInstance().changeState(ProgramState.SELECT);
+                SelectionController.getInstance().selectBoulder(boulder);
             }
         });
         COMPONENTS.add(this);

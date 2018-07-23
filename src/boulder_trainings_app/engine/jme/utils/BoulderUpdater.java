@@ -5,9 +5,8 @@ import boulder_trainings_app.data.enums.ProgramState;
 import boulder_trainings_app.engine.jme.appstates.CreateAppState;
 import boulder_trainings_app.engine.jme.appstates.EditAppState;
 import boulder_trainings_app.engine.jme.appstates.SelectAppState;
-import boulder_trainings_app.ui.BoulderDependent;
-import boulder_trainings_app.ui.SelectDependent;
-import boulder_trainings_app.ui.StateDependent;
+import boulder_trainings_app.controller.interfaces.BoulderDependent;
+import boulder_trainings_app.controller.interfaces.StateDependent;
 import boulder_trainings_app.ui.containers.components.View3d;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
@@ -19,6 +18,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import java.util.HashMap;
+import boulder_trainings_app.controller.interfaces.SelectionDependent;
 
 /**
  * This class is responsible for the visualization of the currrent boulders in
@@ -26,7 +26,7 @@ import java.util.HashMap;
  *
  * @author Fabian Rauscher
  */
-public class BoulderUpdater implements StateDependent, BoulderDependent, SelectDependent
+public class BoulderUpdater implements StateDependent, BoulderDependent, SelectionDependent
 {
     private final View3d view3d;
     private final HashMap<String, Node> bouldersMap = new HashMap<>();
@@ -46,7 +46,7 @@ public class BoulderUpdater implements StateDependent, BoulderDependent, SelectD
         this.stateManager = app.getStateManager();
         StateDependent.COMPONENTS.add(this);
         BoulderDependent.COMPONENTS.add(this);
-        SelectDependent.COMPONENTS.add(this);
+        SelectionDependent.COMPONENTS.add(this);
     }
 
     @Override

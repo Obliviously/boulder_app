@@ -9,8 +9,8 @@ import java.awt.Dimension;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import boulder_trainings_app.ui.StateDependent;
-import static boulder_trainings_app.ui.StateDependent.COMPONENTS;
+import boulder_trainings_app.controller.interfaces.StateDependent;
+import static boulder_trainings_app.controller.interfaces.StateDependent.COMPONENTS;
 
 /**
  *

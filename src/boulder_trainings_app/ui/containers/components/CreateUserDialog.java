@@ -1,8 +1,7 @@
 package boulder_trainings_app.ui.containers.components;
 
-import boulder_trainings_app.ApplicationState;
+import boulder_trainings_app.controller.UserController;
 import boulder_trainings_app.data.User;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridLayout;
@@ -25,31 +24,31 @@ public class CreateUserDialog extends JDialog
     private final JTextField nameField;
     private final JButton addButton;
     private final JButton cancelButton;
-    
+
     public CreateUserDialog(Frame parent)
     {
         super(parent, "Create User", true);
         super.setLayout(new FlowLayout());
         heading = new JLabel("Hello! Whats your name?");
-        
+
         nameLabel = new JLabel("Name:");
         nameField = new JTextField();
-        
+
         addButton = new JButton("Create");
         cancelButton = new JButton("Exit");
-        
+
         JPanel panel = new JPanel(new GridLayout(5, 2));
         panel.add(heading);
         panel.add(nameLabel);
         panel.add(nameField);
         panel.add(addButton);
         panel.add(cancelButton);
-        
+
         cancelButton.addActionListener((ActionEvent ae) ->
         {
             System.exit(0);
         });
-        
+
         addButton.addActionListener(new ActionListener()
         {
             @Override
@@ -59,12 +58,12 @@ public class CreateUserDialog extends JDialog
                 if (!name.isEmpty())
                 {
                     User user = new User(name);
-                    ApplicationState.getInstance().setUser(user);
+                    UserController.getInstance().setUser(user);
                     CreateUserDialog.this.dispose();
                 }
             }
-        });        
-        super.add(panel);        
+        });
+        super.add(panel);
         super.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         super.setLocationRelativeTo(null);
         this.pack();

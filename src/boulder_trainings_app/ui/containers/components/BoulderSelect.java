@@ -1,7 +1,6 @@
 package boulder_trainings_app.ui.containers.components;
 
 import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.ui.SelectDependent;
 import boulder_trainings_app.utils.Consts;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
@@ -12,12 +11,13 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import boulder_trainings_app.controller.interfaces.SelectionDependent;
 
 /**
  *
  * @author Fabian Rauscher
  */
-public class BoulderSelect extends JPanel implements SelectDependent
+public class BoulderSelect extends JPanel implements SelectionDependent
 {
     private final JPanel propertiesContainer;
 

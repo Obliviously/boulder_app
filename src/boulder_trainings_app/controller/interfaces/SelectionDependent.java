@@ -1,4 +1,4 @@
-package boulder_trainings_app.ui;
+package boulder_trainings_app.controller.interfaces;
 
 import boulder_trainings_app.data.Boulder;
 import java.util.HashSet;
@@ -9,9 +9,9 @@ import javafx.collections.ObservableSet;
  *
  * @author Fabian Rauscher
  */
-public interface SelectDependent
+public interface SelectionDependent
 {
-    public static final ObservableSet<SelectDependent> COMPONENTS = FXCollections.observableSet(new HashSet<SelectDependent>());
+    public static final ObservableSet<SelectionDependent> COMPONENTS = FXCollections.observableSet(new HashSet<SelectionDependent>());
 
     public void selectBoulder(Boulder boulder);
 }

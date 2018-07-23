@@ -5,11 +5,10 @@
  */
 package boulder_trainings_app.ui.containers.components;
 
+import boulder_trainings_app.controller.BoulderController;
+import boulder_trainings_app.controller.SelectionController;
 import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.ApplicationState;
-import boulder_trainings_app.data.enums.ProgramState;
-import boulder_trainings_app.ui.BoulderDependent;
-import boulder_trainings_app.ui.SelectDependent;
+import boulder_trainings_app.controller.interfaces.BoulderDependent;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -24,12 +23,13 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.Font;
 import javax.swing.UIManager;
+import boulder_trainings_app.controller.interfaces.SelectionDependent;
 
 /**
  *
  * @author Fabian Rauscher
  */
-public class Sections extends JPanel implements SelectDependent, BoulderDependent
+public class Sections extends JPanel implements SelectionDependent, BoulderDependent
 {
 
     private final HashMap<Integer, JList> sections = new HashMap();
@@ -100,7 +100,7 @@ public class Sections extends JPanel implements SelectDependent, BoulderDependen
                                 otherList.clearSelection();
                             }
                         });
-                        ApplicationState.getInstance().selectBoulder(ApplicationState.getInstance().getBoulderById(htmlToBoulderId(list.getSelectedValue())));
+                        SelectionController.getInstance().selectBoulder(BoulderController.getInstance().getBoulderById(htmlToBoulderId(list.getSelectedValue())));
                     }
                 }
             });
@@ -121,7 +121,7 @@ public class Sections extends JPanel implements SelectDependent, BoulderDependen
             });
 
         }
-        SelectDependent.COMPONENTS.add(this);
+        SelectionDependent.COMPONENTS.add(this);
         BoulderDependent.COMPONENTS.add(this);
     }
 

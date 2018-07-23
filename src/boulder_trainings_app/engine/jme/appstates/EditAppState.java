@@ -1,6 +1,7 @@
 package boulder_trainings_app.engine.jme.appstates;
 
-import boulder_trainings_app.ApplicationState;
+import boulder_trainings_app.controller.BoulderController;
+import boulder_trainings_app.controller.SelectionController;
 import boulder_trainings_app.engine.jme.utils.AbstractInputController;
 import boulder_trainings_app.ui.containers.components.View3d;
 import com.jme3.app.Application;
@@ -60,7 +61,7 @@ public class EditAppState extends BaseAppState
                     if (results.size() > 0)
                     {
                         CollisionResult closest = results.getClosestCollision();
-                        ApplicationState.getInstance().selectBoulder(ApplicationState.getInstance().getBoulderById(closest.getGeometry().getName()));
+                        SelectionController.getInstance().selectBoulder(BoulderController.getInstance().getBoulderById(closest.getGeometry().getName()));
                     }
                 }
             }

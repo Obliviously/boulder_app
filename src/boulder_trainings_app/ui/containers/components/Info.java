@@ -10,7 +10,7 @@ import boulder_trainings_app.utils.Consts;
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import boulder_trainings_app.ui.StateDependent;
+import boulder_trainings_app.controller.interfaces.StateDependent;
 
 /**
  *
