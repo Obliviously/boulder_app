@@ -1,5 +1,6 @@
 package boulder_trainings_app.ui;
 
+import boulder_trainings_app.data.User;
 import java.util.HashSet;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
@@ -12,4 +13,5 @@ public interface UserDependent
 {
     public static final ObservableSet<UserDependent> COMPONENTS = FXCollections.observableSet(new HashSet<UserDependent>());
 
+    public void setUser(User user);
 }

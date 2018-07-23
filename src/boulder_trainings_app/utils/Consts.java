@@ -14,7 +14,7 @@ import java.nio.file.Paths;
  */
 public class Consts
 {
-    public final static Path DATAPATH = Paths.get(".\\data\\");
+    public final static Path DATAPATH = Paths.get(".\\data\\boulder\\");
     public final static String PROGRAM_NAME = "Boulder Trainings App";
     public final static String PROGRAM_VERSION = "Version 0.1";
 

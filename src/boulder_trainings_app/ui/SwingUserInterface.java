@@ -1,6 +1,8 @@
 package boulder_trainings_app.ui;
 
 import boulder_trainings_app.ui.containers.*;
+import boulder_trainings_app.ui.containers.components.CreateUserDialog;
+import static boulder_trainings_app.ui.utils.UIUtilities.getCenteredPosition;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JFrame;
@@ -13,7 +15,7 @@ import javax.swing.JFrame;
 public class SwingUserInterface implements GraphicalUserInterface
 {
     private JFrame frame;
-    
+
     @Override
     public void display(String title, int minWidth, int minHeight)
     {
@@ -24,18 +26,19 @@ public class SwingUserInterface implements GraphicalUserInterface
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             //frame.setUndecorated(true);
             loadComponents();
+            frame.setLocation(getCenteredPosition(minWidth, minHeight));
             frame.setSize(minWidth, minHeight);
             frame.setMinimumSize(new Dimension(minWidth, minHeight));
             frame.setVisible(true);
         });
     }
-    
+
     private void loadComponents()
     {
         final int HGAP = 5;
         final int VGAP = 0;
         BorderLayout borderLayout = new BorderLayout(HGAP, VGAP);
-        frame.setLayout(borderLayout);        
+        frame.setLayout(borderLayout);
         TopContainer top = new TopContainer();
         MiddleContainer middle = new MiddleContainer();
         LeftContainer left = new LeftContainer();
@@ -46,5 +49,11 @@ public class SwingUserInterface implements GraphicalUserInterface
         frame.add(middle, BorderLayout.CENTER);
         frame.add(right, BorderLayout.LINE_END);
         frame.add(bottom, BorderLayout.PAGE_END);
-    }   
+    }
+
+    @Override
+    public void createUser()
+    {
+        new CreateUserDialog(frame);
+    }
 }

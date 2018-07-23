@@ -110,11 +110,11 @@ public class BoulderFileManager
                 }
                 catch (FileNotFoundException ex)
                 {
-                    Logger.getLogger(BoulderFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                    LOGGER.log(Level.SEVERE, null, ex);
                 }
                 catch (IOException | ClassNotFoundException ex)
                 {
-                    Logger.getLogger(BoulderFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                    LOGGER.log(Level.SEVERE, null, ex);
                 }
             }
         }

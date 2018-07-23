@@ -1,11 +1,13 @@
 package boulder_trainings_app;
 
 import boulder_trainings_app.data.Boulder;
+import boulder_trainings_app.data.User;
 import boulder_trainings_app.data.enums.BoulderSection;
 import boulder_trainings_app.data.enums.ProgramState;
 import boulder_trainings_app.ui.BoulderDependent;
 import boulder_trainings_app.ui.SelectDependent;
 import boulder_trainings_app.ui.StateDependent;
+import boulder_trainings_app.ui.UserDependent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -187,5 +189,25 @@ public class ApplicationState
     public DateTime getDate()
     {
         return gymDate;
+    }
+
+    public boolean loadUser()
+    {
+        User user = UserFileManager.loadUser();
+        if (user != null)
+        {
+            UserDependent.COMPONENTS.forEach((c) -> c.setUser(user));
+            return true;
+        }
+        return false;
+    }
+
+    public void setUser(User user)
+    {
+        if (user != null)
+        {
+            UserFileManager.saveUser(user);
+            UserDependent.COMPONENTS.forEach((c) -> c.setUser(user));
+        }
     }
 }

@@ -19,9 +19,14 @@ public class BoulderApp
     }
 
     public void start()
-    {        
+    {
         userInterface.display(Consts.PROGRAM_NAME, Consts.MIN_WIDTH, Consts.MIN_HEIGHT);
         ApplicationState.getInstance().loadBoulder(DateTime.now());
+        if (!ApplicationState.getInstance().loadUser())
+        {
+            System.out.println("boulder_trainings_app.BoulderApp.start()");
+            userInterface.createUser();
+        }
     }
 
     public static void main(String[] args)

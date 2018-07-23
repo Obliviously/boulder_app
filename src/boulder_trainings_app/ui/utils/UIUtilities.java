@@ -1,7 +1,10 @@
 package boulder_trainings_app.ui.utils;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.Window;
 import javax.swing.SwingUtilities;
 
@@ -24,5 +27,14 @@ public class UIUtilities
             }
         }
         return parentFrame;
+    }
+
+    public static Point getCenteredPosition(int minWidth, int minHeight)
+    {
+        final Toolkit toolkit = Toolkit.getDefaultToolkit();
+        final Dimension screenSize = toolkit.getScreenSize();
+        final int x = (screenSize.width - minWidth) / 2;
+        final int y = (screenSize.height - minHeight) / 2;
+        return new Point(x, y);
     }
 }
