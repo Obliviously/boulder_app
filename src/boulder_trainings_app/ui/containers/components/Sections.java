@@ -24,6 +24,8 @@ import javax.swing.event.ListSelectionEvent;
 import java.awt.Font;
 import javax.swing.UIManager;
 import boulder_trainings_app.controller.interfaces.SelectionDependent;
+import boulder_trainings_app.data.enums.BoulderSection;
+import java.util.Iterator;
 
 /**
  *
@@ -138,12 +140,20 @@ public class Sections extends JPanel implements SelectionDependent, BoulderDepen
     @Override
     public void removeBoulder(Boulder boulder)
     {
-        JList list = sections.get(boulder.getSection().toInt());
-        DefaultListModel listModel = (DefaultListModel) list.getModel();
-        listModel.removeElement(boulderToHtml(boulder.getName(), boulder.getId()));
-
-        JLabel listSize = listSizes.get(boulder.getSection().toInt());
-        listSize.setText(" | (" + (list.getModel().getSize()) + ")");
+        for (BoulderSection section : BoulderSection.values())
+        {
+            JList list = sections.get(section.toInt());
+            DefaultListModel listModel = (DefaultListModel) list.getModel();
+            for (int i = 0; i < listModel.getSize(); i++)
+            {
+                if (((String) listModel.get(i)).contains(boulder.getId()))
+                {
+                    listModel.remove(i);
+                }
+            }
+            JLabel listSize = listSizes.get(section.toInt());
+            listSize.setText(" | (" + (list.getModel().getSize()) + ")");
+        }
     }
 
     private String boulderToHtml(String name, String id)
@@ -179,5 +189,10 @@ public class Sections extends JPanel implements SelectionDependent, BoulderDepen
     @Override
     public void updateBoulder(Boulder boulder)
     {
+        if (boulder != null)
+        {
+            removeBoulder(boulder);
+            addBoulder(boulder);
+        }
     }
 }
