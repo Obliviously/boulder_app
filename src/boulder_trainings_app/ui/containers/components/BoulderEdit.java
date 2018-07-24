@@ -114,6 +114,7 @@ public class BoulderEdit extends JPanel implements SelectionDependent
                 updateSection();
                 updateType();
                 BoulderController.getInstance().saveBoulder(boulder);
+                BoulderController.getInstance().updateBoulder(boulder);
                 StateController.getInstance().changeState(ProgramState.SELECT);
                 SelectionController.getInstance().selectBoulder(boulder);
             }

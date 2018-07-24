@@ -61,6 +61,7 @@ public class View3d extends SimpleApplication
         super();
         this.parentContainer = parentContainer;
         AppSettings appSetting = new AppSettings(true);
+        appSetting.setAudioRenderer(null);
         appSetting.setFrameRate(60);
         this.showSettings = false;
         

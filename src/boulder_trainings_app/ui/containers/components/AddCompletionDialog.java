@@ -1,5 +1,8 @@
 package boulder_trainings_app.ui.containers.components;
 
+import boulder_trainings_app.controller.BoulderController;
+import boulder_trainings_app.controller.UserController;
+import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.ui.utils.DateLabelFormatter;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -17,6 +20,7 @@ import javax.swing.JTextField;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import org.joda.time.DateTime;
 
 /**
  *
@@ -40,11 +44,11 @@ public class AddCompletionDialog extends JDialog
     private JButton addButton;
     private JButton cancelButton;
 
-    public AddCompletionDialog(Frame parent, String name)
+    public AddCompletionDialog(Frame parent, Boulder boulder)
     {
         super(parent, "Add Completion", true);
         super.setLayout(new FlowLayout());
-        heading = new JLabel(name);
+        heading = new JLabel(boulder.getName());
 
         attemptsLabel = new JLabel("Attempts:");
         attemptsField = new JTextField();
@@ -85,13 +89,19 @@ public class AddCompletionDialog extends JDialog
         {
             AddCompletionDialog.this.dispose();
         });
-        
+
         addButton.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent ae)
             {
-                
+                int attempts = Integer.parseInt(attemptsField.getText());
+                boolean flashed = flashedBox.isSelected();
+                boolean onsight = flashedBox.isSelected();
+                DateTime date = new DateTime(dateModel.getYear(), dateModel.getMonth(), dateModel.getDay(), 0, 0, 0, 0);
+                UserController.getInstance().addCompletion(boulder, attempts, flashed, onsight, date);
+                BoulderController.getInstance().updateBoulder(boulder);
+                AddCompletionDialog.this.dispose();
             }
         });
 

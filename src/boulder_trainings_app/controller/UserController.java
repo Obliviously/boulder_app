@@ -1,10 +1,15 @@
 package boulder_trainings_app.controller;
 
 import boulder_trainings_app.UserFileManager;
+import boulder_trainings_app.controller.interfaces.StateDependent;
 import boulder_trainings_app.controller.interfaces.UserDependent;
+import boulder_trainings_app.data.Boulder;
+import boulder_trainings_app.data.BoulderCompletion;
 import boulder_trainings_app.data.User;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 import javafx.collections.SetChangeListener;
+import org.joda.time.DateTime;
 
 /**
  *
@@ -55,5 +60,18 @@ public class UserController
             UserFileManager.saveUser(user);
             UserDependent.COMPONENTS.forEach((c) -> c.setUser(user));
         }
+    }
+
+    public void addCompletion(Boulder boulder, int attempts, boolean flashed, boolean onsight, DateTime date)
+    {
+        user.addCompletion(boulder, attempts, flashed, onsight, date);
+        UserDependent.COMPONENTS.forEach((c) -> c.updateUser(user));
+
+        UserFileManager.saveUser(user);
+    }
+
+    public ArrayList<BoulderCompletion> getCompletions(String boulderId)
+    {
+        return user.getCompletions(boulderId);
     }
 }

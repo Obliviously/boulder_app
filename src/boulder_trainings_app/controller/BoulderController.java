@@ -81,16 +81,18 @@ public class BoulderController
     public void saveBoulder(Boulder boulder)
     {
         BoulderFileManager.saveBoulder(boulder);
+    }
 
-        if (boulderList.contains(boulder))
-        {
-            BoulderDependent.COMPONENTS.forEach((c) -> c.updateBoulder(boulder));
-        }
-        else
+    public void updateBoulder(Boulder boulder)
+    {
+        if (!boulderList.contains(boulder))
         {
             addBoulder(boulder);
         }
-      
+        else
+        {
+            BoulderDependent.COMPONENTS.forEach((c) -> c.updateBoulder(boulder));
+        }
     }
 
     public void loadBoulder(DateTime date)

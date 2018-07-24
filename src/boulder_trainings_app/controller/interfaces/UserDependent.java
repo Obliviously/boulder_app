@@ -14,4 +14,6 @@ public interface UserDependent
     public static final ObservableSet<UserDependent> COMPONENTS = FXCollections.observableSet(new HashSet<UserDependent>());
 
     public void setUser(User user);
+
+    public void updateUser(User user);
 }
