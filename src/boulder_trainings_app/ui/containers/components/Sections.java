@@ -153,10 +153,8 @@ public class Sections extends JPanel implements SelectionDependent, BoulderDepen
 
     private String htmlToBoulderId(String html)
     {
-        System.out.println(html);
         html = html.replaceAll("'>.*", "");
         html = html.replaceAll(".*='", "");
-        System.out.println(html);
         return html;
     }
 

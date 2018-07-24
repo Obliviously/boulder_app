@@ -74,18 +74,27 @@ public class BoulderFileManager
     public static ArrayList<Boulder> loadBoulder(DateTime date)
     {
         ArrayList<Boulder> boulders = new ArrayList<>();
-        for (BoulderSection section : BoulderSection.values())
+        if (Consts.DATAPATH.toFile().exists())
         {
-            boulders.addAll(loadBoulderSection(date, section));
+
+            for (BoulderSection section : BoulderSection.values())
+            {
+                boulders.addAll(loadBoulderSection(date, section));
+            }
+            LOGGER.log(Level.INFO, "Loaded {0} problems for date {1}", new Object[]
+            {
+                boulders.size(), date.toString()
+            });
         }
-        LOGGER.log(Level.INFO, "Loaded {0} problems for date {1}", new Object[]
+        else
         {
-            boulders.size(), date.toString()
-        });
+            Consts.DATAPATH.toFile().mkdirs();
+        }
         return boulders;
+
     }
 
-    public static ArrayList<Boulder> loadBoulderSection(DateTime date, BoulderSection section)
+    private static ArrayList<Boulder> loadBoulderSection(DateTime date, BoulderSection section)
     {
         ArrayList<Boulder> boulders = new ArrayList<>();
         int year = date.getYear();

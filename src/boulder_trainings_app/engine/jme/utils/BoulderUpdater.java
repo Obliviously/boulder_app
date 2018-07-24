@@ -8,7 +8,6 @@ import boulder_trainings_app.engine.jme.appstates.SelectAppState;
 import boulder_trainings_app.controller.interfaces.BoulderDependent;
 import boulder_trainings_app.controller.interfaces.StateDependent;
 import boulder_trainings_app.ui.containers.components.View3d;
-import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
@@ -58,7 +57,7 @@ public class BoulderUpdater implements StateDependent, BoulderDependent, Selecti
         }
         if (boulder != null)
         {
-            changeBoulderColor(boulder, SELECTION_COLOR);
+            changeBoulderColor(boulder, boulder.getColor().toColorRGBA().add(ColorRGBA.White.mult(0.5f)));
         }
         selectedBoulder = boulder;
     }
