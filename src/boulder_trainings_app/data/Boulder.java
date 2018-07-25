@@ -27,8 +27,8 @@ public class Boulder extends Observable implements Serializable
     private BoulderSection section = BoulderSection.ONE;
     private BoulderColor color = BoulderColor.PINK;
     private final ArrayList<Vector3f> positions = new ArrayList<>();
-    private String name = "NAME";
-    private BoulderGrade grade = BoulderGrade.TWO;
+    private String name = "DEFAULT_NAME";
+    private BoulderGrade grade = BoulderGrade.ONE;
     private BoulderType type = BoulderType.JUGS;
 
     public ArrayList<Vector3f> getPositions()

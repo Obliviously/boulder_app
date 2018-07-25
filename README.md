@@ -1,6 +1,6 @@
 
 - Wie starte ich die Software
-	Im /dist Ordner liegt das bereits gebaute Projekt in Form
+	Im /demo Ordner liegt das bereits gebaute Projekt in Form
 	der boulder_trainings_app.jar vor. Wenn das Betriebssystem
 	entsprechend eingerichtet ist, kann die .jar durch doppelklicken
 	gestartet werden.

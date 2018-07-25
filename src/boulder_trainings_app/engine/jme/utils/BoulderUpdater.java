@@ -82,7 +82,6 @@ public class BoulderUpdater implements StateDependent, BoulderDependent, Selecti
     public void removeBoulder(Boulder boulder)
     {
         destroyBoulder(bouldersMap.remove(boulder.getId()));
-        selectedBoulder = null;
     }
 
     @Override
@@ -94,6 +93,7 @@ public class BoulderUpdater implements StateDependent, BoulderDependent, Selecti
     public Node createBoulder(Boulder boulder)
     {
         Node boulderNode = new Node();
+
         boulderNode.setName(boulder.getId());
         Material defaultMaterial = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 

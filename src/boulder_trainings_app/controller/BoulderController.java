@@ -1,13 +1,12 @@
 package boulder_trainings_app.controller;
 
-import boulder_trainings_app.BoulderFileManager;
+import boulder_trainings_app.FileManager.BoulderFileManager;
 import boulder_trainings_app.controller.interfaces.BoulderDependent;
 import boulder_trainings_app.data.Boulder;
-import boulder_trainings_app.data.enums.BoulderSection;
-import boulder_trainings_app.data.enums.ProgramState;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.SetChangeListener;
 import org.joda.time.DateTime;
@@ -53,19 +52,20 @@ public class BoulderController
         }
     }
 
-    public void addBoulders(ArrayList<Boulder> boulderList)
+    public synchronized void addBoulders(ArrayList<Boulder> boulderList)
     {
-        boulderList.forEach((b) -> addBoulder(b));
+        boulderList.forEach((b) -> this.addBoulder(b));
     }
 
     public void removeBoulders(Set<Boulder> boulderList)
     {
+        this.boulderList.removeAll(boulderList);
         boulderList.forEach((b) -> BoulderDependent.COMPONENTS.forEach((c) ->
         {
             c.removeBoulder(b);
-            this.boulderList.remove(b);
         }
         ));
+
     }
 
     public void removeAllBoulders()
@@ -73,9 +73,9 @@ public class BoulderController
         boulderList.forEach((b) -> BoulderDependent.COMPONENTS.forEach((c) ->
         {
             c.removeBoulder(b);
-            boulderList.remove(b);
         }
         ));
+        boulderList.clear();
     }
 
     public void saveBoulder(Boulder boulder)
@@ -100,20 +100,8 @@ public class BoulderController
         if (gymDate == null || !date.equals(gymDate))
         {
             gymDate = date;
-            removeBoulders(boulderList);
+            removeAllBoulders();
             addBoulders(BoulderFileManager.loadBoulder(gymDate));
-        }
-    }
-
-    public void removeSection(BoulderSection section)
-    {
-        for (Boulder boulder : boulderList)
-        {
-            if (boulder.getSection().equals(section))
-            {
-                deleteBoulder(boulder);
-            }
-            boulderList.remove(boulder);
         }
     }
 

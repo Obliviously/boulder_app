@@ -8,5 +8,5 @@ public interface GraphicalUserInterface
 {
     public void display(String title, int minWidth, int minHeight);
 
-    public void createUser();
+    public void showWelcomeMessage();
 }

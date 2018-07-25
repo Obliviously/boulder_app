@@ -9,13 +9,11 @@ import java.util.HashMap;
  */
 public class User implements Serializable
 {
-    private final String name;
     private final HashMap<String, BoulderStatistic> statistics;
 
-    public User(String name)
+    public User()
     {
         this.statistics = new HashMap<>();
-        this.name = name;
     }
 
     public void addCompletion(String boulderID, BoulderCompletion bc)
@@ -41,10 +39,5 @@ public class User implements Serializable
         BoulderStatistic bs = new BoulderStatistic();
         statistics.put(boulderID, bs);
         return bs;
-    }
-
-    public String getName()
-    {
-        return this.name;
     }
 }

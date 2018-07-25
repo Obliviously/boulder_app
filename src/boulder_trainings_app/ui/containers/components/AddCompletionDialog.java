@@ -1,11 +1,10 @@
 package boulder_trainings_app.ui.containers.components;
 
-import boulder_trainings_app.controller.BoulderController;
 import boulder_trainings_app.controller.UserController;
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.data.BoulderStatistic;
 import boulder_trainings_app.ui.utils.DateLabelFormatter;
-import java.awt.Dimension;
+import boulder_trainings_app.ui.utils.PlaceholderTextField;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridLayout;
@@ -14,12 +13,10 @@ import java.awt.event.ActionListener;
 import java.util.Properties;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -43,7 +40,7 @@ public class AddCompletionDialog extends JDialog
     {
         super(parent, "Add Completion", true);
         super.setLayout(new FlowLayout());
-        JLabel heading = new JLabel(boulder.getName());
+        JLabel heading = new JLabel("Boulder: " + boulder.getName());
 
         JRadioButton attemptsButton = new JRadioButton(ATTEMPTSSTRING);
         attemptsButton.setSelected(true);
@@ -58,10 +55,12 @@ public class AddCompletionDialog extends JDialog
         JLabel dateLabel = new JLabel("Date:");
         UtilDateModel dateModel = new UtilDateModel();
         Properties p = new Properties();
+        dateModel.setSelected(true);
         JDatePanelImpl datePanel = new JDatePanelImpl(dateModel, p);
         JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
 
-        JTextField attemptsField = new JTextField();
+        PlaceholderTextField attemptsField = new PlaceholderTextField();
+        attemptsField.setPlaceholder("Only numbers are valid!");
 
         attemptsButton.addActionListener((ActionEvent ae) ->
         {
@@ -100,7 +99,7 @@ public class AddCompletionDialog extends JDialog
             onsightedButton.setEnabled(false);
         }
 
-        JPanel panel = new JPanel(new GridLayout(20, 2));
+        JPanel panel = new JPanel(new GridLayout(9, 2));
 
         panel.add(heading);
 
@@ -113,28 +112,36 @@ public class AddCompletionDialog extends JDialog
         panel.add(addButton);
         panel.add(cancelButton);
 
-        cancelButton.addActionListener(
-                (ActionEvent ae) ->
+        cancelButton.addActionListener((ActionEvent ae) ->
         {
             AddCompletionDialog.this.dispose();
         }
         );
 
-        addButton.addActionListener(
-                new ActionListener()
+        addButton.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent ae
             )
             {
-                int attempts = Integer.parseInt(attemptsField.getText());
+                /*
+                 * Try catch to catch non integer inputs inside attemptsField.
+                 * It's not nice but workarounds are even messier.
+                 */
 
-                DateTime date = new DateTime(dateModel.getYear(), dateModel.getMonth(), dateModel.getDay(), 0, 0, 0, 0);
-
-                UserController.getInstance().addCompletion(boulder.getId(), attempts, flashed, onsighted, date);
-                UserController.getInstance().updateUser();
-                UserController.getInstance().saveUser();
-                AddCompletionDialog.this.dispose();
+                try
+                {
+                    int attempts = Integer.parseInt(attemptsField.getText());
+                    DateTime date = new DateTime(dateModel.getYear(), dateModel.getMonth(), dateModel.getDay(), 0, 0, 0, 0);
+                    UserController.getInstance().addCompletion(boulder.getId(), attempts, flashed, onsighted, date);
+                    UserController.getInstance().updateUser();
+                    UserController.getInstance().saveUser();
+                    AddCompletionDialog.this.dispose();
+                }
+                catch (NumberFormatException e)
+                {
+                    attemptsField.setText("");
+                }
             }
         }
         );
@@ -142,6 +149,7 @@ public class AddCompletionDialog extends JDialog
         super.add(panel);
         super.setLocationRelativeTo(parent);
         super.pack();
+        super.setResizable(false);
         super.setVisible(true);
     }
 }

@@ -1,7 +1,7 @@
 package boulder_trainings_app.ui;
 
 import boulder_trainings_app.ui.containers.*;
-import boulder_trainings_app.ui.containers.components.CreateUserDialog;
+import boulder_trainings_app.ui.containers.components.WelcomeDialog;
 import static boulder_trainings_app.ui.utils.UIUtilities.getCenteredPosition;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -52,8 +52,8 @@ public class SwingUserInterface implements GraphicalUserInterface
     }
 
     @Override
-    public void createUser()
+    public void showWelcomeMessage()
     {
-        new CreateUserDialog(frame);
+        new WelcomeDialog(frame);
     }
 }

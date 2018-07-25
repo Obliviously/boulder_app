@@ -118,7 +118,7 @@ public class CreateAppState extends BaseAppState
                 currSelectedVertices = tempSelectedVertices;
                 break;
             default:
-                LOGGER.log(Level.WARNING, "This should not happens!");
+                LOGGER.log(Level.WARNING, "This should not happen! (" + newSelectedVertices.size() + ")");
                 break;
             }
         }

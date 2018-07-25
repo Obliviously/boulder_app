@@ -1,6 +1,6 @@
 package boulder_trainings_app.controller;
 
-import boulder_trainings_app.UserFileManager;
+import boulder_trainings_app.FileManager.UserFileManager;
 import boulder_trainings_app.controller.interfaces.UserDependent;
 import boulder_trainings_app.data.BoulderCompletion;
 import boulder_trainings_app.data.BoulderStatistic;

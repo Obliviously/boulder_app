@@ -3,6 +3,7 @@ package boulder_trainings_app;
 import boulder_trainings_app.controller.BoulderController;
 import boulder_trainings_app.controller.StateController;
 import boulder_trainings_app.controller.UserController;
+import boulder_trainings_app.data.User;
 import boulder_trainings_app.data.enums.ProgramState;
 import boulder_trainings_app.ui.GraphicalUserInterface;
 import boulder_trainings_app.utils.Consts;
@@ -31,7 +32,8 @@ public class BoulderApp
         if (!UserController.getInstance().loadUser())
         {
             System.out.println("boulder_trainings_app.BoulderApp.start()");
-            userInterface.createUser();
+            userInterface.showWelcomeMessage();
+            UserController.getInstance().setUser(new User());
         }
     }
 

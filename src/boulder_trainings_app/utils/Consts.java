@@ -22,12 +22,12 @@ public class Consts
     public final static int MIN_HEIGHT = 720;
 
     //BoulderInfo GUI
-    public final static String BOULDER_NAME_LABEL = "Name";
-    public final static String BOULDER_COLOR_LABEL = "Color";
-    public final static String BOULDER_SECTION_LABEL = "Section";
-    public final static String BOULDER_DATE_LABEL = "Date";
-    public final static String BOULDER_TYPE_LABEL = "Type";
-    public final static String BOULDER_GRADE_LABEL = "Grade";
+    public final static String BOULDER_NAME_LABEL = "Name:";
+    public final static String BOULDER_COLOR_LABEL = "Color:";
+    public final static String BOULDER_SECTION_LABEL = "Section:";
+    public final static String BOULDER_DATE_LABEL = "Creation Date:";
+    public final static String BOULDER_TYPE_LABEL = "Type:";
+    public final static String BOULDER_GRADE_LABEL = "Grade:";
     public final static String BOULDER_SAVE_BUTTON = "SAVE";
     public final static String NOTHING_SELECTED_MESSAGE = "SELECT A BOULDER";
 

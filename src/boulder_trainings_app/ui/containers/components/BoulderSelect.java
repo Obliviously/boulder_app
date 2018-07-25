@@ -25,6 +25,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  *
@@ -149,7 +151,7 @@ public class BoulderSelect extends JPanel implements SelectionDependent, UserDep
         c.gridy = 6;
         c.gridx = 0;
         c.gridwidth = 2;
-        propertiesContainer.add(flashOnsightLabel,c);
+        propertiesContainer.add(flashOnsightLabel, c);
 
         c.gridy = 7;
         c.gridx = 0;
@@ -201,7 +203,8 @@ public class BoulderSelect extends JPanel implements SelectionDependent, UserDep
     private void initValues()
     {
         nameValue.setText(boulder.getName());
-        dateValue.setText(boulder.getDate().toString());
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("dd.MMMM, yyyy");
+        dateValue.setText(fmt.print(boulder.getDate()));
         colorValue.setText(boulder.getColor().toString());
         typeValue.setText(boulder.getType().toString());
         gradeValue.setText(boulder.getGrade().toString());
@@ -231,7 +234,7 @@ public class BoulderSelect extends JPanel implements SelectionDependent, UserDep
             for (int i = 0; i < completions.size(); i++)
             {
                 BoulderCompletion bd = completions.get(i);
-                model.setValueAt(bd.getDate(), i, 0);
+                model.setValueAt(fmt.print(bd.getDate()), i, 0);
                 model.setValueAt(bd.getAttempts(), i, 1);
             }
         }

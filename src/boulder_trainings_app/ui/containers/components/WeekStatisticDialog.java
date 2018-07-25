@@ -5,16 +5,16 @@ import boulder_trainings_app.controller.UserController;
 import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.data.BoulderStatistic;
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.util.Set;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  *
@@ -33,7 +33,8 @@ public class WeekStatisticDialog extends JDialog
         super.setLayout(new BorderLayout());
 
         JLabel headline = new JLabel("Statistics for:");
-        JLabel dateValue = new JLabel(BoulderController.getInstance().getDate().toString());
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("dd.MMMM,yyyy");
+        JLabel dateValue = new JLabel(fmt.print(BoulderController.getInstance().getDate()));
 
         JLabel completedLabel = new JLabel("Completed");
         completedValue = new JLabel();
@@ -93,7 +94,6 @@ public class WeekStatisticDialog extends JDialog
                 }
             }
         }
-
         completedValue.setText(completedCounter + "/" + boulderCount);
         flashedValue.setText(flashedCounter + "/" + completedCounter);
         onsightedValue.setText(onsightedCounter + "/" + completedCounter);
