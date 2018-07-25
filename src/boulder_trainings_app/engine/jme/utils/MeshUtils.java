@@ -121,7 +121,7 @@ public class MeshUtils
     public static Geometry createMark(Vector3f position, String name, Material mat, ColorRGBA color)
     {
         final float RADIUS = 0.3f;
-        final int RESOLUTION = 15;
+        final int RESOLUTION = 10;
 
         Sphere sphere = new Sphere(RESOLUTION, RESOLUTION, RADIUS);
         Geometry mark = new Geometry(name, sphere);

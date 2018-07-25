@@ -22,6 +22,7 @@ public class StateController
         StateDependent.COMPONENTS.addListener((SetChangeListener.Change<? extends StateDependent> c) ->
         {
             StateDependent d = (StateDependent) c.getElementAdded();
+            d.changeState(programState);
         });
     }
 

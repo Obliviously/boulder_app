@@ -25,7 +25,6 @@ public class Info extends JPanel implements StateDependent
     public Info()
     {
         super();
-        COMPONENTS.add(this);
 
         programState = new JLabel(ProgramState.SELECT.toString());
         programName = new JLabel(Consts.PROGRAM_NAME);
@@ -36,6 +35,7 @@ public class Info extends JPanel implements StateDependent
         super.add(programVersion);
         super.setBackground(Color.GRAY);
 
+        COMPONENTS.add(this);
     }
 
     @Override
