@@ -5,7 +5,6 @@ import boulder_trainings_app.controller.SelectionController;
 import boulder_trainings_app.controller.StateController;
 import boulder_trainings_app.data.enums.ProgramState;
 import boulder_trainings_app.engine.jme.utils.BoulderUpdater;
-import boulder_trainings_app.engine.jme.appstates.SelectAppState;
 import boulder_trainings_app.engine.jme.utils.AbstractInputController;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
@@ -30,6 +29,7 @@ import com.jme3.post.ssao.SSAOFilter;
 import com.jme3.scene.Spatial;
 import com.jme3.system.AppSettings;
 import java.awt.Dimension;
+import java.io.InputStream;
 import javax.swing.JPanel;
 
 /**
@@ -119,6 +119,10 @@ public class View3d extends SimpleApplication
 
     private void initWorld()
     {
+        InputStream in = this.getClass().getResourceAsStream("data/SomeTextFile.txt");
+
+
+        
         Spatial gym = assetManager.loadModel("Models/boulderhalle.blend");
 
         CollisionShape sceneShape

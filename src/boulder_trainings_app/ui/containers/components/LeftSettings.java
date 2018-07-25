@@ -5,7 +5,8 @@
  */
 package boulder_trainings_app.ui.containers.components;
 
-import javax.swing.JLabel;
+import java.awt.GridLayout;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 /**
@@ -14,10 +15,13 @@ import javax.swing.JPanel;
  */
 public class LeftSettings extends JPanel
 {
+    JButton weekStatistics;
+
     public LeftSettings()
     {
         super();
-        super.add(new JLabel("LeftSettings"));
+        super.setLayout(new GridLayout());
+        weekStatistics = new JButton("Weekly Statistic");
+        super.add(weekStatistics);
     }
-    
 }
