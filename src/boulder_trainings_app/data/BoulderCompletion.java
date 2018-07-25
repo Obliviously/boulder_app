@@ -9,25 +9,14 @@ import org.joda.time.DateTime;
  */
 public class BoulderCompletion implements Serializable
 {
-    private final String boulderID;
     private final DateTime date;
     private final int attempts;
-    private final boolean flashed;
-    private final boolean onsight;
 
-    public BoulderCompletion(String boulderID, int attempts, boolean flashed, boolean onsight, DateTime date)
-    {
-        this.boulderID = boulderID;
+    public BoulderCompletion( int attempts, DateTime date)
+    {      
         this.attempts = attempts;
-        this.flashed = flashed;
-        this.onsight = onsight;
         this.date = date;
-    }
-
-    public String getBoulderID()
-    {
-        return boulderID;
-    }
+    } 
 
     public DateTime getDate()
     {
@@ -38,15 +27,4 @@ public class BoulderCompletion implements Serializable
     {
         return attempts;
     }
-
-    public boolean isFlashed()
-    {
-        return flashed;
-    }
-
-    public boolean isOnsight()
-    {
-        return onsight;
-    }
-
 }

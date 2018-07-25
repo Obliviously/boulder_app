@@ -1,8 +1,7 @@
 package boulder_trainings_app.data;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import org.joda.time.DateTime;
+import java.util.HashMap;
 
 /**
  *
@@ -10,30 +9,42 @@ import org.joda.time.DateTime;
  */
 public class User implements Serializable
 {
-    private String name;
-    private ArrayList<BoulderCompletion> completions = new ArrayList<>();
+    private final String name;
+    private final HashMap<String, BoulderStatistic> statistics;
 
     public User(String name)
     {
+        this.statistics = new HashMap<>();
         this.name = name;
     }
 
-    public void addCompletion(Boulder boulder, int attempts, boolean flashed, boolean onsight, DateTime date)
+    public void addCompletion(String boulderID, BoulderCompletion bc)
     {
-        BoulderCompletion bc = new BoulderCompletion(boulder.getId(), attempts, flashed, onsight, date);
-        completions.add(bc);
+        if (statistics.containsKey(boulderID))
+        {
+            statistics.get(boulderID).addCompletion(bc);
+        }
+        else
+        {
+            BoulderStatistic bs = new BoulderStatistic();
+            bs.addCompletion(bc);
+            statistics.put(boulderID, bs);
+        }
     }
 
-    public ArrayList<BoulderCompletion> getCompletions(String boulderId)
+    public BoulderStatistic getBoulderStatistic(String boulderID)
     {
-        ArrayList<BoulderCompletion> list = new ArrayList<>();
-        for (BoulderCompletion bc : completions)
+        if (statistics.containsKey(boulderID))
         {
-            if (bc.getBoulderID().equals(boulderId))
-            {
-                list.add(bc);
-            }
+            return statistics.get(boulderID);
         }
-        return list;
+        BoulderStatistic bs = new BoulderStatistic();
+        statistics.put(boulderID, bs);
+        return bs;
+    }
+
+    public String getName()
+    {
+        return this.name;
     }
 }

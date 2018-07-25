@@ -5,7 +5,11 @@
  */
 package boulder_trainings_app.ui.containers.components;
 
+import boulder_trainings_app.ui.utils.UIUtilities;
+import java.awt.Frame;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -20,8 +24,18 @@ public class LeftSettings extends JPanel
     public LeftSettings()
     {
         super();
-        super.setLayout(new GridLayout());
-        weekStatistics = new JButton("Weekly Statistic");
+        super.setLayout(new GridLayout(1, 1, 50, 50));
+        weekStatistics = new JButton("Week Statistic");
         super.add(weekStatistics);
+
+        weekStatistics.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae)
+            {
+                Frame parentFrame = UIUtilities.getParentFrame(LeftSettings.this);
+                new WeekStatisticDialog(parentFrame);
+            }
+        });
     }
 }

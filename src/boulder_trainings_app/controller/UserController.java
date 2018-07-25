@@ -1,12 +1,10 @@
 package boulder_trainings_app.controller;
 
 import boulder_trainings_app.UserFileManager;
-import boulder_trainings_app.controller.interfaces.StateDependent;
 import boulder_trainings_app.controller.interfaces.UserDependent;
-import boulder_trainings_app.data.Boulder;
 import boulder_trainings_app.data.BoulderCompletion;
+import boulder_trainings_app.data.BoulderStatistic;
 import boulder_trainings_app.data.User;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 import javafx.collections.SetChangeListener;
 import org.joda.time.DateTime;
@@ -62,16 +60,36 @@ public class UserController
         }
     }
 
-    public void addCompletion(Boulder boulder, int attempts, boolean flashed, boolean onsight, DateTime date)
+    public void addCompletion(String boulderID, int attempts, boolean flashed, boolean onsight, DateTime date)
     {
-        user.addCompletion(boulder, attempts, flashed, onsight, date);
+        BoulderStatistic bs = user.getBoulderStatistic(boulderID);
+        bs.addCompletion(new BoulderCompletion(attempts, date));
+        bs.setFlashed(flashed);
+        bs.setOnsighted(onsight);
         UserDependent.COMPONENTS.forEach((c) -> c.updateUser(user));
-
         UserFileManager.saveUser(user);
     }
 
-    public ArrayList<BoulderCompletion> getCompletions(String boulderId)
+    public void setFlashed(String boulderID, boolean flashed)
     {
-        return user.getCompletions(boulderId);
+        BoulderStatistic bs = user.getBoulderStatistic(boulderID);
+        if (bs != null)
+        {
+            bs.setFlashed(flashed);
+        }
+    }
+
+    public void setOnsighted(String boulderID, boolean onsighted)
+    {
+        BoulderStatistic bs = user.getBoulderStatistic(boulderID);
+        if (bs != null)
+        {
+            bs.setOnsighted(onsighted);
+        }
+    }
+
+    public BoulderStatistic getStatistic(String boulderId)
+    {
+        return user.getBoulderStatistic(boulderId);
     }
 }

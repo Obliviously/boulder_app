@@ -3,9 +3,11 @@ package boulder_trainings_app.ui.containers.components;
 import boulder_trainings_app.controller.StateController;
 import boulder_trainings_app.controller.interfaces.StateDependent;
 import boulder_trainings_app.data.enums.ProgramState;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -22,7 +24,8 @@ public class ModeSelection extends JPanel implements StateDependent
     public ModeSelection()
     {
         super();
-        super.setLayout(new GridLayout(1, 3));
+        super.setBackground(Color.BLUE);
+        super.setLayout(new GridLayout());
         selectButton = new JButton("SELECT");
         editButton = new JButton("EDIT");
         createButton = new JButton("CREATE");

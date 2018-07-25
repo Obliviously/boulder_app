@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import boulder_trainings_app.controller.interfaces.SelectionDependent;
 import boulder_trainings_app.controller.interfaces.UserDependent;
 import boulder_trainings_app.data.BoulderCompletion;
+import boulder_trainings_app.data.BoulderStatistic;
 import boulder_trainings_app.data.User;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -23,7 +24,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 
 /**
@@ -49,8 +49,9 @@ public class BoulderSelect extends JPanel implements SelectionDependent, UserDep
 
     private final JTable completionsTable;
     private final JScrollPane tableScrollPane;
-
     private final JLabel nothingSelectedMessage;
+    private final JLabel flashOnsightLabel;
+
     private Boulder boulder = null;
 
     private Frame parentFrame;
@@ -71,6 +72,7 @@ public class BoulderSelect extends JPanel implements SelectionDependent, UserDep
         gradeValue = new JLabel();
         JLabel sectionLabel = new JLabel(Consts.BOULDER_SECTION_LABEL);
         sectionValue = new JLabel();
+        flashOnsightLabel = new JLabel();
 
         TableModel tableModel = new DefaultTableModel(tableColumnNames, 0);
         completionsTable = new JTable(tableModel);
@@ -147,9 +149,14 @@ public class BoulderSelect extends JPanel implements SelectionDependent, UserDep
         c.gridy = 6;
         c.gridx = 0;
         c.gridwidth = 2;
-        propertiesContainer.add(addCompletion, c);
+        propertiesContainer.add(flashOnsightLabel,c);
 
         c.gridy = 7;
+        c.gridx = 0;
+        c.gridwidth = 2;
+        propertiesContainer.add(addCompletion, c);
+
+        c.gridy = 8;
         c.gridx = 0;
         c.gridwidth = 10;
         propertiesContainer.add(tableScrollPane, c);
@@ -201,15 +208,33 @@ public class BoulderSelect extends JPanel implements SelectionDependent, UserDep
         sectionValue.setText(boulder.getSection().toString());
 
         //Update completions list
-        ArrayList<BoulderCompletion> completions = UserController.getInstance().getCompletions(boulder.getId());
-        DefaultTableModel model = (DefaultTableModel) completionsTable.getModel();
-        model.setRowCount(completions.size());
-
-        for (int i = 0; i < completions.size(); i++)
+        BoulderStatistic bs = UserController.getInstance().getStatistic(boulder.getId());
+        if (bs != null)
         {
-            BoulderCompletion bd = completions.get(i);
-            model.setValueAt(bd.getDate(), i, 0);
-            model.setValueAt(bd.getAttempts(), i, 1);
+            if (bs.flashed())
+            {
+                flashOnsightLabel.setText("FLASHED");
+                if (bs.onsighted())
+                {
+                    flashOnsightLabel.setText("ONSIGHTED");
+                }
+            }
+            else
+            {
+                flashOnsightLabel.setText("NOT FLASHED OR ONSIGHTED");
+            }
+
+            ArrayList<BoulderCompletion> completions = bs.getCompletions();
+            DefaultTableModel model = (DefaultTableModel) completionsTable.getModel();
+            model.setRowCount(completions.size());
+
+            for (int i = 0; i < completions.size(); i++)
+            {
+                BoulderCompletion bd = completions.get(i);
+                model.setValueAt(bd.getDate(), i, 0);
+                model.setValueAt(bd.getAttempts(), i, 1);
+            }
         }
+
     }
 }

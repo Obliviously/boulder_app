@@ -16,24 +16,25 @@ import org.joda.time.DateTime;
 public class BoulderApp
 {
     private final GraphicalUserInterface userInterface;
-    
+
     public BoulderApp()
     {
         this.userInterface = new SwingUserInterface();
     }
-    
+
     public void start()
     {
         userInterface.display(Consts.PROGRAM_NAME, Consts.MIN_WIDTH, Consts.MIN_HEIGHT);
         BoulderController.getInstance().loadBoulder(DateTime.now());
+        StateController.getInstance().changeState(ProgramState.SELECT);
+
         if (!UserController.getInstance().loadUser())
         {
             System.out.println("boulder_trainings_app.BoulderApp.start()");
             userInterface.createUser();
         }
-        StateController.getInstance().changeState(ProgramState.SELECT);
     }
-    
+
     public static void main(String[] args)
     {
         BoulderApp app = new BoulderApp();
