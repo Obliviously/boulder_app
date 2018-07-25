@@ -19,8 +19,9 @@ public class BoulderStatistic implements Serializable
         this.onsighted = false;
         this.completions = new ArrayList<>();
     }
-    
-    public boolean isCompleted(){
+
+    public boolean isCompleted()
+    {
         return !completions.isEmpty();
     }
 

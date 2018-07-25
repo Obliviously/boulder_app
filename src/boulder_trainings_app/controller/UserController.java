@@ -60,14 +60,22 @@ public class UserController
         }
     }
 
+    public void saveUser()
+    {
+        UserFileManager.saveUser(user);
+    }
+
     public void addCompletion(String boulderID, int attempts, boolean flashed, boolean onsight, DateTime date)
     {
         BoulderStatistic bs = user.getBoulderStatistic(boulderID);
         bs.addCompletion(new BoulderCompletion(attempts, date));
         bs.setFlashed(flashed);
         bs.setOnsighted(onsight);
+    }
+
+    public void updateUser()
+    {
         UserDependent.COMPONENTS.forEach((c) -> c.updateUser(user));
-        UserFileManager.saveUser(user);
     }
 
     public void setFlashed(String boulderID, boolean flashed)

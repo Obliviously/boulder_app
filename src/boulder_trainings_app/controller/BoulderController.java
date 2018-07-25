@@ -117,7 +117,7 @@ public class BoulderController
         }
     }
 
-    public Boulder getBoulderById(String boulderId)
+    public Boulder getBoulder(String boulderId)
     {
         for (Boulder b : boulderList)
         {
@@ -127,6 +127,11 @@ public class BoulderController
             }
         }
         return null;
+    }
+
+    public Set<Boulder> getBoulder()
+    {
+        return this.boulderList;
     }
 
     public void deleteBoulder(Boulder boulder)

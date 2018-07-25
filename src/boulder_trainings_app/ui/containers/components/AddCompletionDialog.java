@@ -34,7 +34,11 @@ public class AddCompletionDialog extends JDialog
     private final String ATTEMPTSSTRING = "Attempts";
     private final String FLASHEDSTRING = "Flashed";
     private final String ONSIGHTEDSTRING = "Onsighted";
-    
+
+    private boolean flashed = false;
+    private boolean onsighted = false;
+    private int attempts = 1;
+
     public AddCompletionDialog(Frame parent, Boulder boulder)
     {
         super(parent, "Add Completion", true);
@@ -45,6 +49,7 @@ public class AddCompletionDialog extends JDialog
         attemptsButton.setSelected(true);
         JRadioButton flashedButton = new JRadioButton(FLASHEDSTRING);
         JRadioButton onsightedButton = new JRadioButton(ONSIGHTEDSTRING);
+
         ButtonGroup group = new ButtonGroup();
         group.add(attemptsButton);
         group.add(flashedButton);
@@ -58,12 +63,38 @@ public class AddCompletionDialog extends JDialog
 
         JTextField attemptsField = new JTextField();
 
+        attemptsButton.addActionListener((ActionEvent ae) ->
+        {
+            attemptsField.setEditable(true);
+            attemptsField.setText("");
+            flashed = false;
+            onsighted = false;
+        });
+
+        flashedButton.addActionListener((ActionEvent ae) ->
+        {
+            attemptsField.setEditable(false);
+            attemptsField.setText("1");
+            attempts = 1;
+            flashed = true;
+            onsighted = false;
+        });
+
+        onsightedButton.addActionListener((ActionEvent ae) ->
+        {
+            attemptsField.setEditable(false);
+            attemptsField.setText("1");
+            attempts = 1;
+            flashed = true;
+            onsighted = true;
+        });
+
         JButton addButton = new JButton("Add");
         JButton cancelButton = new JButton("Cancel");
 
         //You can only flash or onsight at your first completion
         BoulderStatistic bs = UserController.getInstance().getStatistic(boulder.getId());
-        if (!bs.isCompleted())
+        if (bs.isCompleted())
         {
             flashedButton.setEnabled(false);
             onsightedButton.setEnabled(false);
@@ -73,19 +104,13 @@ public class AddCompletionDialog extends JDialog
 
         panel.add(heading);
 
-        
-        
         panel.add(attemptsButton);
         panel.add(attemptsField);
         panel.add(flashedButton);
         panel.add(onsightedButton);
-
         panel.add(dateLabel);
-
         panel.add(datePicker);
-
         panel.add(addButton);
-
         panel.add(cancelButton);
 
         cancelButton.addActionListener(
@@ -103,24 +128,20 @@ public class AddCompletionDialog extends JDialog
             )
             {
                 int attempts = Integer.parseInt(attemptsField.getText());
-                boolean flashed = flashedBox.isSelected();
-                boolean onsight = onsightBox.isSelected();
+
                 DateTime date = new DateTime(dateModel.getYear(), dateModel.getMonth(), dateModel.getDay(), 0, 0, 0, 0);
-                UserController.getInstance().addCompletion(boulder.getId(), attempts, flashed, onsight, date);
-                BoulderController.getInstance().updateBoulder(boulder);
+
+                UserController.getInstance().addCompletion(boulder.getId(), attempts, flashed, onsighted, date);
+                UserController.getInstance().updateUser();
+                UserController.getInstance().saveUser();
                 AddCompletionDialog.this.dispose();
             }
         }
         );
 
-        panel.setSize(new Dimension(500, 500));
-        panel.setPreferredSize(new Dimension(500, 500));
-
         super.add(panel);
-
-        this.pack();
-
-        this.setVisible(
-                true);
+        super.setLocationRelativeTo(parent);
+        super.pack();
+        super.setVisible(true);
     }
 }

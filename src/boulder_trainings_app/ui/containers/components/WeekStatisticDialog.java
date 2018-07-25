@@ -1,11 +1,19 @@
 package boulder_trainings_app.ui.containers.components;
 
+import boulder_trainings_app.controller.BoulderController;
+import boulder_trainings_app.controller.UserController;
+import boulder_trainings_app.data.Boulder;
+import boulder_trainings_app.data.BoulderStatistic;
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.util.Set;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -14,25 +22,80 @@ import javax.swing.JPanel;
  */
 public class WeekStatisticDialog extends JDialog
 {
-    JButton okButton;
+
+    JLabel completedValue;
+    JLabel flashedValue;
+    JLabel onsightedValue;
 
     public WeekStatisticDialog(Frame parent)
     {
         super(parent, "Statistics", true);
-        super.setLayout(new FlowLayout());
+        super.setLayout(new BorderLayout());
 
-        okButton = new JButton("Ok");
+        JLabel headline = new JLabel("Statistics for:");
+        JLabel dateValue = new JLabel(BoulderController.getInstance().getDate().toString());
+
+        JLabel completedLabel = new JLabel("Completed");
+        completedValue = new JLabel();
+        JLabel flashedLabel = new JLabel("Flashed");
+        flashedValue = new JLabel();
+        JLabel onsightedLabel = new JLabel("Onsighted");
+        onsightedValue = new JLabel();
+        JButton okButton = new JButton("CLOSE");
+
         JPanel panel = new JPanel(new GridLayout(5, 2));
-        panel.add(okButton);
+        panel.add(headline);
+        panel.add(dateValue);
+        panel.add(completedLabel);
+        panel.add(completedValue);
+        panel.add(flashedLabel);
+        panel.add(flashedValue);
+        panel.add(onsightedLabel);
+        panel.add(onsightedValue);
 
         okButton.addActionListener((ActionEvent ae) ->
         {
             this.dispose();
         });
 
-        super.add(panel);
+        calculateStatistics();
+        super.add(panel, BorderLayout.CENTER);
+        super.add(okButton, BorderLayout.SOUTH);
+
         super.setLocationRelativeTo(null);
         this.pack();
         this.setVisible(true);
+    }
+
+    private void calculateStatistics()
+    {
+        Set<Boulder> boulderSet = BoulderController.getInstance().getBoulder();
+        UserController userController = UserController.getInstance();
+        BoulderStatistic boulderStatistic;
+        int boulderCount = boulderSet.size();
+        int completedCounter = 0;
+        int flashedCounter = 0;
+        int onsightedCounter = 0;
+
+        for (Boulder boulder : boulderSet)
+        {
+            boulderStatistic = userController.getStatistic(boulder.getId());
+            if (boulderStatistic != null && boulderStatistic.isCompleted())
+            {
+                completedCounter++;
+                if (boulderStatistic.flashed())
+                {
+                    flashedCounter++;
+                }
+                if (boulderStatistic.onsighted())
+                {
+                    onsightedCounter++;
+                }
+            }
+        }
+
+        completedValue.setText(completedCounter + "/" + boulderCount);
+        flashedValue.setText(flashedCounter + "/" + completedCounter);
+        onsightedValue.setText(onsightedCounter + "/" + completedCounter);
     }
 }

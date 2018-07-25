@@ -102,7 +102,7 @@ public class Sections extends JPanel implements SelectionDependent, BoulderDepen
                                 otherList.clearSelection();
                             }
                         });
-                        SelectionController.getInstance().selectBoulder(BoulderController.getInstance().getBoulderById(htmlToBoulderId(list.getSelectedValue())));
+                        SelectionController.getInstance().selectBoulder(BoulderController.getInstance().getBoulder(htmlToBoulderId(list.getSelectedValue())));
                     }
                 }
             });

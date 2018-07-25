@@ -61,7 +61,7 @@ public class EditAppState extends BaseAppState
                     if (results.size() > 0)
                     {
                         CollisionResult closest = results.getClosestCollision();
-                        SelectionController.getInstance().selectBoulder(BoulderController.getInstance().getBoulderById(closest.getGeometry().getName()));
+                        SelectionController.getInstance().selectBoulder(BoulderController.getInstance().getBoulder(closest.getGeometry().getName()));
                     }
                 }
             }

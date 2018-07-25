@@ -24,7 +24,6 @@ public class ModeSelection extends JPanel implements StateDependent
     public ModeSelection()
     {
         super();
-        super.setBackground(Color.BLUE);
         super.setLayout(new GridLayout());
         selectButton = new JButton("SELECT");
         editButton = new JButton("EDIT");
