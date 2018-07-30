@@ -28,7 +28,3 @@
 - Welche Entwicklungsumgebung wird benötigt
 	Die jmonkeyplatform v3.2.1
 	https://github.com/jMonkeyEngine/sdk/releases	
-
-- Kontaktmöglichkeit (Email) für Rückfragen
-	fabian.m.rauscher@gmail.com
-	
